@@ -14,7 +14,7 @@
                 </div>
                 <div class="notice_slider overflow-hidden my-3">
                     <div class="notice_wrapper" id="wrapper">
-                        <div class="notice_board_content" id="noticeContent">
+                        <!-- <div class="notice_board_content" id="noticeContent">
                             <div class="notice_board_content_menu">
                                 <div class="notice_board_content_menu_items">
                                     <div class="wrap">
@@ -138,6 +138,25 @@
                                         সহযোগিকা প্রদান প্রসঙ্গে ।</a>
                                 </div>
                             </div>
+                        </div> -->
+                        <div class="notice_board_content" id="noticeContent">
+                            @forelse($notices as $notice)
+                            <div class="notice_board_content_menu">
+                                <div class="notice_board_content_menu_items">
+                                    <div class="wrap">
+                                        <h3 class="date">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d') }}</h3>
+                                        <p class="month">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('F') }}</p>
+                                    </div>
+                                </div>
+                                <div class="notice_board_content_menu_text">
+                                    <a href="{{ route('notice') }}" class="notice_item">{{ $notice->title }}</a>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="p-3 text-center text-muted">
+                                <p>এখনো কোনো নোটিশ প্রকাশ করা হয়নি।</p>
+                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

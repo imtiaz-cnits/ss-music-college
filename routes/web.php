@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\Notice; 
+use App\Http\Controllers\NoticeController;
 
 // Home page
 Route::get('/', function () {
-    return view('frontend.index');
+    $notices = Notice::orderBy('date', 'desc')->get();
+    return view('frontend.index', compact('notices'));
 })->name('home');
 
 Route::get('/institution-history', function () {
@@ -29,9 +32,12 @@ Route::get('/teachers', function () {
     return view('frontend.teachers');
 })->name('teachers');
 
+// Notice page
 Route::get('/notice', function () {
-    return view('frontend.notice');
+    $notices = Notice::orderBy('date', 'desc')->paginate(15);
+    return view('frontend.notice', compact('notices'));
 })->name('notice');
+
 Route::get('/result', function () {
     return view('frontend.result');
 })->name('result');
@@ -71,3 +77,17 @@ Route::get('/municipality-certification-letter', function () {
     return view('frontend.municipality-certification-letter');
 })->name('municipality_certification');
 
+
+// =========================================
+
+Route::get('/municipality-certification-letter', function () {
+    return view('frontend.municipality-certification-letter');
+})->name('municipality_certification');
+
+// Admin Dashboard Routes
+Route::get('/notice/download/{id}', [NoticeController::class, 'download'])->name('notices.download');
+
+// Admin Dashboard Routes
+Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+    Route::resource('notices', NoticeController::class);
+});
