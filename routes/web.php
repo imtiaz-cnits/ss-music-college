@@ -6,7 +6,7 @@ use App\Http\Controllers\NoticeController;
 
 // Home page
 Route::get('/', function () {
-    $notices = Notice::orderBy('date', 'desc')->get();
+    $notices = Notice::orderBy('created_at', 'desc')->get();
     return view('frontend.index', compact('notices'));
 })->name('home');
 
@@ -34,9 +34,15 @@ Route::get('/teachers', function () {
 
 // Notice page
 Route::get('/notice', function () {
-    $notices = Notice::orderBy('date', 'desc')->paginate(15);
+    $notices = Notice::orderBy('created_at', 'desc')->paginate(15);
     return view('frontend.notice', compact('notices'));
 })->name('notice');
+
+// Single Notice Details Page
+Route::get('/notice/{id}', function ($id) {
+    $notice = Notice::findOrFail($id);
+    return view('frontend.notice-single', compact('notice'));
+})->name('notice.single');
 
 Route::get('/result', function () {
     return view('frontend.result');
@@ -77,29 +83,10 @@ Route::get('/municipality-certification-letter', function () {
     return view('frontend.municipality-certification-letter');
 })->name('municipality_certification');
 
-
-// =========================================
-
-Route::get('/municipality-certification-letter', function () {
-    return view('frontend.municipality-certification-letter');
-})->name('municipality_certification');
-
-// Admin Dashboard Routes
+// Notice Download Route
 Route::get('/notice/download/{id}', [NoticeController::class, 'download'])->name('notices.download');
 
 // Admin Dashboard Routes
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('notices', NoticeController::class);
 });
-
-// Notice page
-Route::get('/notice', function () {
-    $notices = \App\Models\Notice::orderBy('date', 'desc')->paginate(15);
-    return view('frontend.notice', compact('notices'));
-})->name('notice');
-
-// Single Notice Details Page
-Route::get('/notice/{id}', function ($id) {
-    $notice = \App\Models\Notice::findOrFail($id);
-    return view('frontend.notice-single', compact('notice'));
-})->name('notice.single');

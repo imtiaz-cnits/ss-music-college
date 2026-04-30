@@ -11,7 +11,7 @@ class NoticeController extends Controller
     // ১. সব নোটিশ দেখানোর জন্য
     public function index()
     {
-        $notices = Notice::orderBy('date', 'desc')->get();
+        $notices = Notice::orderBy('created_at', 'desc')->get();
         return view('dashboard.notices.index', compact('notices'));
     }
 
@@ -28,7 +28,7 @@ class NoticeController extends Controller
             'title'       => 'required|string|max:255',
             'date'        => 'required|date',
             'description' => 'nullable|string',
-            'file'        => 'nullable|mimes:pdf,png,jpg,jpeg|max:10240' 
+            'file'        => 'nullable|mimes:pdf,png,jpg,jpeg|max:10240'
         ]);
 
         $notice = new Notice();
@@ -44,7 +44,7 @@ class NoticeController extends Controller
             // public 
             $path = $file->storeAs('notices', $fileName, 'public');
 
-            $notice->file = $path; 
+            $notice->file = $path;
         }
 
         $notice->save();

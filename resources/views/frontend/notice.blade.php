@@ -18,33 +18,32 @@
                   <th class="text-uppercase text-start">ক্রমিক</th>
                   <th class="text-uppercase text-start">শিরোনাম</th>
                   <th class="text-uppercase text-start">তারিখ</th>
-                  <th class="text-uppercase text-center">ফাইল</th>
+                  <th class="text-uppercase text-center">ফাইল/বিস্তারিত</th>
                 </tr>
               </thead>
 
               <tbody>
                 @forelse($notices as $key => $notice)
-                <tr>
+                <!-- পুরো রো ক্লিকেবল করা হলো এবং পয়েন্টার কার্সর দেওয়া হলো -->
+                <tr style="cursor: pointer;" onclick="window.location='{{ route('notice.single', $notice->id) }}'">
                   <td>{{ $notices->firstItem() + $key }}</td>
                   <td>
-                    @if($notice->file)
-                    <a href="{{ route('notice.single', $notice->id) }}" class="notice-title text-decoration-none" style="color: #000; font-weight: 500;">
+                    <!-- টাইটেল এখন span, কারণ পুরো রো-ই ক্লিকেবল -->
+                    <span class="notice-title text-dark" style="font-weight: 500;">
                       {{ $notice->title }}
-                    </a>
-                    @else
-                    <span class="notice-title">{{ $notice->title }}</span>
-                    @endif
+                    </span>
 
-                    <div class="time">{{ \Carbon\Carbon::parse($notice->created_at)->format('h:i A') }}</div>
+                    <div class="time text-muted small mt-1">{{ \Carbon\Carbon::parse($notice->created_at)->format('h:i A') }}</div>
                   </td>
                   <td class="date-year">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d M, Y') }}</td>
                   <td class="text-center">
                     @if($notice->file)
-                    <a href="{{ route('notices.download', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #da1e37; color: white;">
+                    <!-- event.stopPropagation() দেওয়া হয়েছে যেন এখানে ক্লিক করলে রো-এর ক্লিক কাজ না করে -->
+                    <a href="{{ route('notices.download', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #da1e37; color: white;" onclick="event.stopPropagation()">
                       ডাউনলোড
                     </a>
                     @else
-                    <a href="{{ route('notice.single', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #2c3e50; color: white;">
+                    <a href="{{ route('notice.single', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #2c3e50; color: white;" onclick="event.stopPropagation()">
                       বিস্তারিত দেখুন
                     </a>
                     @endif
