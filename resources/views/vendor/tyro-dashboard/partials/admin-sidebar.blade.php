@@ -1,4 +1,4 @@
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar flex flex-col" id="sidebar" style="display: flex; flex-direction: column;">
     <div class="sidebar-header">
         <a href="{{ route($dashboardRoute::name('index')) }}" class="sidebar-logo">
             <div class="sidebar-logo-icon">
@@ -26,7 +26,8 @@
 
     <nav class="sidebar-nav sidebar-accordion"
         data-sidebar-accordion
-        data-sidebar-accordion-compact="{{ config('tyro-dashboard.branding.sidebar_accordion_compact', false) ? 'true' : 'false' }}">
+        data-sidebar-accordion-compact="{{ config('tyro-dashboard.branding.sidebar_accordion_compact', false) ? 'true' : 'false' }}" style="flex-grow: 1;">
+        
         <div class="sidebar-section">
             <div class="sidebar-section-title">Menu</div>
 
@@ -42,13 +43,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 My Profile
-            </a>
-
-            <a href="{{ route('notices.index') }}" class="sidebar-link {{ request()->routeIs('notices.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                </svg>
-                Notice Management
             </a>
 
             @if(!empty($commonMenuItems))
@@ -82,6 +76,18 @@
             @endif
         </div>
 
+        {{-- Our College Dropdown --}}
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Our College</div>
+            
+            <a href="{{ route('notices.index') }}" class="sidebar-link {{ request()->routeIs('notices.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                </svg>
+                Notice Management
+            </a>
+        </div>
+
         <div class="sidebar-section">
             <div class="sidebar-section-title">Administration</div>
             <a href="{{ route($dashboardRoute::name('users.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('users.*')) ? 'active' : '' }}">
@@ -102,34 +108,6 @@
                 </svg>
                 Privileges
             </a>
-            @if(config('tyro-dashboard.features.invitation_system', true))
-            <a href="{{ route($dashboardRoute::name('invitations.admin.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('invitations.admin.*')) ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                </svg>
-                Invitation Links
-            </a>
-            @endif
-
-            @php
-            $showAuditLogsMenu = false;
-            if (config('tyro-dashboard.features.audit_logs', true) && config('tyro.audit.enabled', true) && class_exists('\HasinHayder\Tyro\Models\AuditLog')) {
-            try {
-            $showAuditLogsMenu = \Illuminate\Support\Facades\Schema::hasTable(config('tyro.tables.audit_logs', 'tyro_audit_logs'));
-            } catch (\Throwable $e) {
-            $showAuditLogsMenu = false;
-            }
-            }
-            @endphp
-
-            @if($showAuditLogsMenu)
-            <a href="{{ route($dashboardRoute::name('audits.index')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('audits.*')) ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Audit Logs
-            </a>
-            @endif
 
             @if(!empty($adminMenuItems))
             @foreach($adminMenuItems as $item)
@@ -145,8 +123,6 @@
             </a>
             @endforeach
             @endif
-
-
         </div>
 
         @if(!empty($allResources ?? config('tyro-dashboard.resources')))
@@ -196,39 +172,18 @@
             @endforeach
         </div>
         @endif
-
-        @if(!config('tyro-dashboard.disable_examples', false) && !app()->environment('production'))
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Examples</div>
-            <a href="{{ route($dashboardRoute::name('components')) }}" class="sidebar-link {{ (request()->routeIs($dashboardRoute::pattern('components')) || request()->routeIs($dashboardRoute::pattern('examples.components'))) ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H6a2 2 0 01-2-2V6z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 6a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3a2 2 0 01-2-2V6z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 15a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 15a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3a2 2 0 01-2-2v-3z" />
-                </svg>
-                Dashboard Components
-            </a>
-
-            <a href="{{ route($dashboardRoute::name('widgets')) }}" class="sidebar-link {{ (request()->routeIs($dashboardRoute::pattern('widgets')) || request()->routeIs($dashboardRoute::pattern('examples.widgets'))) ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12h18" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 5h6v6H5z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 13h6v6h-6z" />
-                </svg>
-                Widgets
-            </a>
-
-            @if(class_exists('HasinHayder\\TyroDashboardComponents\\TyroDashboardComponentsServiceProvider'))
-            <a href="{{ route($dashboardRoute::name('x-components')) }}" class="sidebar-link {{ request()->routeIs($dashboardRoute::pattern('x-components')) ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Form Components
-            </a>
-            @endif
-        </div>
-        @endif
     </nav>
+    
+    <!-- Logout Button Placed at the Bottom -->
+    <div class="sidebar-section" style="margin-top: auto; padding: 0rem 0.5rem; border-top: 1px solid var(--sidebar-border); margin-bottom: 0;">
+        <form action="{{ route('tyro-login.logout') }}" method="POST" style="margin: 0;">
+            @csrf
+            <button type="submit" class="sidebar-link" style="width: 100%; text-align: left; background: transparent; border: none; cursor: pointer; color: #ef4444; padding: 1rem 0.5rem;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <span>Logout</span>
+            </button>
+        </form>
+    </div>
 </aside>

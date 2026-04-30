@@ -3,6 +3,7 @@
 @section('title', 'Add Notice')
 
 @section('content')
+
 <div class="page-header">
     <div class="page-header-row">
         <div>
@@ -12,13 +13,18 @@
     </div>
 </div>
 
-<div class="card" style="max-width: 800px;">
+<div class="card" style="max-width: 100%;">
     <div class="card-body">
         <form action="{{ route('notices.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label class="form-label">Notice Title</label>
                 <input type="text" name="title" class="form-input" required placeholder="Enter notice title...">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="description" class="form-label">নোটিশের বিস্তারিত (ঐচ্ছিক)</label>
+                <textarea name="description" id="description" class="form-input" rows="5" placeholder="ফাইল না থাকলে এখানে নোটিশের বিস্তারিত লিখুন">{{ old('description') }}</textarea>
             </div>
 
             <div class="form-group" style="margin-bottom: 1.5rem;">

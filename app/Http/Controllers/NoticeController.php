@@ -25,28 +25,30 @@ class NoticeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'date'  => 'required|date',
-            'file'  => 'nullable|mimes:pdf,png,jpg,jpeg|max:10240' // সর্বোচ্চ ১০ এমবি সাইজ
+            'title'       => 'required|string|max:255',
+            'date'        => 'required|date',
+            'description' => 'nullable|string',
+            'file'        => 'nullable|mimes:pdf,png,jpg,jpeg|max:10240' 
         ]);
 
         $notice = new Notice();
         $notice->title = $request->title;
         $notice->date = $request->date;
+        $notice->description = $request->description;
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $originalName = str_replace(' ', '_', $file->getClientOriginalName());
             $fileName = time() . '_' . $originalName;
-            
-            // public ডিস্কে সরাসরি notices ফোল্ডারে সেভ করছি
-            $path = $file->storeAs('notices', $fileName, 'public'); 
-            
-            $notice->file = $path; // এটি ডাটাবেসে সেভ হবে "notices/filename.ext" হিসেবে
+
+            // public 
+            $path = $file->storeAs('notices', $fileName, 'public');
+
+            $notice->file = $path; 
         }
 
         $notice->save();
-        return redirect()->route('notices.index')->with('success', 'নোটিশ সফলভাবে যোগ করা হয়েছে!');
+        return redirect()->route('notices.index')->with('success', 'নোটিশ সফলভাবে যোগ করা হয়েছে!');
     }
 
     // ৪. নোটিশ এডিট করার ফর্ম
@@ -60,14 +62,16 @@ class NoticeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'date'  => 'required|date',
-            'file'  => 'nullable|mimes:pdf,png,jpg,jpeg|max:10240' // এডিট করার সময়ও ফাইল চেকিং হবে
+            'title'       => 'required|string|max:255',
+            'date'        => 'required|date',
+            'description' => 'nullable|string',
+            'file'        => 'nullable|mimes:pdf,png,jpg,jpeg|max:10240'
         ]);
 
         $notice = Notice::findOrFail($id);
         $notice->title = $request->title;
         $notice->date = $request->date;
+        $notice->description = $request->description; // ডেসক্রিপশন আপডেট করা হচ্ছে
 
         if ($request->hasFile('file')) {
             if ($notice->file && Storage::disk('public')->exists($notice->file)) {
@@ -77,14 +81,14 @@ class NoticeController extends Controller
             $file = $request->file('file');
             $originalName = str_replace(' ', '_', $file->getClientOriginalName());
             $fileName = time() . '_' . $originalName;
-            
-            $path = $file->storeAs('notices', $fileName, 'public'); 
-            
+
+            $path = $file->storeAs('notices', $fileName, 'public');
+
             $notice->file = $path;
         }
 
         $notice->save();
-        return redirect()->route('notices.index')->with('success', 'নোটিশ সফলভাবে আপডেট করা হয়েছে!');
+        return redirect()->route('notices.index')->with('success', 'নোটিশ সফলভাবে আপডেট করা হয়েছে!');
     }
 
     // ৬. নোটিশ ডিলিট করার জন্য
@@ -97,7 +101,7 @@ class NoticeController extends Controller
         }
 
         $notice->delete();
-        return back()->with('success', 'নোটিশ ডিলিট করা হয়েছে!');
+        return back()->with('success', 'নোটিশ ডিলিট করা হয়েছে!');
     }
 
     // ৭. নোটিশের ফাইল ডাউনলোড করার জন্য
@@ -109,6 +113,6 @@ class NoticeController extends Controller
             return Storage::disk('public')->download($notice->file);
         }
 
-        return back()->with('error', 'দুঃখিত, ফাইলটি সার্ভারে পাওয়া যায়নি!');
+        return back()->with('error', 'দুঃখিত, ফাইলটি সার্ভারে পাওয়া যায়নি!');
     }
 }

@@ -14,131 +14,6 @@
                 </div>
                 <div class="notice_slider overflow-hidden my-3">
                     <div class="notice_wrapper" id="wrapper">
-                        <!-- <div class="notice_board_content" id="noticeContent">
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">৩০</h3>
-                                        <p class="month">জুলাই</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">২০২৫-২০২৬ শিক্ষাবর্ষে একাদশ শ্রেণিতে শিক্ষার্থী
-                                        ভর্তির লক্ষ্যে অনলাইন লিংক-ওয়েবসাইট এর ঠিকানা প্রকাশ
-                                        প্রসঙ্গে।</a>
-                                </div>
-                            </div>
-
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">২৩</h3>
-                                        <p class="month">জুলাই</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">চলমান এইচএসসি ২০২৫ এর স্থগিতকৃত পরীক্ষার সময়সূচি</a>
-                                </div>
-                            </div>
-
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">০৫</h3>
-                                        <p class="month">জুলাই</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">এইচএসসি ২০২৫ পরীক্ষার হলে স্বাস্থ্যবিধি কার্যকরভাবে
-                                        মেনে চলা সংক্রান্ত পুন:সতর্কীকরণ প্রসঙ্গে।</a>
-                                </div>
-                            </div>
-
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">২৮</h3>
-                                        <p class="month">জুন</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">এইচএসসি পরীক্ষা ২০২৫ এর পরীক্ষার্থীদের সকাল ৮.৩০ থেকে
-                                        কেন্দ্র চত্বরে প্রবেশের অনুমতি প্রসঙ্গে। ।</a>
-                                </div>
-                            </div>
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">২১</h3>
-                                        <p class="month">জুন</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">এইচএসসি ২০২৫ পরীক্ষা সংক্রান্ত প্রেস বিজ্ঞপ্তি ।</a>
-                                </div>
-                            </div>
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">১৫</h3>
-                                        <p class="month">ডিসেম্বর</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">
-                                        এইচএসসি ২০২২ ব্যবহারিক পরীক্ষা গ্রহণের নিমিত্ত পরীক্ষক
-                                        নিয়োগ প্রসঙ্গে-সংশোধিত-4 ও 5</a>
-                                </div>
-                            </div>
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">১৭</h3>
-                                        <p class="month">জুন</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">এইচএসসি ২০২৫ পরীক্ষায় পরীক্ষার্থীদের ক্যালকুলেটর
-                                        ব্যবহার প্রসঙ্গে-সংশোধিত ।</a>
-                                </div>
-                            </div>
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">১৭</h3>
-                                        <p class="month">জুলাই</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">এইচএসসি 2019 পরীক্ষার ফলাফল পুন:নিরীক্ষণের বিজ্ঞপ্তি
-                                        ।</a>
-                                </div>
-                            </div>
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">০১</h3>
-                                        <p class="month">ফেব্রুয়ারি</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">পরীক্ষার্থীর উপস্থিতি সংক্রান্ত অন-লাইন নির্দেশনা
-                                        ।</a>
-                                </div>
-                            </div>
-                            <div class="notice_board_content_menu">
-                                <div class="notice_board_content_menu_items">
-                                    <div class="wrap">
-                                        <h3 class="date">২৬</h3>
-                                        <p class="month">মে</p>
-                                    </div>
-                                </div>
-                                <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">এইচএসসি পরীক্ষা-২০২৫ অনুষ্ঠানের লক্ষ্যে সার্বিক
-                                        সহযোগিকা প্রদান প্রসঙ্গে ।</a>
-                                </div>
-                            </div>
-                        </div> -->
                         <div class="notice_board_content" id="noticeContent">
                             @forelse($notices as $notice)
                             <div class="notice_board_content_menu">
@@ -149,7 +24,9 @@
                                     </div>
                                 </div>
                                 <div class="notice_board_content_menu_text">
-                                    <a href="{{ route('notice') }}" class="notice_item">{{ $notice->title }}</a>
+                                    <a href="{{ route('notice.single', $notice->id) }}">
+                                        {{ $notice->title }}
+                                    </a>
                                 </div>
                             </div>
                             @empty

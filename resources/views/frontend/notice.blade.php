@@ -28,7 +28,7 @@
                   <td>{{ $notices->firstItem() + $key }}</td>
                   <td>
                     @if($notice->file)
-                    <a href="{{ asset('storage/' . $notice->file) }}" target="_blank" class="notice-title">
+                    <a href="{{ route('notice.single', $notice->id) }}" class="notice-title text-decoration-none" style="color: #000; font-weight: 500;">
                       {{ $notice->title }}
                     </a>
                     @else
@@ -40,11 +40,13 @@
                   <td class="date-year">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d M, Y') }}</td>
                   <td class="text-center">
                     @if($notice->file)
-                    <a href="{{ route('notices.download', $notice->id) }}" class="btn download-btn px-3 py-1 rounded" style="background-color: #da1e37; color: white;">
+                    <a href="{{ route('notices.download', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #da1e37; color: white;">
                       ডাউনলোড
                     </a>
                     @else
-                    <span class="text-muted">-</span>
+                    <a href="{{ route('notice.single', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #2c3e50; color: white;">
+                      বিস্তারিত দেখুন
+                    </a>
                     @endif
                   </td>
                 </tr>

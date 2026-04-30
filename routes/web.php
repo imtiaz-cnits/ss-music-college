@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\Notice; 
+use App\Models\Notice;
 use App\Http\Controllers\NoticeController;
 
 // Home page
@@ -91,3 +91,15 @@ Route::get('/notice/download/{id}', [NoticeController::class, 'download'])->name
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('notices', NoticeController::class);
 });
+
+// Notice page
+Route::get('/notice', function () {
+    $notices = \App\Models\Notice::orderBy('date', 'desc')->paginate(15);
+    return view('frontend.notice', compact('notices'));
+})->name('notice');
+
+// Single Notice Details Page
+Route::get('/notice/{id}', function ($id) {
+    $notice = \App\Models\Notice::findOrFail($id);
+    return view('frontend.notice-single', compact('notice'));
+})->name('notice.single');

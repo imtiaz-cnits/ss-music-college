@@ -2,96 +2,101 @@
 @section('title', 'Users')
 
 @section('content')
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-    {{-- Header Section --}}
-    <div class="p-6 border-b border-gray-100 flex flex-wrap justify-between items-center bg-white gap-4">
+<div class="page-header">
+    <div class="page-header-row">
         <div>
-            <h2 class="text-xl font-bold text-gray-800">ইউজার ম্যানেজমেন্ট</h2>
-            <p class="text-sm text-gray-500">অ্যাডমিন, শিক্ষক এবং সাধারণ ইউজারদের অ্যাকাউন্ট নিয়ন্ত্রণ করুন</p>
+            <h1 class="page-title">ইউজার ম্যানেজমেন্ট</h1>
+            <p class="page-description">অ্যাডমিন, শিক্ষক এবং সাধারণ ইউজারদের অ্যাকাউন্ট নিয়ন্ত্রণ করুন</p>
         </div>
-        <a href="{{ route($dashboardRoute::name('users.create')) }}" class="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-white text-sm font-bold rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all active:scale-95">
-            <i class="fa-solid fa-user-plus mr-2"></i> নতুন ইউজার
+        <a href="{{ route($dashboardRoute::name('users.create')) }}" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; margin-right: 6px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            নতুন ইউজার
         </a>
     </div>
+</div>
 
-    {{-- Filters Section --}}
-    <div class="p-5 bg-gray-50/50 border-b border-gray-100">
-        <form action="{{ route($dashboardRoute::name('users.index')) }}" method="GET" class="flex flex-wrap gap-4 items-end">
-            <div class="flex-1 min-w-[200px]">
-                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">সার্চ করুন</label>
-                <div class="relative">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" name="search" class="w-full pl-10 pr-4 py-2.5 border-gray-200 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="নাম বা ইমেইল..." value="{{ $filters['search'] ?? '' }}">
+{{-- Filters Section --}}
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body">
+        <form action="{{ route($dashboardRoute::name('users.index')) }}" method="GET">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
+                <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+                    <label class="form-label">সার্চ করুন</label>
+                    <input type="text" name="search" class="form-input" placeholder="নাম বা ইমেইল..." value="{{ $filters['search'] ?? '' }}">
                 </div>
-            </div>
-            <div class="w-48">
-                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">রোল (Role)</label>
-                <select name="role" class="w-full py-2.5 border-gray-200 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 text-sm">
-                    <option value="">সকল রোল</option>
-                    @foreach($roles as $role)
-                        <option value="{{ $role->slug }}" {{ ($filters['role'] ?? '') === $role->slug ? 'selected' : '' }}>{{ $role->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="w-40">
-                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">স্ট্যাটাস</label>
-                <select name="status" class="w-full py-2.5 border-gray-200 rounded-xl focus:ring-indigo-500 focus:border-indigo-500 text-sm">
-                    <option value="">সকল স্ট্যাটাস</option>
-                    <option value="active" {{ ($filters['status'] ?? '') === 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="suspended" {{ ($filters['status'] ?? '') === 'suspended' ? 'selected' : '' }}>Suspended</option>
-                </select>
-            </div>
-            <div class="flex gap-2">
-                <button type="submit" class="px-5 py-2.5 bg-gray-800 text-white text-sm font-semibold rounded-xl hover:bg-gray-900 transition-colors">ফিল্টার</button>
-                @if(!empty($filters['search']) || !empty($filters['role']) || !empty($filters['status']))
-                    <a href="{{ route($dashboardRoute::name('users.index')) }}" class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors">মুছুন</a>
-                @endif
+                <div class="form-group" style="width: 180px; margin-bottom: 0;">
+                    <label class="form-label">রোল (Role)</label>
+                    <select name="role" class="form-select">
+                        <option value="">সকল রোল</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->slug }}" {{ ($filters['role'] ?? '') === $role->slug ? 'selected' : '' }}>{{ $role->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group" style="width: 160px; margin-bottom: 0;">
+                    <label class="form-label">স্ট্যাটাস</label>
+                    <select name="status" class="form-select">
+                        <option value="">সকল স্ট্যাটাস</option>
+                        <option value="active" {{ ($filters['status'] ?? '') === 'active' ? 'selected' : '' }}>Active</option>
+                        <option value="suspended" {{ ($filters['status'] ?? '') === 'suspended' ? 'selected' : '' }}>Suspended</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button type="submit" class="btn btn-secondary">ফিল্টার</button>
+                    @if(!empty($filters['search']) || !empty($filters['role']) || !empty($filters['status']))
+                        <a href="{{ route($dashboardRoute::name('users.index')) }}" class="btn btn-ghost">মুছুন</a>
+                    @endif
+                </div>
             </div>
         </form>
     </div>
+</div>
 
-    {{-- Users Table --}}
-    <div class="p-0">
+{{-- Users Table --}}
+<div class="card">
+    <div class="card-body" style="padding: 0;">
         @if($users->count())
-        <div class="overflow-x-auto">
-            <table class="w-full text-left">
+        <div class="table-container">
+            <table class="table">
                 <thead>
-                    <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-widest font-bold border-b border-gray-100">
-                        <th class="px-6 py-4">ইউজার</th>
-                        <th class="px-6 py-4">রোলস</th>
-                        <th class="px-6 py-4">স্ট্যাটাস</th>
-                        <th class="px-6 py-4">যোগদানের তারিখ</th>
-                        <th class="px-6 py-4 text-right">অ্যাকশন</th>
+                    <tr>
+                        <th>ইউজার</th>
+                        <th>রোলস</th>
+                        <th>স্ট্যাটাস</th>
+                        <th>যোগদানের তারিখ</th>
+                        <th style="text-align: right;">অ্যাকশন</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-50">
+                <tbody>
                     @foreach($users as $listUser)
-                    <tr class="hover:bg-indigo-50/30 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold overflow-hidden border border-indigo-200">
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-cell-avatar" style="{{ ($listUser->profile_photo_path || ($listUser->use_gravatar && $listUser->email)) ? 'background: none; padding: 0;' : '' }}">
                                     @if($listUser->profile_photo_path || ($listUser->use_gravatar && $listUser->email))
-                                        <img src="{{ $listUser->profile_photo_url }}" alt="{{ $listUser->name }}" class="w-full h-full object-cover">
+                                        <img src="{{ $listUser->profile_photo_url }}" alt="{{ $listUser->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                                     @else
                                         {{ strtoupper(substr($listUser->name, 0, 1)) }}
                                     @endif
                                 </div>
-                                <div>
-                                    <div class="font-bold text-gray-800">{{ $listUser->name }}</div>
-                                    <div class="text-xs text-gray-500">{{ $listUser->email }}</div>
+                                <div class="user-cell-info">
+                                    <div class="user-cell-name">{{ $listUser->name }}</div>
+                                    <div class="user-cell-email">{{ $listUser->email }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4">
-                            <div class="flex flex-wrap gap-1">
+                        <td>
+                            <div class="badge-list">
                                 @forelse($listUser->roles as $role)
-                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-[11px] font-bold rounded-md border border-blue-100">{{ $role->name }}</span>
+                                    <span class="badge badge-primary">{{ $role->name }}</span>
                                 @empty
-                                    <span class="px-2 py-1 bg-gray-100 text-gray-500 text-[11px] rounded-md">No roles</span>
+                                    <span class="badge badge-secondary">No roles</span>
                                 @endforelse
                             </div>
                         </td>
-                        <td class="px-6 py-4">
+                        <td>
                             @php
                                 $isSuspended = false;
                                 if (method_exists($listUser, 'isSuspended')) {
@@ -102,51 +107,67 @@
                             @endphp
 
                             @if($isSuspended)
-                                <span class="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-full flex items-center w-max">
-                                    <i class="fa-solid fa-ban mr-1"></i> Suspended
+                                <span class="badge badge-danger">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                    </svg>
+                                    Suspended
                                 </span>
                             @else
-                                <span class="px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-full flex items-center w-max">
-                                    <i class="fa-regular fa-circle-check mr-1"></i> Active
+                                <span class="badge badge-success">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Active
                                 </span>
                             @endif
                         </td>
-                        <td class="px-6 py-4 text-sm text-gray-600 font-medium">
-                            {{ $listUser->created_at->format('M d, Y') }}
+                        <td>
+                            <span style="font-size: 0.875rem;">{{ $listUser->created_at->format('M d, Y') }}</span>
                         </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex justify-end gap-2">
-                                <a href="{{ route($dashboardRoute::name('users.edit'), $listUser->id) }}" class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-colors" title="এডিট">
-                                    <i class="fa-regular fa-pen-to-square"></i>
+                        <td style="text-align: right;">
+                            <div class="action-buttons" style="justify-content: flex-end;">
+                                <a href="{{ route($dashboardRoute::name('users.edit'), $listUser->id) }}" class="action-btn" title="এডিট">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
                                 </a>
                                 
                                 @if($listUser->id !== $user->id)
-                                    <form action="{{ route($dashboardRoute::name('users.login-as'), $listUser->id) }}" method="POST" class="inline" id="login-as-form-{{ $listUser->id }}">
+                                    <form action="{{ route($dashboardRoute::name('users.login-as'), $listUser->id) }}" method="POST" id="login-as-form-{{ $listUser->id }}" style="margin:0;">
                                         @csrf
-                                        <button type="button" onclick="event.preventDefault(); showConfirm('লগিন অ্যাজ', 'আপনি কি {{ addslashes($listUser->name) }} হিসেবে লগিন করতে চান?').then(c => { if(c) document.getElementById('login-as-form-{{ $listUser->id }}').submit(); })" class="p-2 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-600 hover:text-white transition-colors" title="এই ইউজার হয়ে লগিন করুন">
-                                            <i class="fa-solid fa-right-to-bracket"></i>
+                                        <button type="button" class="action-btn" style="color: var(--primary);" title="এই ইউজার হয়ে লগিন করুন" onclick="event.preventDefault(); showConfirm('লগিন অ্যাজ', 'আপনি কি {{ addslashes($listUser->name) }} হিসেবে লগিন করতে চান?').then(c => { if(c) document.getElementById('login-as-form-{{ $listUser->id }}').submit(); })">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                            </svg>
                                         </button>
                                     </form>
                                 @endif
 
                                 @if($isSuspended)
-                                    <form action="{{ route($dashboardRoute::name('users.unsuspend'), $listUser->id) }}" method="POST" class="inline" id="unsuspend-form-{{ $listUser->id }}">
+                                    <form action="{{ route($dashboardRoute::name('users.unsuspend'), $listUser->id) }}" method="POST" id="unsuspend-form-{{ $listUser->id }}" style="margin:0;">
                                         @csrf
-                                        <button type="button" onclick="event.preventDefault(); showConfirm('আন-সাসপেন্ড', 'এই ইউজারকে আবার একটিভ করতে চান?').then(c => { if(c) document.getElementById('unsuspend-form-{{ $listUser->id }}').submit(); })" class="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-600 hover:text-white transition-colors" title="আন-সাসপেন্ড">
-                                            <i class="fa-solid fa-unlock"></i>
+                                        <button type="button" class="action-btn" style="color: var(--success);" title="আন-সাসপেন্ড" onclick="event.preventDefault(); showConfirm('আন-সাসপেন্ড', 'এই ইউজারকে আবার একটিভ করতে চান?').then(c => { if(c) document.getElementById('unsuspend-form-{{ $listUser->id }}').submit(); })">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+                                            </svg>
                                         </button>
                                     </form>
                                 @elseif(method_exists($listUser, 'suspend'))
-                                    <button type="button" onclick="openSuspendModal({{ $listUser->id }}, '{{ addslashes($listUser->name) }}')" class="p-2 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-600 hover:text-white transition-colors" title="সাসপেন্ড করুন">
-                                        <i class="fa-solid fa-ban"></i>
+                                    <button type="button" class="action-btn" style="color: var(--warning);" title="সাসপেন্ড করুন" onclick="openSuspendModal({{ $listUser->id }}, '{{ addslashes($listUser->name) }}')">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                        </svg>
                                     </button>
                                 @endif
 
                                 @if($listUser->id !== $user->id)
-                                    <form action="{{ route($dashboardRoute::name('users.destroy'), $listUser->id) }}" method="POST" class="inline" id="delete-user-form-{{ $listUser->id }}">
+                                    <form action="{{ route($dashboardRoute::name('users.destroy'), $listUser->id) }}" method="POST" id="delete-user-form-{{ $listUser->id }}" style="margin:0;">
                                         @csrf @method('DELETE')
-                                        <button type="button" onclick="event.preventDefault(); showDanger('ইউজার ডিলিট', 'আপনি কি নিশ্চিত? এটি আর ফেরত আনা যাবে না।').then(c => { if(c) document.getElementById('delete-user-form-{{ $listUser->id }}').submit(); })" class="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-colors" title="ডিলিট">
-                                            <i class="fa-regular fa-trash-can"></i>
+                                        <button type="button" class="action-btn action-btn-danger" title="ডিলিট" onclick="event.preventDefault(); showDanger('ইউজার ডিলিট', 'আপনি কি নিশ্চিত? এটি আর ফেরত আনা যাবে না।').then(c => { if(c) document.getElementById('delete-user-form-{{ $listUser->id }}').submit(); })">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
                                         </button>
                                     </form>
                                 @endif
@@ -159,46 +180,54 @@
         </div>
 
         @if($users->hasPages())
-        <div class="p-4 border-t border-gray-100">
-            {{ $users->links('pagination::tailwind') }}
+        <div class="pagination">
+            {{ $users->links() }}
         </div>
         @endif
+        
         @else
-        <div class="px-6 py-20 text-center">
-            <div class="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                <i class="fa-solid fa-users-slash"></i>
-            </div>
-            <h3 class="text-gray-800 font-bold text-lg">কোনো ইউজার পাওয়া যায়নি</h3>
-            <p class="text-gray-500 text-sm mt-1">শুরু করতে নতুন একটি ইউজার অ্যাকাউন্ট তৈরি করুন।</p>
+        <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <h3 class="empty-state-title">কোনো ইউজার পাওয়া যায়নি</h3>
+            <p class="empty-state-description">শুরু করতে নতুন একটি ইউজার অ্যাকাউন্ট তৈরি করুন।</p>
+            <a href="{{ route($dashboardRoute::name('users.create')) }}" class="btn btn-primary">নতুন ইউজার তৈরি করুন</a>
         </div>
         @endif
     </div>
 </div>
 
-<div class="modal-overlay hidden fixed inset-0 bg-gray-900/50 z-50 flex items-center justify-center backdrop-blur-sm transition-all" id="suspendModal">
-    <div class="modal bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden transform scale-100 transition-transform">
-        <div class="modal-header p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-            <h3 class="text-lg font-bold text-gray-800">অ্যাকাউন্ট সাসপেন্ড</h3>
-            <button type="button" class="text-gray-400 hover:text-red-500 transition-colors" onclick="closeModal('suspendModal')">
-                <i class="fa-solid fa-xmark text-xl"></i>
+{{-- Suspend Modal --}}
+<div class="modal-overlay" id="suspendModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">অ্যাকাউন্ট সাসপেন্ড</h3>
+            <button type="button" class="modal-close" onclick="closeModal('suspendModal')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
         </div>
         <form id="suspendForm" method="POST">
             @csrf
-            <div class="modal-body p-6">
-                <div class="mb-4 p-3 bg-orange-50 border border-orange-100 rounded-lg text-sm text-orange-800">
-                    <i class="fa-solid fa-circle-exclamation mr-2"></i> আপনি <strong id="suspendUserName" class="font-bold"></strong>-কে সাসপেন্ড করতে যাচ্ছেন।
+            <div class="modal-body">
+                <div class="alert alert-warning" style="margin-bottom: 1rem; padding: 0.75rem; border-radius: 8px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; margin-right: 0.5rem; display: inline-block; vertical-align: middle;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    আপনি <strong id="suspendUserName" style="font-weight: 600;"></strong>-কে সাসপেন্ড করতে যাচ্ছেন।
                 </div>
                 <div class="form-group">
-                    <label for="reason" class="block text-sm font-semibold text-gray-700 mb-2">
-                        সাসপেন্ড করার কারণ <span class="text-gray-400 font-normal">(ঐচ্ছিক)</span>
+                    <label for="reason" class="form-label">
+                        সাসপেন্ড করার কারণ <span class="form-label-optional">(ঐচ্ছিক)</span>
                     </label>
-                    <textarea id="reason" name="reason" class="w-full border-gray-300 rounded-xl focus:ring-red-500 focus:border-red-500 sm:text-sm p-3" rows="3" placeholder="এখানে কারণ লিখুন..."></textarea>
+                    <textarea id="reason" name="reason" class="form-textarea" rows="3" placeholder="এখানে কারণ লিখুন..."></textarea>
                 </div>
             </div>
-            <div class="modal-footer p-5 border-t border-gray-100 flex justify-end gap-3 bg-gray-50/50">
-                <button type="button" class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-sm font-bold rounded-xl hover:bg-gray-50 transition-colors" onclick="closeModal('suspendModal')">বাতিল</button>
-                <button type="submit" class="px-5 py-2.5 bg-red-600 text-white text-sm font-bold rounded-xl hover:bg-red-700 transition-colors shadow-lg shadow-red-200">সাসপেন্ড করুন</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('suspendModal')">বাতিল</button>
+                <button type="submit" class="btn btn-destructive">সাসপেন্ড করুন</button>
             </div>
         </form>
     </div>
@@ -211,13 +240,13 @@
         document.getElementById('suspendUserName').textContent = userName;
         document.getElementById('reason').value = '';
         
-        // Show modal Tailwind way
+        // Show modal Tyro native way
         const modal = document.getElementById('suspendModal');
-        modal.classList.remove('hidden');
+        modal.classList.add('active');
     }
     
     function closeModal(id) {
-        document.getElementById(id).classList.add('hidden');
+        document.getElementById(id).classList.remove('active');
     }
 
     document.addEventListener('DOMContentLoaded', function() {
