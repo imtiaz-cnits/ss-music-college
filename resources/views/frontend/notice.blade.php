@@ -1,6 +1,13 @@
 @extends('layouts.frontend')
 
 @section('content')
+@php
+    function convertToBangla($string) {
+        $en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'AM', 'PM', 'am', 'pm'];
+        $bn = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯', 'এএম', 'পি.এম', 'এএম', 'পি.এম'];
+        return str_replace($en, $bn, $string);
+    }
+@endphp
 <div class="container">
   <section id="main_content">
     <div class="row mt-3">

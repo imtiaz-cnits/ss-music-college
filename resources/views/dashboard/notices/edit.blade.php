@@ -12,12 +12,26 @@
 
 @section('content')
 
+<!-- Flatpickr CSS for beautiful Datepicker -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+    .flatpickr-calendar {
+        font-family: inherit;
+    }
+</style>
+
 <div class="page-header">
     <div class="page-header-row">
         <div>
             <h1 class="page-title">Edit Notice</h1>
             <p class="page-description">Update the details or file for this official announcement.</p>
         </div>
+        <a href="{{ route('notices.index') }}" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; margin-right: 6px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Back to Notices
+        </a>
     </div>
 </div>
 
@@ -33,13 +47,13 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="description" class="form-label">নোটিশের বিস্তারিত (ঐচ্ছিক)</label>
-                <textarea name="description" id="description" class="form-input" rows="5" placeholder="ফাইল না থাকলে এখানে নোটিশের বিস্তারিত লিখুন">{{ old('description', $notice->description) }}</textarea>
+                <label for="description" class="form-label">Notice Details (Optional)</label>
+                <textarea name="description" id="description" class="form-input" rows="5" placeholder="Write the notice details here if there is no file">{{ old('description') }}</textarea>
             </div>
 
             <div class="form-group" style="margin-bottom: 1.5rem;">
                 <label class="form-label">Notice Date</label>
-                <input type="date" name="date" class="form-input" value="{{ \Carbon\Carbon::parse($notice->date)->format('Y-m-d') }}" required>
+                <input type="text" id="datepicker" name="date" class="form-input bg-white" value="{{ \Carbon\Carbon::parse($notice->date)->format('Y-m-d') }}" required>
             </div>
 
             <div class="form-group" style="margin-bottom: 2rem;">
@@ -65,4 +79,18 @@
         </form>
     </div>
 </div>
+
+<!-- Flatpickr JS and Bengali Localization -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/bn.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr("#datepicker", {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "j F, Y",
+            locale: "en"
+        });
+    });
+</script>
 @endsection
