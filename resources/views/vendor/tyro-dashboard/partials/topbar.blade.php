@@ -25,20 +25,27 @@
         <!-- User Dropdown -->
         <div class="user-dropdown" id="userDropdown">
             <button type="button" class="user-dropdown-btn" onclick="toggleUserDropdown()">
-                <div class="user-avatar" style="{{ ((method_exists($user, 'hasProfilePhotoColumn') && $user->hasProfilePhotoColumn() && $user->profile_photo_path) || (method_exists($user, 'hasGravatarColumn') && $user->hasGravatarColumn() && $user->use_gravatar)) ? 'background: none; padding: 0;' : '' }}">
-                    @if((method_exists($user, 'hasProfilePhotoColumn') && $user->hasProfilePhotoColumn() && $user->profile_photo_path) || (method_exists($user, 'hasGravatarColumn') && $user->hasGravatarColumn() && $user->use_gravatar && $user->email))
-                        <img src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+
+                @php
+                $user = auth()->user();
+                $hasPhoto = $user->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->photo);
+                @endphp
+
+                <div class="user-avatar" style="{{ $hasPhoto ? 'background: none; padding: 0;' : '' }}">
+                    @if($hasPhoto)
+                    <img src="{{ asset('storage/' . $user->photo) }}" alt="{{ $user->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                     @else
-                        {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
+                    {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
                     @endif
                 </div>
+
                 <div class="user-info">
                     <div class="user-name">{{ $user->name ?? 'User' }}</div>
                     <div class="user-role">
                         @if(method_exists($user, 'roles') && $user->roles->count())
-                            {{ $user->roles->first()->name }}
+                        {{ $user->roles->first()->name }}
                         @else
-                            User
+                        User
                         @endif
                     </div>
                 </div>
@@ -55,27 +62,15 @@
                     My Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                @if(session('impersonator_id'))
-                    <form action="{{ route($dashboardRoute::name('leave-impersonation')) }}" method="POST" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="dropdown-item dropdown-item-danger" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Exit Impersonation
-                        </button>
-                    </form>
-                @else
-                    <form action="{{ route('tyro-login.logout') }}" method="POST" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="dropdown-item dropdown-item-danger" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Logout
-                        </button>
-                    </form>
-                @endif
+                <form action="{{ route('tyro-login.logout') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="dropdown-item dropdown-item-danger" style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                    </button>
+                </form>
             </div>
         </div>
     </div>

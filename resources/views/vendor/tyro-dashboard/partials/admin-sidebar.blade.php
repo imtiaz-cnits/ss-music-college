@@ -1,12 +1,12 @@
 <aside class="sidebar flex flex-col" id="sidebar" style="display: flex; flex-direction: column;">
     <div class="sidebar-header">
         <a href="{{ route($dashboardRoute::name('index')) }}" class="sidebar-logo">
-            <div class="sidebar-logo-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+            <div class="sidebar-logo-icon" style="background: transparent; padding: 0;">
+                <img src="{{ asset('assets/image/logo.png') }}" alt="SS Music College Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
-            <span class="sidebar-logo-text">{{ $branding['app_name'] ?? config('app.name', 'Laravel') }}</span>
+            <span class="sidebar-logo-text">
+                SS Music College
+            </span>
         </a>
         @if(config('tyro-dashboard.collapsible_sidebar', false))
         <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar">
@@ -27,7 +27,7 @@
     <nav class="sidebar-nav sidebar-accordion"
         data-sidebar-accordion
         data-sidebar-accordion-compact="{{ config('tyro-dashboard.branding.sidebar_accordion_compact', false) ? 'true' : 'false' }}" style="flex-grow: 1;">
-        
+
         <div class="sidebar-section">
             <div class="sidebar-section-title">Menu</div>
 
@@ -79,12 +79,19 @@
         {{-- Our College Dropdown --}}
         <div class="sidebar-section">
             <div class="sidebar-section-title">Our College</div>
-            
+
             <a href="{{ route('notices.index') }}" class="sidebar-link {{ request()->routeIs('notices.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                 </svg>
                 Notice Management
+            </a>
+
+            <a href="{{ route('galleries.index') }}" class="sidebar-link {{ request()->routeIs('galleries.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Gallery Management
             </a>
         </div>
 
@@ -173,7 +180,7 @@
         </div>
         @endif
     </nav>
-    
+
     <!-- Logout Button Placed at the Bottom -->
     <div class="sidebar-section" style="margin-top: auto; padding: 0rem 0.5rem; border-top: 1px solid var(--sidebar-border); margin-bottom: 0;">
         <form action="{{ route('tyro-login.logout') }}" method="POST" style="margin: 0;">

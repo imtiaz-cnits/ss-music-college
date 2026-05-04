@@ -7,7 +7,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="color-scheme" content="light dark">
 
-    <title>@yield('title', 'Dashboard') - {{ $branding['app_name'] ?? config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Dashboard') - শহীদ সাধন সঙ্গীত মহাবিদ্যালয়</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('assets/image/logo.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -22,9 +25,9 @@
     <div class="dashboard-layout">
         <!-- Sidebar - Conditional based on role -->
         @hasanyrole('admin', 'superadmin')
-            @include('tyro-dashboard::partials.admin-sidebar')
+        @include('tyro-dashboard::partials.admin-sidebar')
         @else
-            @include('tyro-dashboard::partials.user-sidebar')
+        @include('tyro-dashboard::partials.user-sidebar')
         @endhasanyrole
 
         <!-- Main Content -->

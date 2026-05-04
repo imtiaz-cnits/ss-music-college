@@ -31,7 +31,7 @@
                     <select name="role" class="form-select">
                         <option value="">সকল রোল</option>
                         @foreach($roles as $role)
-                            <option value="{{ $role->slug }}" {{ ($filters['role'] ?? '') === $role->slug ? 'selected' : '' }}>{{ $role->name }}</option>
+                        <option value="{{ $role->slug }}" {{ ($filters['role'] ?? '') === $role->slug ? 'selected' : '' }}>{{ $role->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -46,7 +46,7 @@
                 <div style="display: flex; gap: 0.5rem;">
                     <button type="submit" class="btn btn-secondary">ফিল্টার</button>
                     @if(!empty($filters['search']) || !empty($filters['role']) || !empty($filters['status']))
-                        <a href="{{ route($dashboardRoute::name('users.index')) }}" class="btn btn-ghost">মুছুন</a>
+                    <a href="{{ route($dashboardRoute::name('users.index')) }}" class="btn btn-ghost">মুছুন</a>
                     @endif
                 </div>
             </div>
@@ -74,11 +74,14 @@
                     <tr>
                         <td>
                             <div class="user-cell">
-                                <div class="user-cell-avatar" style="{{ ($listUser->profile_photo_path || ($listUser->use_gravatar && $listUser->email)) ? 'background: none; padding: 0;' : '' }}">
-                                    @if($listUser->profile_photo_path || ($listUser->use_gravatar && $listUser->email))
-                                        <img src="{{ $listUser->profile_photo_url }}" alt="{{ $listUser->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                                @php
+                                $hasPhoto = $listUser->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($listUser->photo);
+                                @endphp
+                                <div class="user-cell-avatar" style="{{ $hasPhoto ? 'background: none; padding: 0;' : '' }}">
+                                    @if($hasPhoto)
+                                    <img src="{{ asset('storage/' . $listUser->photo) }}" alt="{{ $listUser->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                                     @else
-                                        {{ strtoupper(substr($listUser->name, 0, 1)) }}
+                                    {{ strtoupper(substr($listUser->name, 0, 1)) }}
                                     @endif
                                 </div>
                                 <div class="user-cell-info">
@@ -90,36 +93,36 @@
                         <td>
                             <div class="badge-list">
                                 @forelse($listUser->roles as $role)
-                                    <span class="badge badge-primary">{{ $role->name }}</span>
+                                <span class="badge badge-primary">{{ $role->name }}</span>
                                 @empty
-                                    <span class="badge badge-secondary">No roles</span>
+                                <span class="badge badge-secondary">No roles</span>
                                 @endforelse
                             </div>
                         </td>
                         <td>
                             @php
-                                $isSuspended = false;
-                                if (method_exists($listUser, 'isSuspended')) {
-                                    $isSuspended = $listUser->isSuspended();
-                                } elseif (isset($listUser->suspended_at) && !is_null($listUser->suspended_at)) {
-                                    $isSuspended = true;
-                                }
+                            $isSuspended = false;
+                            if (method_exists($listUser, 'isSuspended')) {
+                            $isSuspended = $listUser->isSuspended();
+                            } elseif (isset($listUser->suspended_at) && !is_null($listUser->suspended_at)) {
+                            $isSuspended = true;
+                            }
                             @endphp
 
                             @if($isSuspended)
-                                <span class="badge badge-danger">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                    </svg>
-                                    Suspended
-                                </span>
+                            <span class="badge badge-danger">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                </svg>
+                                Suspended
+                            </span>
                             @else
-                                <span class="badge badge-success">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                    Active
-                                </span>
+                            <span class="badge badge-success">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Active
+                            </span>
                             @endif
                         </td>
                         <td>
@@ -132,44 +135,44 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
                                 </a>
-                                
+
                                 @if($listUser->id !== $user->id)
-                                    <form action="{{ route($dashboardRoute::name('users.login-as'), $listUser->id) }}" method="POST" id="login-as-form-{{ $listUser->id }}" style="margin:0;">
-                                        @csrf
-                                        <button type="button" class="action-btn" style="color: var(--primary);" title="এই ইউজার হয়ে লগিন করুন" onclick="event.preventDefault(); showConfirm('লগিন অ্যাজ', 'আপনি কি {{ addslashes($listUser->name) }} হিসেবে লগিন করতে চান?').then(c => { if(c) document.getElementById('login-as-form-{{ $listUser->id }}').submit(); })">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                <form action="{{ route($dashboardRoute::name('users.login-as'), $listUser->id) }}" method="POST" id="login-as-form-{{ $listUser->id }}" style="margin:0;">
+                                    @csrf
+                                    <button type="button" class="action-btn" style="color: var(--primary);" title="এই ইউজার হয়ে লগিন করুন" onclick="event.preventDefault(); showConfirm('লগিন অ্যাজ', 'আপনি কি {{ addslashes($listUser->name) }} হিসেবে লগিন করতে চান?').then(c => { if(c) document.getElementById('login-as-form-{{ $listUser->id }}').submit(); })">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                        </svg>
+                                    </button>
+                                </form>
                                 @endif
 
                                 @if($isSuspended)
-                                    <form action="{{ route($dashboardRoute::name('users.unsuspend'), $listUser->id) }}" method="POST" id="unsuspend-form-{{ $listUser->id }}" style="margin:0;">
-                                        @csrf
-                                        <button type="button" class="action-btn" style="color: var(--success);" title="আন-সাসপেন্ড" onclick="event.preventDefault(); showConfirm('আন-সাসপেন্ড', 'এই ইউজারকে আবার একটিভ করতে চান?').then(c => { if(c) document.getElementById('unsuspend-form-{{ $listUser->id }}').submit(); })">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                @elseif(method_exists($listUser, 'suspend'))
-                                    <button type="button" class="action-btn" style="color: var(--warning);" title="সাসপেন্ড করুন" onclick="openSuspendModal({{ $listUser->id }}, '{{ addslashes($listUser->name) }}')">
+                                <form action="{{ route($dashboardRoute::name('users.unsuspend'), $listUser->id) }}" method="POST" id="unsuspend-form-{{ $listUser->id }}" style="margin:0;">
+                                    @csrf
+                                    <button type="button" class="action-btn" style="color: var(--success);" title="আন-সাসপেন্ড" onclick="event.preventDefault(); showConfirm('আন-সাসপেন্ড', 'এই ইউজারকে আবার একটিভ করতে চান?').then(c => { if(c) document.getElementById('unsuspend-form-{{ $listUser->id }}').submit(); })">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
                                         </svg>
                                     </button>
+                                </form>
+                                @elseif(method_exists($listUser, 'suspend'))
+                                <button type="button" class="action-btn" style="color: var(--warning);" title="সাসপেন্ড করুন" onclick="openSuspendModal({{ $listUser->id }}, '{{ addslashes($listUser->name) }}')">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                    </svg>
+                                </button>
                                 @endif
 
                                 @if($listUser->id !== $user->id)
-                                    <form action="{{ route($dashboardRoute::name('users.destroy'), $listUser->id) }}" method="POST" id="delete-user-form-{{ $listUser->id }}" style="margin:0;">
-                                        @csrf @method('DELETE')
-                                        <button type="button" class="action-btn action-btn-danger" title="ডিলিট" onclick="event.preventDefault(); showDanger('ইউজার ডিলিট', 'আপনি কি নিশ্চিত? এটি আর ফেরত আনা যাবে না।').then(c => { if(c) document.getElementById('delete-user-form-{{ $listUser->id }}').submit(); })">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                <form action="{{ route($dashboardRoute::name('users.destroy'), $listUser->id) }}" method="POST" id="delete-user-form-{{ $listUser->id }}" style="margin:0;">
+                                    @csrf @method('DELETE')
+                                    <button type="button" class="action-btn action-btn-danger" title="ডিলিট" onclick="event.preventDefault(); showDanger('ইউজার ডিলিট', 'আপনি কি নিশ্চিত? এটি আর ফেরত আনা যাবে না।').then(c => { if(c) document.getElementById('delete-user-form-{{ $listUser->id }}').submit(); })">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
                                 @endif
                             </div>
                         </td>
@@ -184,7 +187,7 @@
             {{ $users->links() }}
         </div>
         @endif
-        
+
         @else
         <div class="empty-state">
             <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -236,15 +239,15 @@
 @push('scripts')
 <script>
     function openSuspendModal(userId, userName) {
-        document.getElementById('suspendForm').action = '{{ url(config('tyro-dashboard.route_prefix', 'dashboard')) }}/users/' + userId + '/suspend';
+        document.getElementById('suspendForm').action = '{{ url(config("tyro-dashboard.route_prefix", "dashboard")) }}/users/' + userId + '/suspend';
         document.getElementById('suspendUserName').textContent = userName;
         document.getElementById('reason').value = '';
-        
+
         // Show modal Tyro native way
         const modal = document.getElementById('suspendModal');
         modal.classList.add('active');
     }
-    
+
     function closeModal(id) {
         document.getElementById(id).classList.remove('active');
     }

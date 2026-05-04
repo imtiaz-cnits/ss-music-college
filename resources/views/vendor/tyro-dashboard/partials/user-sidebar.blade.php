@@ -1,12 +1,12 @@
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <a href="{{ route($dashboardRoute::name('index')) }}" class="sidebar-logo">
-            <div class="sidebar-logo-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+            <div class="sidebar-logo-icon" style="background: transparent; padding: 0;">
+                <img src="{{ asset('assets/image/logo.png') }}" alt="SS Music College Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
-            <span class="sidebar-logo-text">{{ $branding['app_name'] ?? config('app.name', 'Laravel') }}</span>
+            <span class="sidebar-logo-text">
+                SS Music College
+            </span>
         </a>
         @if(config('tyro-dashboard.collapsible_sidebar', false))
         <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar">
@@ -52,84 +52,84 @@
             @endif
 
             @if(!empty($commonMenuItems))
-                @foreach($commonMenuItems as $item)
-                    <a href="{{ route($item['route'] ?? '#') }}" class="sidebar-link {{ request()->routeIs($item['route'] ?? '') ? 'active' : '' }}">
-                        @if(isset($item['icon']))
-                            {!! $item['icon'] !!}
-                        @else
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                        @endif
-                        {{ $item['title'] ?? 'Menu Item' }}
-                    </a>
-                @endforeach
+            @foreach($commonMenuItems as $item)
+            <a href="{{ route($item['route'] ?? '#') }}" class="sidebar-link {{ request()->routeIs($item['route'] ?? '') ? 'active' : '' }}">
+                @if(isset($item['icon']))
+                {!! $item['icon'] !!}
+                @else
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                @endif
+                {{ $item['title'] ?? 'Menu Item' }}
+            </a>
+            @endforeach
             @endif
 
             @if(!empty($userMenuItems))
-                @foreach($userMenuItems as $item)
-                    <a href="{{ route($item['route'] ?? '#') }}" class="sidebar-link {{ request()->routeIs($item['route'] ?? '') ? 'active' : '' }}">
-                        @if(isset($item['icon']))
-                            {!! $item['icon'] !!}
-                        @else
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                        @endif
-                        {{ $item['title'] ?? 'Menu Item' }}
-                    </a>
-                @endforeach
+            @foreach($userMenuItems as $item)
+            <a href="{{ route($item['route'] ?? '#') }}" class="sidebar-link {{ request()->routeIs($item['route'] ?? '') ? 'active' : '' }}">
+                @if(isset($item['icon']))
+                {!! $item['icon'] !!}
+                @else
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                @endif
+                {{ $item['title'] ?? 'Menu Item' }}
+            </a>
+            @endforeach
             @endif
         </div>
 
         @php
-            // Filter resources to only those user can access
-            $accessibleResources = [];
-            foreach ($allResources ?? config('tyro-dashboard.resources', []) as $key => $resource) {
-                $canAccess = true;
-                if (isset($resource['roles']) && !empty($resource['roles'])) {
-                    $canAccess = false;
-                    $user = auth()->user();
-                    if ($user && method_exists($user, 'tyroRoleSlugs')) {
-                        $userRoles = $user->tyroRoleSlugs();
-                        // Check allowed roles
-                        foreach ($resource['roles'] as $role) {
-                            if (in_array($role, $userRoles)) {
-                                $canAccess = true;
-                                break;
-                            }
-                        }
-                        // Check readonly roles (if not already allowed)
-                        if (!$canAccess && isset($resource['readonly']) && !empty($resource['readonly'])) {
-                            foreach ($resource['readonly'] as $role) {
-                                if (in_array($role, $userRoles)) {
-                                    $canAccess = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                if ($canAccess) {
-                    $accessibleResources[$key] = $resource;
-                }
-            }
+        // Filter resources to only those user can access
+        $accessibleResources = [];
+        foreach ($allResources ?? config('tyro-dashboard.resources', []) as $key => $resource) {
+        $canAccess = true;
+        if (isset($resource['roles']) && !empty($resource['roles'])) {
+        $canAccess = false;
+        $user = auth()->user();
+        if ($user && method_exists($user, 'tyroRoleSlugs')) {
+        $userRoles = $user->tyroRoleSlugs();
+        // Check allowed roles
+        foreach ($resource['roles'] as $role) {
+        if (in_array($role, $userRoles)) {
+        $canAccess = true;
+        break;
+        }
+        }
+        // Check readonly roles (if not already allowed)
+        if (!$canAccess && isset($resource['readonly']) && !empty($resource['readonly'])) {
+        foreach ($resource['readonly'] as $role) {
+        if (in_array($role, $userRoles)) {
+        $canAccess = true;
+        break;
+        }
+        }
+        }
+        }
+        }
+        if ($canAccess) {
+        $accessibleResources[$key] = $resource;
+        }
+        }
         @endphp
 
         @if(!empty($accessibleResources))
         <div class="sidebar-section">
             <div class="sidebar-section-title">Resources</div>
             @foreach($accessibleResources as $key => $resource)
-                <a href="{{ route($dashboardRoute::name('resources.index'), $key) }}" class="sidebar-link {{ request()->is('*resources/'.$key.'*') ? 'active' : '' }}">
-                    @if(isset($resource['icon']))
-                        {!! $resource['icon'] !!}
-                    @else
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                    @endif
-                    {{ $resource['title'] }}
-                </a>
+            <a href="{{ route($dashboardRoute::name('resources.index'), $key) }}" class="sidebar-link {{ request()->is('*resources/'.$key.'*') ? 'active' : '' }}">
+                @if(isset($resource['icon']))
+                {!! $resource['icon'] !!}
+                @else
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                @endif
+                {{ $resource['title'] }}
+            </a>
             @endforeach
         </div>
         @endif

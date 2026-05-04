@@ -40,7 +40,7 @@
                     <label for="name" class="form-label">Name</label>
                     <input type="text" id="name" name="name" class="form-input @error('name') is-invalid @enderror" value="{{ old('name', $editUser->name) }}" required>
                     @error('name')
-                        <span class="form-error">{{ $message }}</span>
+                    <span class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -48,7 +48,7 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" id="email" name="email" class="form-input @error('email') is-invalid @enderror" value="{{ old('email', $editUser->email) }}" required>
                     @error('email')
-                        <span class="form-error">{{ $message }}</span>
+                    <span class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -58,7 +58,7 @@
                     </label>
                     <input type="password" id="password" name="password" class="form-input @error('password') is-invalid @enderror" placeholder="••••••••">
                     @error('password')
-                        <span class="form-error">{{ $message }}</span>
+                    <span class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -81,7 +81,7 @@
                         @endforeach
                     </div>
                     @error('roles')
-                        <span class="form-error">{{ $message }}</span>
+                    <span class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -100,17 +100,23 @@
             </div>
             <div class="card-body">
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                    <div class="user-cell-avatar" style="width: 64px; height: 64px; font-size: 1.5rem; {{ ((method_exists($editUser, 'hasProfilePhotoColumn') && $editUser->hasProfilePhotoColumn() && $editUser->profile_photo_path) || (method_exists($editUser, 'hasGravatarColumn') && $editUser->hasGravatarColumn() && $editUser->use_gravatar)) ? 'background: none; padding: 0;' : '' }}">
-                        @if((method_exists($editUser, 'hasProfilePhotoColumn') && $editUser->hasProfilePhotoColumn() && $editUser->profile_photo_path) || (method_exists($editUser, 'hasGravatarColumn') && $editUser->hasGravatarColumn() && $editUser->use_gravatar && $editUser->email))
-                            <img src="{{ $editUser->profile_photo_url }}" alt="{{ $editUser->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                    @php
+                    $hasPhoto = $editUser->photo && \Illuminate\Support\Facades\Storage::disk('public')->exists($editUser->photo);
+                    @endphp
+
+                    <div class="user-cell-avatar" style="width: 64px; height: 64px; font-size: 1.5rem; {{ $hasPhoto ? 'background: none; padding: 0;' : '' }}">
+                        @if($hasPhoto)
+                        <img src="{{ asset('storage/' . $editUser->photo) }}" alt="{{ $editUser->name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         @else
-                            {{ strtoupper(substr($editUser->name, 0, 1)) }}
+                        {{ strtoupper(substr($editUser->name, 0, 1)) }}
                         @endif
                     </div>
+
                     <div>
                         <div style="font-weight: 600; color: var(--foreground);">{{ $editUser->name }}</div>
                         <div style="font-size: 0.875rem; color: var(--muted-foreground);">Member since {{ $editUser->created_at->format('M d, Y') }}</div>
-                        @if(method_exists($editUser, 'hasProfilePhotoColumn') && $editUser->hasProfilePhotoColumn() && $editUser->profile_photo_path)
+
+                        @if($hasPhoto)
                         <div style="margin-top: 0.5rem;">
                             <form id="delete-user-photo-form" action="{{ route($dashboardRoute::name('users.photo.delete'), $editUser->id) }}" method="POST" style="display: inline;">
                                 @csrf
@@ -131,16 +137,16 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span style="font-size: 0.875rem; color: var(--muted-foreground);">Status</span>
                         @if(method_exists($editUser, 'isSuspended') && $editUser->isSuspended())
-                            <span class="badge badge-danger">Suspended</span>
+                        <span class="badge badge-danger">Suspended</span>
                         @else
-                            <span class="badge badge-success">Active</span>
+                        <span class="badge badge-success">Active</span>
                         @endif
                     </div>
                     @if(method_exists($editUser, 'isSuspended') && $editUser->isSuspended() && method_exists($editUser, 'getSuspensionReason') && $editUser->getSuspensionReason())
-                        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
-                            <span style="font-size: 0.75rem; color: var(--muted-foreground);">Suspension Reason:</span>
-                            <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-top: 0.25rem;">{{ $editUser->getSuspensionReason() }}</p>
-                        </div>
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                        <span style="font-size: 0.75rem; color: var(--muted-foreground);">Suspension Reason:</span>
+                        <p style="font-size: 0.875rem; color: var(--muted-foreground); margin-top: 0.25rem;">{{ $editUser->getSuspensionReason() }}</p>
+                    </div>
                     @endif
                 </div>
 
@@ -150,41 +156,41 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                         <span style="font-size: 0.875rem; color: var(--muted-foreground);">Two-Factor Authentication</span>
                         @if($editUser->two_factor_secret)
-                            <span class="badge badge-success">Enabled</span>
+                        <span class="badge badge-success">Enabled</span>
                         @else
-                            <span class="badge badge-secondary">Disabled</span>
+                        <span class="badge badge-secondary">Disabled</span>
                         @endif
                     </div>
                     @if($editUser->two_factor_secret)
-                        <form action="{{ route($dashboardRoute::name('users.2fa.reset'), $editUser->id) }}" method="POST" id="reset-2fa-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-sm btn-outline-warning" style="width: 100%;" onclick="event.preventDefault(); showConfirm('Reset 2FA', 'Are you sure you want to reset 2FA for this user?').then(confirmed => { if(confirmed) document.getElementById('reset-2fa-form').submit(); })">
-                                Reset 2FA
-                            </button>
-                        </form>
+                    <form action="{{ route($dashboardRoute::name('users.2fa.reset'), $editUser->id) }}" method="POST" id="reset-2fa-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-sm btn-outline-warning" style="width: 100%;" onclick="event.preventDefault(); showConfirm('Reset 2FA', 'Are you sure you want to reset 2FA for this user?').then(confirmed => { if(confirmed) document.getElementById('reset-2fa-form').submit(); })">
+                            Reset 2FA
+                        </button>
+                    </form>
                     @endif
                 </div>
                 @endif
 
                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
                     @if(method_exists($editUser, 'isSuspended') && $editUser->isSuspended())
-                        <form action="{{ route($dashboardRoute::name('users.unsuspend'), $editUser->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-success" style="width: 100%;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Unsuspend User
-                            </button>
-                        </form>
-                    @elseif($editUser->id !== $user->id)
-                        <button type="button" class="btn btn-warning" style="width: 100%;" onclick="openSuspendModal()">
+                    <form action="{{ route($dashboardRoute::name('users.unsuspend'), $editUser->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-success" style="width: 100%;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Suspend User
+                            Unsuspend User
                         </button>
+                    </form>
+                    @elseif($editUser->id !== $user->id)
+                    <button type="button" class="btn btn-warning" style="width: 100%;" onclick="openSuspendModal()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                        </svg>
+                        Suspend User
+                    </button>
                     @endif
                 </div>
             </div>

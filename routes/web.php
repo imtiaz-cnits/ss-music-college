@@ -3,11 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Notice;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\CustomProfileController;
 
 // Home page
 Route::get('/', function () {
     $notices = Notice::orderBy('created_at', 'desc')->get();
-    return view('frontend.index', compact('notices'));
+
+    $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->take(4)->get();
+
+    return view('frontend.index', compact('notices', 'galleries'));
 })->name('home');
 
 Route::get('/institution-history', function () {
@@ -47,9 +52,12 @@ Route::get('/notice/{id}', function ($id) {
 Route::get('/result', function () {
     return view('frontend.result');
 })->name('result');
+
 Route::get('/gallery', function () {
-    return view('frontend.gallery');
+    $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->paginate(12);
+    return view('frontend.gallery', compact('galleries'));
 })->name('gallery');
+
 Route::get('/event', function () {
     return view('frontend.event');
 })->name('event');
@@ -89,4 +97,6 @@ Route::get('/notice/download/{id}', [NoticeController::class, 'download'])->name
 // Admin Dashboard Routes
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('notices', NoticeController::class);
+    Route::resource('galleries', GalleryController::class);
+    Route::put('/profile/update', [App\Http\Controllers\CustomProfileController::class, 'update'])->name('tyro-dashboard.profile.update');
 });
