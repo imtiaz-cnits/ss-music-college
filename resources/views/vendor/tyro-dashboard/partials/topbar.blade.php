@@ -12,6 +12,14 @@
     </div>
 
     <div class="topbar-right">
+        <!-- Visit Website Button -->
+        <a href="{{ route('home') }}" target="_blank" class="topbar-btn" title="ওয়েবসাইট ভিজিট করুন" style="display: flex; align-items: center; gap: 6px; text-decoration: none; padding: 0.4rem 0.75rem; border-radius: 6px; background-color: var(--muted); margin-right: 0.5rem; border: 1px solid var(--border);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-3.6-9m3.6 9a9 9 0 003.6-9m-3.6-9a9 9 0 013.6 9m-3.6-9a9 9 0 00-3.6 9" />
+            </svg>
+            <span style="font-size: 0.875rem; font-weight: 500; color: var(--foreground);">Website</span>
+        </a>
+
         <!-- Theme Toggle -->
         <button type="button" class="topbar-btn" onclick="toggleTheme()" aria-label="Toggle theme">
             <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">

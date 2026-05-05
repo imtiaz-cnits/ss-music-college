@@ -5,14 +5,17 @@ use App\Models\Notice;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\CustomProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PublicEventController;
 
 // Home page
 Route::get('/', function () {
-    $notices = Notice::orderBy('created_at', 'desc')->get();
-
+    $notices = \App\Models\Notice::orderBy('created_at', 'desc')->get();
     $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->take(4)->get();
 
-    return view('frontend.index', compact('notices', 'galleries'));
+    $sliderEvents = \App\Models\Event::with('images')->orderBy('event_date', 'desc')->take(5)->get();
+
+    return view('frontend.index', compact('notices', 'galleries', 'sliderEvents'));
 })->name('home');
 
 Route::get('/institution-history', function () {
@@ -58,12 +61,10 @@ Route::get('/gallery', function () {
     return view('frontend.gallery', compact('galleries'));
 })->name('gallery');
 
-Route::get('/event', function () {
-    return view('frontend.event');
-})->name('event');
-Route::get('/single-event', function () {
-    return view('frontend.single-event');
-})->name('single_event');
+// Frontend Event Routes
+Route::get('/event', [App\Http\Controllers\PublicEventController::class, 'index'])->name('event');
+Route::get('/event/{id}', [App\Http\Controllers\PublicEventController::class, 'show'])->name('single_event');
+
 Route::get('/contact', function () {
     return view('frontend.contact');
 })->name('contact');
@@ -99,4 +100,12 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('notices', NoticeController::class);
     Route::resource('galleries', GalleryController::class);
     Route::put('/profile/update', [App\Http\Controllers\CustomProfileController::class, 'update'])->name('tyro-dashboard.profile.update');
+
+    // ইভেন্ট ম্যানেজমেন্টের রাউট
+    Route::get('/events', [App\Http\Controllers\PublicEventController::class, 'adminIndex'])->name('dashboard.events.index');
+    Route::get('/events/create', [App\Http\Controllers\PublicEventController::class, 'create'])->name('dashboard.events.create');
+    Route::post('/events', [App\Http\Controllers\PublicEventController::class, 'store'])->name('dashboard.events.store');
+    Route::get('/events/{id}/edit', [App\Http\Controllers\PublicEventController::class, 'edit'])->name('dashboard.events.edit');
+    Route::put('/events/{id}', [App\Http\Controllers\PublicEventController::class, 'update'])->name('dashboard.events.update');
+    Route::delete('/events/{id}', [App\Http\Controllers\PublicEventController::class, 'destroy'])->name('dashboard.events.destroy');
 });
