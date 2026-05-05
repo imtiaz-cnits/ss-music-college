@@ -13,7 +13,7 @@ Route::get('/', function () {
     $notices = \App\Models\Notice::orderBy('created_at', 'desc')->get();
     $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->take(4)->get();
 
-    $sliderEvents = \App\Models\Event::with('images')->orderBy('event_date', 'desc')->take(5)->get();
+    $sliderEvents = \App\Models\Event::with('images')->latest()->take(5)->get();
 
     return view('frontend.index', compact('notices', 'galleries', 'sliderEvents'));
 })->name('home');
