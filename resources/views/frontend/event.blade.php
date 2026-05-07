@@ -35,7 +35,7 @@ return str_replace($en, $bn, $number);
                                 </div>
                                 <div class="blog_card_text p-4">
                                     {{-- বাংলা তারিখ --}}
-                                    <h5>{{ en2bn(\Carbon\Carbon::parse($event->event_date)->translatedFormat('d F, Y')) }}</h5>
+                                    <h5>{{ en2bn(\Carbon\Carbon::parse($event->event_date)->locale('bn')->translatedFormat('d F, Y')) }}</h5>
                                     <h2>{{ $event->title }}</h2>
                                     <p>{{ Str::limit($event->description, 100) }}</p>
                                     <div class="blog_btn">

@@ -21,7 +21,13 @@ return str_replace($en, $bn, $number);
                 <i class="fa-solid fa-angle-left"></i>পূর্ববর্তী পেজে ফেরত যান
               </a>
               <h2>{{ $event->title }}</h2>
-              <h5>{{ en2bn(\Carbon\Carbon::parse($event->event_date)->translatedFormat('d F, Y')) }}</h5>
+              <h5>
+                @php
+                $en = ['0','1','2','3','4','5','6','7','8','9'];
+                $bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+                echo str_replace($en, $bn, \Carbon\Carbon::parse($event->event_date)->locale('bn')->translatedFormat('d F, Y'));
+                @endphp
+              </h5>
             </div>
 
             {{-- মাল্টিপল ইমেজ গ্যালারি --}}

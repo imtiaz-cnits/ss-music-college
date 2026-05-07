@@ -15,9 +15,9 @@
 <div class="page-header">
     <div class="page-header-row">
         <div>
-            <h1 class="page-title">ইভেন্ট এডিট করুন</h1>
+            <h1 class="page-title">Edit Event</h1>
         </div>
-        <a href="{{ route('dashboard.events.index') }}" class="btn btn-secondary">পেছনে যান</a>
+        <a href="{{ route('dashboard.events.index') }}" class="btn btn-secondary">Back</a>
     </div>
 </div>
 
@@ -28,31 +28,31 @@
             @method('PUT')
 
             <div class="form-group mb-3">
-                <label class="form-label">ইভেন্টের টাইটেল</label>
+                <label class="form-label">Event Title</label>
                 <input type="text" name="title" class="form-control form-input" value="{{ $event->title }}" required>
             </div>
 
             <!-- Date Picker -->
             <div class="form-group mb-3">
-                <label class="form-label">তারিখ</label>
+                <label class="form-label">Date</label>
                 <input type="text" id="datepicker" name="event_date" class="form-control form-input" value="{{ $event->event_date->format('Y-m-d') }}" required>
             </div>
 
             <div class="form-group mb-3">
-                <label class="form-label">বিস্তারিত বিবরণ</label>
+                <label class="form-label">Description</label>
                 <textarea name="description" rows="4" class="form-control form-input">{{ $event->description }}</textarea>
             </div>
 
             <!-- ইমেজ প্রিভিউ ও আপলোড -->
             <div class="form-group mb-4">
-                <label class="form-label">বর্তমান ছবিসমূহ:</label>
+                <label class="form-label">Current Images:</label>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
                     @foreach($event->images as $image)
                     <img src="{{ asset('storage/' . $image->image_path) }}" alt="Event Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
                     @endforeach
                 </div>
 
-                <label class="form-label mt-3">নতুন ছবি আপলোড করুন (পুরনো ছবিগুলো মুছে এই নতুন ছবিগুলো যুক্ত হবে)</label>
+                <label class="form-label mt-3">Upload New Images (Old images will be deleted and new ones will be added)</label>
                 <input type="file" name="images[]" multiple accept="image/*" class="form-control form-input" id="imageInput">
                 <div id="newImagePreview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;"></div>
             </div>
@@ -60,18 +60,18 @@
             <!-- ডায়নামিক টেবিল ফিল্ড -->
             <div class="form-group mb-4">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <label class="form-label m-0">কমিটির লিস্ট</label>
-                    <button type="button" class="btn btn-sm btn-info" onclick="addTableRow()">+ নতুন রো অ্যাড করুন</button>
+                    <label class="form-label m-0">Committee List</label>
+                    <button type="button" class="btn btn-sm btn-info" onclick="addTableRow()">+ Add New Row</button>
                 </div>
 
                 <div class="table-container">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ক্রমিক নং</th>
-                                <th>নাম ও পদবি</th>
-                                <th>নির্বাচনের ক্ষেত্র</th>
-                                <th width="100">অ্যাকশন</th>
+                                <th>Serial</th>
+                                <th>Name and Position</th>
+                                <th>Selection Area</th>
+                                <th width="100">Action</th>
                             </tr>
                         </thead>
                         <tbody id="dynamic-table-body">
@@ -81,15 +81,15 @@
                                 <td><input type="text" name="sl[]" class="form-control form-input" value="{{ $row['sl'] ?? '' }}"></td>
                                 <td><input type="text" name="name[]" class="form-control form-input" value="{{ $row['name'] ?? '' }}"></td>
                                 <td><input type="text" name="area[]" class="form-control form-input" value="{{ $row['area'] ?? '' }}"></td>
-                                <td><button type="button" class="btn btn-sm btn-danger" onclick="removeTableRow(this)">মুছুন</button></td>
+                                <td><button type="button" class="btn btn-sm btn-danger" onclick="removeTableRow(this)">Delete</button></td>
                             </tr>
                             @endforeach
                             @else
                             <tr>
-                                <td><input type="text" name="sl[]" class="form-control form-input" placeholder="১।"></td>
-                                <td><input type="text" name="name[]" class="form-control form-input" placeholder="উদা: মোঃ শফিকুল ইসলাম"></td>
-                                <td><input type="text" name="area[]" class="form-control form-input" placeholder="উদা: অভিভাবক সদস্য"></td>
-                                <td><button type="button" class="btn btn-sm btn-danger" onclick="removeTableRow(this)">মুছুন</button></td>
+                                <td><input type="text" name="sl[]" class="form-control form-input" placeholder="1."></td>
+                                <td><input type="text" name="name[]" class="form-control form-input" placeholder="e.g., Mr. Shahidul Islam"></td>
+                                <td><input type="text" name="area[]" class="form-control form-input" placeholder="e.g., Committee Member"></td>
+                                <td><button type="button" class="btn btn-sm btn-danger" onclick="removeTableRow(this)">Delete</button></td>
                             </tr>
                             @endif
                         </tbody>
@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3">আপডেট করুন</button>
+            <button type="submit" class="btn btn-primary mt-3">Update</button>
         </form>
     </div>
 </div>
@@ -121,10 +121,10 @@
         const tbody = document.getElementById('dynamic-table-body');
         const tr = document.createElement('tr');
         tr.innerHTML = `
-            <td><input type="text" name="sl[]" class="form-control form-input" placeholder="ক্রমিক নং"></td>
-            <td><input type="text" name="name[]" class="form-control form-input" placeholder="নাম ও পদবি"></td>
-            <td><input type="text" name="area[]" class="form-control form-input" placeholder="নির্বাচনের ক্ষেত্র"></td>
-            <td><button type="button" class="btn btn-sm btn-danger" onclick="removeTableRow(this)">মুছুন</button></td>
+            <td><input type="text" name="sl[]" class="form-control form-input" placeholder="Serial"></td>
+            <td><input type="text" name="name[]" class="form-control form-input" placeholder="Name and Position"></td>
+            <td><input type="text" name="area[]" class="form-control form-input" placeholder="Selection Area"></td>
+            <td><button type="button" class="btn btn-sm btn-danger" onclick="removeTableRow(this)">Delete</button></td>
         `;
         tbody.appendChild(tr);
     }

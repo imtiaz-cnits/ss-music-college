@@ -63,7 +63,7 @@ class PublicEventController extends Controller
 
             'description' => 'nullable|string',
 
-            'images' => 'nullable|array', // অ্যারে ডিক্লেয়ার করা হলো
+            'images' => 'nullable|array', 
 
             'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
 

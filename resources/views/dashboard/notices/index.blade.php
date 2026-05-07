@@ -53,7 +53,7 @@
                         <td style="font-weight: 500; color: var(--foreground);">{{ $notice->title }}</td>
                         <td>
                             <span class="badge badge-secondary" style="font-size: 0.85rem;">
-                                {{ convertToBangla(\Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d F, Y')) }}
+                                {{ \Carbon\Carbon::parse($notice->date)->locale('en')->format('d M, Y') }}
                             </span>
                         </td>
                         <td>

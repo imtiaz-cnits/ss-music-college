@@ -5,9 +5,9 @@
 <div class="page-header">
     <div class="page-header-row">
         <div>
-            <h1 class="page-title">ইভেন্ট ম্যানেজমেন্ট</h1>
+            <h1 class="page-title">Event Management</h1>
         </div>
-        <a href="{{ route('dashboard.events.create') }}" class="btn btn-primary">নতুন ইভেন্ট যুক্ত করুন</a>
+        <a href="{{ route('dashboard.events.create') }}" class="btn btn-primary">Add New Event</a>
     </div>
 </div>
 
@@ -16,10 +16,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>টাইটেল</th>
-                    <th>ইমেজ</th>
-                    <th>তারিখ</th>
-                    <th style="text-align: right;">অ্যাকশন</th>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Date</th>
+                    <th style="text-align: right;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,12 +33,12 @@
                         <img src="{{ asset('assets/image/blog_card_img_01.png') }}" width="60" height="40" style="object-fit: cover; border-radius: 4px; display: block;">
                         @endif
                     </td>
-                    <td>{{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d M, Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($event->event_date)->locale('en')->format('d M, Y') }}</td>
 
                     <td style="text-align: right;">
                         <div style="display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center;">
                             <!-- Preview Button -->
-                            <button type="button" class="btn btn-sm btn-info" onclick="previewEvent('{{ addslashes($event->title) }}', '{{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F, Y') }}', '{{ $event->images->isNotEmpty() ? asset('storage/' . $event->images->first()->image_path) : asset('assets/image/blog_card_img_01.png') }}')">
+                            <button type="button" class="btn btn-sm btn-info" onclick="previewEvent('{{ addslashes($event->title) }}', '{{ \Carbon\Carbon::parse($event->event_date)->locale('en')->format('d F, Y') }}', '{{ $event->images->isNotEmpty() ? asset('storage/' . $event->images->first()->image_path) : asset('assets/image/blog_card_img_01.png') }}')">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;">
                                     <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -48,17 +48,18 @@
                             <!-- Edit Button -->
                             <a href="{{ route('dashboard.events.edit', $event->id) }}" class="btn btn-sm btn-secondary">Edit</a>
 
+
                             <!-- Delete Button -->
                             <form action="{{ route('dashboard.events.destroy', $event->id) }}" method="POST" style="margin: 0; display: flex;">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger" onclick="return confirm('ডিলিট করতে চান?')">Delete</button>
+                                <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this event?')">Delete</button>
                             </form>
                         </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" class="text-center py-3">কোনো ইভেন্ট নেই</td>
+                    <td colspan="4" class="text-center py-3">No events found</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -113,7 +114,7 @@
     <!-- ভেতরের কন্টেন্ট -->
     <div class="event-modal-box">
         <div style="padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-            <h3 style="margin: 0; font-size: 18px; color: var(--foreground);">ইভেন্ট প্রিভিউ</h3>
+            <h3 style="margin: 0; font-size: 18px; color: var(--foreground);">Event Preview</h3>
             <button onclick="closePreviewModal()" style="border: none; background: transparent; font-size: 26px; cursor: pointer; color: var(--foreground); line-height: 1;">&times;</button>
         </div>
         <div style="padding: 20px;">

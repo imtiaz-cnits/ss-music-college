@@ -42,7 +42,7 @@
 
                     <div class="time text-muted small mt-1">{{ \Carbon\Carbon::parse($notice->created_at)->format('h:i A') }}</div>
                   </td>
-                  <td class="date-year">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d M, Y') }}</td>
+                  <td class="date-year">{{ convertToBangla(\Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d F, Y')) }}</td>
                   <td class="text-center">
                     @if($notice->file)
                     <!-- event.stopPropagation() দেওয়া হয়েছে যেন এখানে ক্লিক করলে রো-এর ক্লিক কাজ না করে -->
@@ -50,7 +50,7 @@
                       ডাউনলোড
                     </a>
                     @else
-                    <a href="{{ route('notice.single', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #2c3e50; color: white;" onclick="event.stopPropagation()">
+                    <a href="{{ route('notice.single', $notice->id) }}" class="btn px-3 py-1 rounded" style="background-color: #2c3e50; color: white; white-space: nowrap;" onclick="event.stopPropagation()">
                       বিস্তারিত দেখুন
                     </a>
                     @endif

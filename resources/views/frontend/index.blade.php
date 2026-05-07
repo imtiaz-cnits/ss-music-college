@@ -20,7 +20,13 @@
                                 <div class="notice_board_content_menu">
                                     <div class="notice_board_content_menu_items">
                                         <div class="wrap">
-                                            <h3 class="date">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d') }}</h3>
+                                            <h3 class="date">
+                                                @php
+                                                $en = ['0','1','2','3','4','5','6','7','8','9'];
+                                                $bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+                                                echo str_replace($en, $bn, \Carbon\Carbon::parse($notice->date)->format('d'));
+                                                @endphp
+                                            </h3>
                                             <p class="month">{{ \Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('F') }}</p>
                                         </div>
                                     </div>
@@ -400,7 +406,7 @@
                                             @php
                                             $en = ['0','1','2','3','4','5','6','7','8','9'];
                                             $bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-                                            echo str_replace($en, $bn, \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F, Y'));
+                                            echo str_replace($en, $bn, \Carbon\Carbon::parse($event->event_date)->locale('bn')->translatedFormat('d F, Y'));
                                             @endphp
                                         </h5>
                                         <h2>{{ $event->title }}</h2>
