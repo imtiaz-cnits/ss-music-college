@@ -121,13 +121,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
         </svg>
         <h3 class="empty-state-title">No privileges found</h3>
-        <p class="empty-state-description">Get started by creating a new privilege.</p>
-        <a href="{{ route($dashboardRoute::name('privileges.create')) }}" class="btn btn-primary">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Add Privilege
-        </a>
+        <p class="empty-state-description">There are no privileges added yet. Click the button above to create one.</p>
     </div>
     @endif
 </div>

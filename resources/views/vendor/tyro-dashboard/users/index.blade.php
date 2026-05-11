@@ -5,14 +5,14 @@
 <div class="page-header">
     <div class="page-header-row">
         <div>
-            <h1 class="page-title">ইউজার ম্যানেজমেন্ট</h1>
-            <p class="page-description">অ্যাডমিন, শিক্ষক এবং সাধারণ ইউজারদের অ্যাকাউন্ট নিয়ন্ত্রণ করুন</p>
+            <h1 class="page-title">User Management</h1>
+            <p class="page-description">Control admin, teacher and general users account</p>
         </div>
         <a href="{{ route($dashboardRoute::name('users.create')) }}" class="btn btn-primary">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; margin-right: 6px;">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            নতুন ইউজার
+            New User
         </a>
     </div>
 </div>
@@ -23,30 +23,30 @@
         <form action="{{ route($dashboardRoute::name('users.index')) }}" method="GET">
             <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end;">
                 <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
-                    <label class="form-label">সার্চ করুন</label>
-                    <input type="text" name="search" class="form-input" placeholder="নাম বা ইমেইল..." value="{{ $filters['search'] ?? '' }}">
+                    <label class="form-label">Search</label>
+                    <input type="text" name="search" class="form-input" placeholder="Name or Email..." value="{{ $filters['search'] ?? '' }}">
                 </div>
                 <div class="form-group" style="width: 180px; margin-bottom: 0;">
-                    <label class="form-label">রোল (Role)</label>
+                    <label class="form-label">Role</label>
                     <select name="role" class="form-select">
-                        <option value="">সকল রোল</option>
+                        <option value="">All Roles</option>
                         @foreach($roles as $role)
                         <option value="{{ $role->slug }}" {{ ($filters['role'] ?? '') === $role->slug ? 'selected' : '' }}>{{ $role->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group" style="width: 160px; margin-bottom: 0;">
-                    <label class="form-label">স্ট্যাটাস</label>
+                    <label class="form-label">Status</label>
                     <select name="status" class="form-select">
-                        <option value="">সকল স্ট্যাটাস</option>
+                        <option value="">All Status</option>
                         <option value="active" {{ ($filters['status'] ?? '') === 'active' ? 'selected' : '' }}>Active</option>
                         <option value="suspended" {{ ($filters['status'] ?? '') === 'suspended' ? 'selected' : '' }}>Suspended</option>
                     </select>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
-                    <button type="submit" class="btn btn-secondary">ফিল্টার</button>
+                    <button type="submit" class="btn btn-secondary">Filter</button>
                     @if(!empty($filters['search']) || !empty($filters['role']) || !empty($filters['status']))
-                    <a href="{{ route($dashboardRoute::name('users.index')) }}" class="btn btn-ghost">মুছুন</a>
+                    <a href="{{ route($dashboardRoute::name('users.index')) }}" class="btn btn-ghost">Clear</a>
                     @endif
                 </div>
             </div>
@@ -62,11 +62,11 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ইউজার</th>
-                        <th>রোলস</th>
-                        <th>স্ট্যাটাস</th>
-                        <th>যোগদানের তারিখ</th>
-                        <th style="text-align: right;">অ্যাকশন</th>
+                        <th>User</th>
+                        <th>Roles</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th style="text-align: right;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,7 +130,7 @@
                         </td>
                         <td style="text-align: right;">
                             <div class="action-buttons" style="justify-content: flex-end;">
-                                <a href="{{ route($dashboardRoute::name('users.edit'), $listUser->id) }}" class="action-btn" title="এডিট">
+                                <a href="{{ route($dashboardRoute::name('users.edit'), $listUser->id) }}" class="action-btn" title="Edit">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                     </svg>
@@ -193,9 +193,8 @@
             <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
-            <h3 class="empty-state-title">কোনো ইউজার পাওয়া যায়নি</h3>
-            <p class="empty-state-description">শুরু করতে নতুন একটি ইউজার অ্যাকাউন্ট তৈরি করুন।</p>
-            <a href="{{ route($dashboardRoute::name('users.create')) }}" class="btn btn-primary">নতুন ইউজার তৈরি করুন</a>
+            <h3 class="empty-state-title">No users found</h3>
+            <p class="empty-state-description">There are no users added yet. Click the button above to create one.</p>
         </div>
         @endif
     </div>
