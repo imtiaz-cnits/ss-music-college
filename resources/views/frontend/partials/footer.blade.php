@@ -78,7 +78,7 @@
         </div>
         <div id="copy_right">
             <div class="copy_right_content d-block d-md-flex justify-content-between">
-                <p class="content1 pt-2">© ২০২৫ | কপিরাইট - শহীদ সাধন সঙ্গীত মহাবিদ্যালয়.</p>
+                <p class="content1 pt-2">© {{ str_replace(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'], date('Y')) }} | কপিরাইট - শহীদ সাধন সঙ্গীত মহাবিদ্যালয়.</p>
                 <p class="content2 text-center pt-2 m-0">কারিগরী সহায়তায় - <a rel="dofollow" href="https://codenextit.com">কোডনেক্সট আইটি</a></p>
             </div>
         </div>
