@@ -319,6 +319,167 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Services -->
+                <div style="margin-top: 30px;" class="government-all-services-two-widget">
+                    <!-- Expand Toggle Checkbox -->
+                    <input type="checkbox" id="check-91009" class="expand-toggle" style="display: none;">
+
+                        <div class="services-grid">
+                            <!-- 1. সেবা প্রদান প্রতিশ্রুতি (সিটিজেন চার্টার) -->
+                            <div class="service-box-item box-2">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/1344ff1364164ca0a28da6ba20bdfba6.png" alt="সেবা প্রদান প্রতিশ্রুতি (সিটিজেন চার্টার)" class="service-icon-img">
+                                    <h3 class="service-title">সেবা প্রদান প্রতিশ্রুতি (সিটিজেন চার্টার)</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fc1e935ce18e1c06ce961" target="_blank"><i class="fa fa-angle-right"></i> সেবা প্রদান প্রতিশ্রুতি</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697f99f735ce18e1c06c2043" target="_blank"><i class="fa fa-angle-right"></i> ফোকাল পয়েন্ট কর্মকর্তা/পরিবীক্ষণ কমিটি</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fc8ac35ce18e1c06d1e1b" target="_blank"><i class="fa fa-angle-right"></i> সভার কার্যবিবরণী/প্রশিক্ষণ</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fcfbb35ce18e1c06d4e32" target="_blank"><i class="fa fa-angle-right"></i> আইন/বিধি/নীতিমালা/পরিপত্র</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 2. আমাদের সম্পর্কে (Double size center box) -->
+                            <div class="service-box-item box-1">
+                                <div class="content-default">
+                                    <i class="fa-solid fa-building-columns ph center-icon md:text-xs" style="color: #007F5F; margin-bottom: 16px;"></i>
+                                    <h3 class="service-title" style="color: #002C53;">আমাদের সম্পর্কে</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="{{ route('history') }}"><i class="fa fa-angle-right"></i> প্রতিষ্ঠানের ইতিহাস</a></li>
+                                        <li><a href="{{ route('principal_message') }}"><i class="fa fa-angle-right"></i> অধ্যক্ষের বাণী</a></li>
+                                        <li><a href="{{ route('governing_body_approval') }}"><i class="fa fa-angle-right"></i> গভর্ণিং বডির অনুমোদন</a></li>
+                                        <li><a href="{{ route('chairman') }}"><i class="fa fa-angle-right"></i> গভর্ণিং বডির সভাপতি</a></li>
+                                        <li><a href="{{ route('teachers') }}"><i class="fa fa-angle-right"></i> কর্মকর্তা/ কর্মচারী</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 3. অভ্যন্তরীণ ই-সেবা -->
+                            <div class="service-box-item box-0">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/38389d7a52f049f7b25d994cd112d511.png" alt="অভ্যন্তরীণ ই-সেবা" class="service-icon-img">
+                                    <h3 class="service-title">অভ্যন্তরীণ ই-সেবা</h3>
+                                </div>
+                                <div class="content-hover">
+
+                                    <ul class="service-links"> <li> <a href="http://bdlaws.minlaw.gov.bd/bangla_all_sections.php?id=1011" target="_blank"> <i class="fa fa-angle-right"></i> তথ্য অধিকার আইন </a> </li> <li> <a href="http://adcrevpabna.com" target="_blank"> <i class="fa fa-angle-right"></i> \\"অতিরিক্ত জেলা প্রশাসক (রাজস্ব),পাবনা এর আদালত\\" </a> </li> <li> <a href="http://www.zppabna.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> জেলা পরিষদ, পাবনা </a> </li> <li> <a href="http://mmc.e-service.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> মাল্টিমিডিয়া ক্লাসরুম নিবন্ধন </a> </li> <li> <a href="http://bdlaws.minlaw.gov.bd/index.php?page=html&amp;language=bangla" target="_blank"> <i class="fa fa-angle-right"></i> বাংলাদেশ কোড </a> </li> <li> <a href="http://uams.e-service.gov.bd/modules/home/home.php" target="_blank"> <i class="fa fa-angle-right"></i> ইউআইএসসি কার্যক্রম </a> </li> <li> <a href="http://www.a2i.pmo.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> এটুআই </a> </li> <li> <a href="http://www.krishimarket.com/" target="_blank"> <i class="fa fa-angle-right"></i> অন লাইন কৃুষি বাজার </a> </li> <li> <a href="https://ictd.gov.bd/pages/static-pages/69414b2435ce18e1c059ade8" target="_blank"> <i class="fa fa-angle-right"></i> ICT খাতে ফেলোশিপ ও বৃত্তি </a> </li> <li> <a href="https://pabna.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> \\"অতিরিক্ত জেলা প্রশাসক (এডিএম),পাবনা এর আদালত\\" </a> </li> <li> <a href="http://bdlaws.minlaw.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> তথ্য ও যোগাযোগ প্রযুক্তি আইন </a> </li> <li> <a href="https://ais.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> কৃষি তথ্য সার্ভিস </a> </li> <li> <a href="https://www.teachers.gov.bd/" target="_blank"> <i class="fa fa-angle-right"></i> জাতীয় শিক্ষক বাতায়ন </a> </li> <li> <a href="https://pabna.gov.bd/views/e-directory-zilla" target="_blank"> <i class="fa fa-angle-right"></i> ই-ডিরেক্টরী </a> </li> <li> <a href="https://pabna.gov.bd/pages/office-process-maps" target="_blank"> <i class="fa fa-angle-right"></i> সেবা পাবার ধাপ </a> </li> <li> <a href="https://dls.gov.bd/e_Livestock/Hash_Morgir_Rog.php" target="_blank"> <i class="fa fa-angle-right"></i> ই-প্রাণীসম্পদ </a> </li> <li> <a href="https://pabna.gov.bd/views/all-info-officers" target="_blank"> <i class="fa fa-angle-right"></i> তথ্যপ্রদান কর্মকর্তা </a> </li> </ul>
+                                </div>
+                            </div>
+
+                            <!-- 4. অভিযোগ প্রতিকার ব্যবস্থাপনা -->
+                            <div class="service-box-item box-3">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/a7a92e2ff96a448a88545bbf6226d728.png" alt="অভিযোগ প্রতিকার ব্যবস্থাপনা" class="service-icon-img">
+                                    <h3 class="service-title">অভিযোগ প্রতিকার ব্যবস্থাপনা</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="https://www.grs.gov.bd" target="_blank"><i class="fa fa-angle-right"></i> অনলাইন অভিযোগ দাখিল</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/grievance-redressal-officers/697f642846cf052615a52fea" target="_blank"><i class="fa fa-angle-right"></i>  অনিক ও আপিল কর্মকর্তাগণ </a></li> 
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697f6e0a35ce18e1c06b3b16" target="_blank"><i class="fa fa-angle-right"></i>  অভিযোগ প্রতিকার মাসিক/ত্রৈমাসিক মূল্যায়ন প্রতিবেদন </a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/files/697f678035ce18e1c06882db" target="_blank"><i class="fa fa-angle-right"></i> আইন/বিধি/নীতিমালা/নির্দেশিকা</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 5. তথ্য অধিকার -->
+                            <div class="service-box-item box-6">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/fce25400a72f4b9385e4a5087a722b35.png" alt="তথ্য অধিকার" class="service-icon-img">
+                                    <h3 class="service-title">তথ্য অধিকার</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="https://pabna.gov.bd/views/info-officers" target="_blank"><i class="fa fa-angle-right"></i> দায়িত্বপ্রাপ্ত কর্মকর্তা</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/files/697f678735ce18e1c0688760" target="_blank"><i class="fa fa-angle-right"></i> আবেদন ও আপিল ফরম</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fd8be35ce18e1c06d614f" target="_blank"><i class="fa fa-angle-right"></i> যাবতীয় তথ্যের ক্যাটালগ</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/files/697f672f35ce18e1c0683c99" target="_blank"><i class="fa fa-angle-right"></i> আইন/বিধি/নির্দেশিকা</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 6. শুদ্ধাচার -->
+                            <div class="service-box-item box-7">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/2c51ace57749497784d4b7a65a628c02.png" alt="শুদ্ধাচার" class="service-icon-img">
+                                    <h3 class="service-title">শুদ্ধাচার</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697faa4235ce18e1c06c7229" target="_blank"><i class="fa fa-angle-right"></i> শুদ্ধাচার কর্ম-পরিকল্পনা</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fd8db35ce18e1c06d6f16" target="_blank"><i class="fa fa-angle-right"></i> ত্রৈমাসিক বাস্তবায়ন অগ্রগতি</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fcfbe35ce18e1c06d4f89" target="_blank"><i class="fa fa-angle-right"></i> ফোকাল পয়েন্ট কর্মকর্তা</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fb31335ce18e1c06ca0cf" target="_blank"><i class="fa fa-angle-right"></i> প্রজ্ঞাপন/নীতিমালা</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 7. আইন/নীতিমালা/প্রজ্ঞাপন/পরিপত্র -->
+                            <div class="service-box-item box-11">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/daa2068508784c81ba4a7fef407bd26b.png" alt="আইন/নীতিমালা/প্রজ্ঞাপন/পরিপত্র" class="service-icon-img">
+                                    <h3 class="service-title">আইন/নীতিমালা/প্রজ্ঞাপন/পরিপত্র</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="http://bdlaws.minlaw.gov.bd/" target="_blank"><i class="fa fa-angle-right"></i> আইন</a></li>
+                                        <li><a href="http://bdlaws.minlaw.gov.bd/laws-of-bangladesh.html" target="_blank"><i class="fa fa-angle-right"></i> বিধিমালা</a></li>
+                                        <li><a href="http://bdlaws.minlaw.gov.bd/laws-of-bangladesh.html" target="_blank"><i class="fa fa-angle-right"></i> পরিপত্র/নীতিমালা</a></li>
+                                        <li><a href="https://bangladesh.gov.bd/views/gurd-files-category" target="_blank"><i class="fa fa-angle-right"></i> গার্ডফাইল</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- 8. কর্মসম্পাদন ব্যবস্থাপনা -->
+                            <div class="service-box-item box-4">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/af9d0ecfb8e6476d97689f98c93977b2.png" alt="কর্মসম্পাদন ব্যবস্থাপনা" class="service-icon-img">
+                                    <h3 class="service-title">কর্মসম্পাদন ব্যবস্থাপনা</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="https://cabinet.gov.bd/pages/static-pages/694032db35ce18e1c056382e" target="_blank"><i class="fa fa-angle-right"></i> পরিপত্র/নীতিমালা</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697fc8bb35ce18e1c06d249f" target="_blank"><i class="fa fa-angle-right"></i> বার্ষিক কর্মসম্পাদন চুক্তি</a></li>
+                                        <li><a href="https://pabna.gov.bd/pages/static-pages/697f93c435ce18e1c06beafc" target="_blank"><i class="fa fa-angle-right"></i> বাস্তবায়ন অগ্রগতি</a></li>
+                                        <li><a href="https://apams.cabinet.gov.bd/" target="_blank"><i class="fa fa-angle-right"></i> এপিএমএস</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Hidden Cards (shown on click) -->
+                            <!-- 9. শিক্ষা-সেবা -->
+                            <!-- <div class="service-box-item box-16 service-box-hidden">
+                                <div class="content-default">
+                                    <img src="https://objectstorage.ap-dcc-gazipur-1.oraclecloud15.com/n/axvjbnqprylg/b/V2Ministry/o/office-pabna/2024/12/e2ca514647ed4693b360b420da0544e7.png" alt="শিক্ষা-সেবা" class="service-icon-img">
+                                    <h3 class="service-title">শিক্ষা-সেবা</h3>
+                                </div>
+                                <div class="content-hover">
+                                    <ul class="service-links">
+                                        <li><a href="http://www.educationboardresults.gov.bd/" target="_blank"><i class="fa fa-angle-right"></i> পরীক্ষার ফলাফল</a></li>
+                                        <li><a href="https://bangladesh.gov.bd/pages/np-services" target="_blank"><i class="fa fa-angle-right"></i> বিশ্ববিদ্যালয়সমূহ</a></li>
+                                        <li><a href="http://application.emis.gov.bd/" target="_blank"><i class="fa fa-angle-right"></i> অনলাইনে MPO আবেদন</a></li>
+                                        <li><a href="https://bangladesh.gov.bd/pages/static-pages/69a55ba386514399668e4e81" target="_blank"><i class="fa fa-angle-right"></i> শিক্ষাবোর্ডসমূহ</a></li>
+                                    </ul>
+                                </div>
+                            </div> -->
+
+                        </div>
+
+                        <!-- Toggle Details Button -->
+                        <div class="show-details-btn">
+                            <label for="check-91009" class="toggle-btn">
+                                <span class="toggle-text-default">সকল সেবাসমূহ দেখুন <i class="fa-solid fa-arrow-right icon ms-1"></i></span>
+                                <span class="toggle-text-expanded">সংক্ষিপ্ত <i class="fa-solid fa-arrow-up icon ms-1"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="institution_gallery">
                     <div class="institution_gallery_heading">
                         <h2>গ্যালারী</h2>

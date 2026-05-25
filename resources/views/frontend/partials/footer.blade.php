@@ -76,10 +76,74 @@
                 </div>
             </div>
         </div>
+        <hr class="footer-divider">
+        @php
+            // Dynamic Last Updated Date Calculator
+            $latestTime = null;
+            
+            try {
+                $lastNoticeUpdate = \App\Models\Notice::max('updated_at');
+                $lastEventUpdate = \App\Models\Event::max('updated_at');
+                $lastGalleryUpdate = \App\Models\Gallery::max('updated_at');
+
+                $timestamps = array_filter([$lastNoticeUpdate, $lastEventUpdate, $lastGalleryUpdate]);
+                
+                if (!empty($timestamps)) {
+                    $latestTime = \Illuminate\Support\Carbon::parse(max($timestamps));
+                }
+            } catch (\Exception $e) {
+                // Fail-safe if database tables are not ready
+            }
+
+            // Default Fallback to original deployment/update date
+            if (!$latestTime) {
+                $latestTime = \Illuminate\Support\Carbon::parse('2026-05-24 15:38:47');
+            }
+
+            // Bengali Conversion Map
+            $days = [
+                'Sunday' => 'রবিবার', 'Monday' => 'সোমবার', 'Tuesday' => 'মঙ্গলবার',
+                'Wednesday' => 'বুধবার', 'Thursday' => 'বৃহস্পতিবার', 'Friday' => 'শুক্রবার',
+                'Saturday' => 'শনিবার'
+            ];
+
+            $months = [
+                'January' => 'জানুয়ারি', 'February' => 'ফেব্রুয়ারি', 'March' => 'মার্চ',
+                'April' => 'এপ্রিল', 'May' => 'মে', 'June' => 'জুন',
+                'July' => 'জুলাই', 'August' => 'আগস্ট', 'September' => 'সেপ্টেম্বর',
+                'October' => 'অক্টোবর', 'November' => 'নভেম্বর', 'December' => 'ডিসেম্বর'
+            ];
+
+            $engNumbers = ['0','1','2','3','4','5','6','7','8','9'];
+            $bangNumbers = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+
+            // Format segments into Bengali
+            $dayName = $days[$latestTime->format('l')] ?? '';
+            $dayNum = str_replace($engNumbers, $bangNumbers, $latestTime->format('d'));
+            $monthName = $months[$latestTime->format('F')] ?? '';
+            $yearNum = str_replace($engNumbers, $bangNumbers, $latestTime->format('Y'));
+            $timeNum = str_replace($engNumbers, $bangNumbers, $latestTime->format('h:i:s'));
+            $amPm = $latestTime->format('A');
+            $amPmBengali = ($amPm === 'AM') ? 'AM' : 'PM';
+
+            $bengaliFormattedDate = "{$dayName}, {$dayNum} {$monthName}, {$yearNum} এ {$timeNum} {$amPmBengali}";
+        @endphp
         <div id="copy_right">
-            <div class="copy_right_content d-block d-md-flex justify-content-between">
-                <p class="content1 pt-2">© {{ str_replace(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'], date('Y')) }} | কপিরাইট - শহীদ সাধন সঙ্গীত মহাবিদ্যালয়.</p>
-                <p class="content2 text-center pt-2 m-0">কারিগরী সহায়তায় - <a rel="dofollow" href="https://codenextit.com">কোডনেক্সট আইটি</a></p>
+            <div class="copy_right_content d-block d-md-flex justify-content-between align-items-center">
+                <p class="content1 pt-2">
+                    <i class="fa-regular fa-copyright text-primary me-2"></i>{{ str_replace(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'], date('Y')) }} | কপিরাইট - শহীদ সাধন সঙ্গীত মহাবিদ্যালয়.
+                </p>
+                <p class="content2 text-center pt-2 m-0">
+                    <i class="fa-solid fa-code text-secondary me-2"></i>কারিগরী সহায়তায় - <a rel="dofollow" href="https://codenextit.com" class="developer-link">কোডনেক্সট আইটি</a>
+                </p>
+            </div>
+            <div class="last-updated-wrapper text-center mt-3">
+                <span class="last-updated-badge">
+                    <span class="badge-label-part">
+                        <i class="fa-regular fa-calendar-check text-primary me-2"></i>সাইটটি শেষ হাল-নাগাদ করা হয়েছে:
+                    </span>
+                    <span class="update-time-text">{{ $bengaliFormattedDate }}</span>
+                </span>
             </div>
         </div>
     </div>

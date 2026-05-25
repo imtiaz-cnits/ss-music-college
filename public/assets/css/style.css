@@ -2688,3 +2688,436 @@ body {
 }
 
 /* Students Session Page CSS End */
+
+/* E-Services Section Start */
+.institution_services_heading {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.institution_services_heading .title-icon {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    top: 0;
+    right: 0;
+}
+
+.institution_services_heading h2 {
+    text-align: left;
+    font-size: 30px;
+    padding: 10px 20px;
+    color: var(--bg-color);
+    border-radius: 6px;
+    background: linear-gradient(
+        90deg,
+        #1b98e0 0%,
+        rgba(255, 255, 255, 0) 88.08%
+    );
+    font-weight: 600;
+    font-family: var(--primary-font);
+    margin: 0;
+}
+
+/* Premium Desktop Grid Layout */
+.government-all-services-two-widget {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.government-all-services-two-widget .services-grid {
+    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    margin: 0 auto;
+    display: grid;
+}
+
+.government-all-services-two-widget .service-box-item {
+    border-radius: 16px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    position: relative;
+    overflow: visible;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+}
+
+.government-all-services-two-widget .service-box-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Service Box Hidden State */
+.government-all-services-two-widget .service-box-hidden {
+    opacity: 0;
+    max-height: 0;
+    transition: opacity 0.3s ease;
+    overflow: hidden;
+    display: none !important;
+}
+
+.government-all-services-two-widget .expand-toggle:checked ~ .services-grid .service-box-hidden {
+    opacity: 1;
+    max-height: 220px;
+    display: flex !important;
+}
+
+
+/* Content Views */
+.government-all-services-two-widget .content-default {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease;
+    box-sizing: border-box;
+}
+
+.government-all-services-two-widget .service-box-item:hover .content-default {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.government-all-services-two-widget .service-icon-img {
+    object-fit: contain;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
+}
+
+.government-all-services-two-widget .service-box-item:hover .service-icon-img {
+    transform: scale(1.1);
+}
+
+.government-all-services-two-widget .service-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.4;
+    margin: 0;
+    font-family: var(--primary-font);
+}
+
+.government-all-services-two-widget .center-icon {
+    object-fit: contain;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 16px;
+}
+
+.government-all-services-two-widget .ph.center-icon {
+    color: #1e88e5;
+    font-size: 54px;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+/* Hover Interactive Lists */
+.government-all-services-two-widget .content-hover {
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 16px;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #006A4E !important;
+    color: #ffffff !important;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.government-all-services-two-widget .service-box-item:hover .content-hover {
+    opacity: 1;
+    visibility: visible;
+}
+
+.government-all-services-two-widget .service-links {
+    text-align: left;
+    color: #ffffff;
+    padding: 10px 10px 10px 15px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.government-all-services-two-widget .service-links li {
+    color: #ffffff;
+    padding-bottom: 8px;
+    list-style: square;
+    font-size: 14px;
+}
+
+.government-all-services-two-widget .service-links li a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: inline;
+    line-height: 1.4;
+    font-family: var(--primary-font);
+}
+
+.government-all-services-two-widget .service-links li a:hover {
+    color: #ffc107;
+}
+
+/* Custom Scrollbar for Hover Lists */
+.government-all-services-two-widget .service-links::-webkit-scrollbar {
+    width: 5px;
+}
+
+.government-all-services-two-widget .service-links::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.government-all-services-two-widget .service-links::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.government-all-services-two-widget .service-links::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Toggle Details Button */
+.government-all-services-two-widget .show-details-btn {
+    margin-top: 24px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.government-all-services-two-widget .show-details-btn .toggle-btn {
+    color: #006A4E;
+    font-weight: 700;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid #006A4E;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 12px 32px;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: flex;
+    font-family: var(--primary-font);
+    font-size: 16px;
+    background: transparent;
+}
+
+.government-all-services-two-widget .show-details-btn .toggle-btn:hover {
+    background-color: #006A4E;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 106, 78, 0.3);
+}
+
+.government-all-services-two-widget .show-details-btn .toggle-text-expanded,
+.government-all-services-two-widget .expand-toggle:checked ~ .show-details-btn .toggle-text-default {
+    display: none;
+}
+
+.government-all-services-two-widget .expand-toggle:checked ~ .show-details-btn .toggle-text-expanded {
+    display: inline;
+}
+
+.government-all-services-two-widget .expand-toggle:checked ~ .show-details-btn .toggle-btn .icon {
+    transform: rotate(180deg);
+}
+
+.government-all-services-two-widget .show-details-btn i {
+    font-weight: 700;
+    transition: transform 0.3s;
+}
+
+/* Individual Card Gradient Definitions */
+.government-all-services-two-widget .service-box-item.box-0 {
+    background: radial-gradient(91.1% 96.09% at 15.37% 13.19%, #ffe8e1 0%, #ebefff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-0-b {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-1 {
+    grid-area: 1 / 2 / 3 / 4;
+    background: linear-gradient(to bottom right, #fff 0%, #d6eafe 50%) bottom right / 50% 50% no-repeat,
+                linear-gradient(to bottom left, #fff 0%, #d6eafe 50%) bottom left / 50% 50% no-repeat,
+                linear-gradient(to top left, #fff 0%, #d6eafe 50%) top left / 50% 50% no-repeat,
+                linear-gradient(to top right, #fff 0%, #d6eafe 50%) top right / 50% 50% no-repeat;
+    background-color: #ffffff;
+}
+
+.government-all-services-two-widget .service-box-item.box-2 {
+    background: linear-gradient(180deg, #ece2db 0%, rgba(215, 236, 245, 0.55) 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-3 {
+    background: radial-gradient(189.78% 139.02% at 69.18% 33.13%, #f1eef9 0%, #dee4ff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-4 {
+    background: radial-gradient(91.1% 96.09% at 15.37% 13.19%, #ffe8e1 0%, #ebefff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-5 {
+    background: linear-gradient(210deg, #e1e8ff 18.43%, rgba(231, 232, 238, 0.55) 57.92%);
+}
+
+.government-all-services-two-widget .service-box-item.box-6 {
+    background: radial-gradient(91.1% 96.09% at 15.37% 13.19%, #ffe8e1 0%, #ebefff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-7 {
+    background: linear-gradient(210deg, #e1e8ff 18.43%, rgba(231, 232, 238, 0.55) 57.92%);
+}
+
+.government-all-services-two-widget .service-box-item.box-8 {
+    background: linear-gradient(180deg, #ece2db 0%, rgba(215, 236, 245, 0.55) 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-9 {
+    background: radial-gradient(189.78% 139.02% at 69.18% 33.13%, #f1eef9 0%, #dee4ff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-10 {
+    background: radial-gradient(91.1% 96.09% at 15.37% 13.19%, #ffe8e1 0%, #ebefff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-11 {
+    background: linear-gradient(210deg, #e1e8ff 18.43%, rgba(231, 232, 238, 0.55) 57.92%);
+}
+
+.government-all-services-two-widget .service-box-item.box-12 {
+    background: linear-gradient(180deg, #ece2db 0%, rgba(215, 236, 245, 0.55) 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-13 {
+    background: radial-gradient(189.78% 139.02% at 69.18% 33.13%, #f1eef9 0%, #dee4ff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-14 {
+    background: radial-gradient(91.1% 96.09% at 15.37% 13.19%, #ffe8e1 0%, #ebefff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-15 {
+    background: linear-gradient(210deg, #e1e8ff 18.43%, rgba(231, 232, 238, 0.55) 57.92%);
+}
+
+.government-all-services-two-widget .service-box-item.box-16 {
+    background: linear-gradient(180deg, #ece2db 0%, rgba(215, 236, 245, 0.55) 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-17 {
+    background: radial-gradient(189.78% 139.02% at 69.18% 33.13%, #f1eef9 0%, #dee4ff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-18 {
+    background: radial-gradient(91.1% 96.09% at 15.37% 13.19%, #ffe8e1 0%, #ebefff 100%);
+}
+
+.government-all-services-two-widget .service-box-item.box-19 {
+    background: linear-gradient(210deg, #e1e8ff 18.43%, rgba(231, 232, 238, 0.55) 57.92%);
+}
+
+.government-all-services-two-widget .service-box-item.box-20 {
+    background: linear-gradient(180deg, #ece2db 0%, rgba(215, 236, 245, 0.55) 100%);
+}
+
+/* Scoped Responsive Styling */
+@media screen and (max-width: 991px) {
+    .government-all-services-two-widget .services-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        grid-auto-rows: auto;
+        gap: 16px;
+    }
+
+    .government-all-services-two-widget .service-box-item,
+    .government-all-services-two-widget .service-box-item.box-1 {
+        grid-area: auto !important;
+        height: 180px;
+    }
+
+    .government-all-services-two-widget .service-box-item.box-1 .service-title {
+        font-size: 20px !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .government-all-services-two-widget .services-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .government-all-services-two-widget .service-box-item,
+    .government-all-services-two-widget .service-box-item.box-1 {
+        grid-area: auto !important;
+        height: 140px;
+        min-height: 140px;
+    }
+
+    .government-all-services-two-widget .content-default {
+        flex-direction: row;
+        text-align: left;
+        height: 100%;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 16px 24px;
+        gap: 20px;
+    }
+
+    .government-all-services-two-widget .service-icon-img,
+    .government-all-services-two-widget .center-icon,
+    .government-all-services-two-widget .ph.center-icon {
+        margin-bottom: 0;
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        font-size: 44px;
+    }
+
+    .government-all-services-two-widget .service-title {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .institution_services_heading .title-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .government-all-services-two-widget .service-box-item {
+        height: 120px;
+        min-height: 120px;
+    }
+
+    .government-all-services-two-widget .content-default {
+        padding: 12px 16px;
+        gap: 16px;
+    }
+
+    .government-all-services-two-widget .service-title {
+        font-size: 15px;
+    }
+}
+/* E-Services Section End */

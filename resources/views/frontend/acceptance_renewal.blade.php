@@ -87,7 +87,7 @@
                 <!-- Admission Box Start -->
                 <div id="admission_box">
                     <div class="admission_content">
-                        <a href="#" class="admission_content_cards admission_content_card">
+                        <a href="https://xiclassadmissiongovbd.com/apply-online/" class="admission_content_cards admission_content_card">
                             <div class="admission_content_card_img admission_card_imgs">
                                 <img src="./assets/icon/admission_box_icon_02.svg" alt="" />
                             </div>
