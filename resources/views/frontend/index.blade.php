@@ -478,7 +478,6 @@
                             </label>
                         </div>
                     </div>
-                </div>
 
                 <div id="institution_gallery">
                     <div class="institution_gallery_heading">
