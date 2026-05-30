@@ -10,7 +10,7 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $galleries = Gallery::latest()->get();
+        $galleries = Gallery::orderBy('id', 'desc')->get();
         return view('dashboard.galleries.index', compact('galleries'));
     }
 

@@ -11,9 +11,9 @@ use App\Http\Controllers\PublicEventController;
 // Home page
 Route::get('/', function () {
     $notices = \App\Models\Notice::orderBy('date', 'desc')->orderBy('id', 'desc')->get();
-    $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->take(4)->get();
+    $galleries = \App\Models\Gallery::orderBy('id', 'desc')->take(4)->get();
 
-    $sliderEvents = \App\Models\Event::with('images')->latest()->take(5)->get();
+    $sliderEvents = \App\Models\Event::with('images')->orderBy('event_date', 'desc')->orderBy('id', 'desc')->take(5)->get();
 
     return view('frontend.index', compact('notices', 'galleries', 'sliderEvents'));
 })->name('home');
@@ -57,7 +57,7 @@ Route::get('/result', function () {
 })->name('result');
 
 Route::get('/gallery', function () {
-    $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->paginate(12);
+    $galleries = \App\Models\Gallery::orderBy('id', 'desc')->paginate(12);
     return view('frontend.gallery', compact('galleries'));
 })->name('gallery');
 

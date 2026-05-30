@@ -23,7 +23,7 @@ class PublicEventController extends Controller
     // Frontend
     public function index()
     {
-        $events = Event::with('images')->latest()->paginate(9);
+        $events = Event::with('images')->orderBy('event_date', 'desc')->orderBy('id', 'desc')->paginate(9);
         return view('frontend.event', compact('events'));
     }
 
@@ -36,7 +36,7 @@ class PublicEventController extends Controller
     // Backend (Admin)
     public function adminIndex()
     {
-        $events = Event::with('images')->latest()->paginate(10);
+        $events = Event::with('images')->orderBy('event_date', 'desc')->orderBy('id', 'desc')->paginate(10);
         return view('dashboard.events.index', compact('events'));
     }
 
