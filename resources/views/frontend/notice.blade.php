@@ -33,16 +33,14 @@
                 @forelse($notices as $key => $notice)
                 <!-- পুরো রো ক্লিকেবল করা হলো এবং পয়েন্টার কার্সর দেওয়া হলো -->
                 <tr style="cursor: pointer;" onclick="window.location='{{ route('notice.single', $notice->id) }}'">
-                  <td>{{ $notices->firstItem() + $key }}</td>
+                  <td class="text-center">{{ convertToBangla($notices->firstItem() + $key) }}</td>
                   <td>
                     <!-- টাইটেল এখন span, কারণ পুরো রো-ই ক্লিকেবল -->
                     <span class="notice-title text-dark" style="font-weight: 500;">
                       {{ $notice->title }}
                     </span>
-
-                    <div class="time text-muted small mt-1">{{ \Carbon\Carbon::parse($notice->created_at)->format('h:i A') }}</div>
                   </td>
-                  <td class="date-year">{{ convertToBangla(\Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d F, Y')) }}</td>
+                  <td class="date-year" style="white-space: nowrap; font-size: 0.9rem;">{{ convertToBangla(\Carbon\Carbon::parse($notice->date)->locale('bn')->translatedFormat('d F, Y')) }}</td>
                   <td class="text-center">
                     @if($notice->file)
                     <!-- event.stopPropagation() দেওয়া হয়েছে যেন এখানে ক্লিক করলে রো-এর ক্লিক কাজ না করে -->

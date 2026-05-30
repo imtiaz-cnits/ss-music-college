@@ -10,7 +10,7 @@ use App\Http\Controllers\PublicEventController;
 
 // Home page
 Route::get('/', function () {
-    $notices = \App\Models\Notice::orderBy('created_at', 'desc')->get();
+    $notices = \App\Models\Notice::orderBy('date', 'desc')->orderBy('id', 'desc')->get();
     $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->take(4)->get();
 
     $sliderEvents = \App\Models\Event::with('images')->latest()->take(5)->get();
@@ -42,7 +42,7 @@ Route::get('/teachers', function () {
 
 // Notice page
 Route::get('/notice', function () {
-    $notices = Notice::orderBy('created_at', 'desc')->paginate(15);
+    $notices = Notice::orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(15);
     return view('frontend.notice', compact('notices'));
 })->name('notice');
 

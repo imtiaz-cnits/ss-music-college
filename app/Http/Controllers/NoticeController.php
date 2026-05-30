@@ -11,7 +11,7 @@ class NoticeController extends Controller
     // ১. সব নোটিশ দেখানোর জন্য
     public function index()
     {
-        $notices = Notice::orderBy('created_at', 'desc')->get();
+        $notices = Notice::orderBy('date', 'desc')->orderBy('id', 'desc')->get();
         return view('dashboard.notices.index', compact('notices'));
     }
 

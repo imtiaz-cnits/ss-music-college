@@ -6,7 +6,7 @@
 @php
 $totalNotices = \App\Models\Notice::count();
 $totalEvents = \App\Models\Event::count();
-$recentNotices = \App\Models\Notice::orderBy('created_at', 'desc')->take(5)->get();
+$recentNotices = \App\Models\Notice::orderBy('date', 'desc')->orderBy('id', 'desc')->take(5)->get();
 $recentEvents = \App\Models\Event::latest()->take(5)->get();
 @endphp
 

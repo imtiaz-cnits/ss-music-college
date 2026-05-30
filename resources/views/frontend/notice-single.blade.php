@@ -73,8 +73,8 @@
                                         </div>
                                     @elseif(strtolower($extension) === 'pdf')
                                         <!-- If it's a PDF, show an iframe or a distinct button -->
-                                        <div class="mb-4 ratio ratio-16x9 d-none d-md-block" style="min-height: 600px;">
-                                            <iframe src="{{ asset('storage/' . $notice->file) }}" class="rounded border shadow-sm" allowfullscreen></iframe>
+                                        <div class="mb-4 d-none d-md-block" style="width: 100%; height: 1000px;">
+                                            <iframe src="{{ asset('storage/' . $notice->file) }}" style="width: 100%; height: 100%;" class="rounded border shadow-sm" allowfullscreen></iframe>
                                         </div>
                                         <div class="d-block d-md-none mb-4 p-4 bg-light rounded text-center border">
                                             <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
