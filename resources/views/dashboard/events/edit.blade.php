@@ -46,13 +46,33 @@
             <!-- ইমেজ প্রিভিউ ও আপলোড -->
             <div class="form-group mb-4">
                 <label class="form-label">Current Images:</label>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 10px;">
                     @foreach($event->images as $image)
-                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="Event Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="width: 120px; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: var(--card); text-align: center; display: flex; flex-direction: column; gap: 5px;">
+                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Event Image" style="width: 100%; height: 100px; object-fit: cover; border-radius: 6px;">
+                        
+                        <!-- Featured Radio -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.8rem; margin-top: 5px;">
+                            <input type="radio" name="featured_image_id" value="{{ $image->id }}" id="featured_{{ $image->id }}" {{ $image->is_featured ? 'checked' : '' }}>
+                            <label for="featured_{{ $image->id }}" style="margin: 0; cursor: pointer;">Featured</label>
+                        </div>
+                        
+                        <!-- Sort Order -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem;">
+                            <span>Order:</span>
+                            <input type="number" name="sort_orders[{{ $image->id }}]" value="{{ $image->sort_order }}" style="width: 50px; padding: 2px 5px; border: 1px solid var(--border); border-radius: 4px; text-align: center;" min="0">
+                        </div>
+
+                        <!-- Delete Checkbox -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.8rem; color: var(--danger); border-top: 1px solid var(--border); padding-top: 5px; margin-top: 2px;">
+                            <input type="checkbox" name="delete_images[]" value="{{ $image->id }}" id="delete_{{ $image->id }}">
+                            <label for="delete_{{ $image->id }}" style="margin: 0; cursor: pointer; color: #da1e37;">Delete</label>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
 
-                <label class="form-label mt-3">Upload New Images (Old images will be deleted and new ones will be added)</label>
+                <label class="form-label mt-3">Upload More Images (Optional - will be appended to the current event images)</label>
                 <input type="file" name="images[]" multiple accept="image/*" class="form-control form-input" id="imageInput">
                 <div id="newImagePreview" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;"></div>
             </div>

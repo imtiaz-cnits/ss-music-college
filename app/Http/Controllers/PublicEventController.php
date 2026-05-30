@@ -111,17 +111,13 @@ class PublicEventController extends Controller
 
 
         if ($request->hasFile('images')) {
-
-            foreach ($request->file('images') as $image) {
-
+            foreach ($request->file('images') as $index => $image) {
                 $path = $image->store('events', 'public');
-
                 EventImage::create([
-
                     'event_id' => $event->id,
-
                     'image_path' => $path,
-
+                    'is_featured' => ($index === 0),
+                    'sort_order' => $index,
                 ]);
             }
         }
@@ -205,31 +201,52 @@ class PublicEventController extends Controller
 
 
 
-        if ($request->hasFile('images')) {
-
-            foreach ($event->images as $oldImage) {
-
-                if (Storage::disk('public')->exists($oldImage->image_path)) {
-
-                    Storage::disk('public')->delete($oldImage->image_path);
+        // 1. Delete selected existing images
+        if ($request->has('delete_images')) {
+            foreach ($request->delete_images as $imageId) {
+                $img = EventImage::find($imageId);
+                if ($img) {
+                    if (Storage::disk('public')->exists($img->image_path)) {
+                        Storage::disk('public')->delete($img->image_path);
+                    }
+                    $img->delete();
                 }
-
-                $oldImage->delete();
             }
+        }
 
+        // 2. Update sort orders for remaining existing images
+        if ($request->has('sort_orders')) {
+            foreach ($request->sort_orders as $imageId => $order) {
+                EventImage::where('id', $imageId)->update(['sort_order' => intval($order)]);
+            }
+        }
 
+        // 3. Update featured image selection
+        EventImage::where('event_id', $event->id)->update(['is_featured' => false]);
+        if ($request->has('featured_image_id')) {
+            EventImage::where('id', $request->featured_image_id)->update(['is_featured' => true]);
+        }
 
-            foreach ($request->file('images') as $image) {
-
+        // 4. Upload and append new images if any
+        if ($request->hasFile('images')) {
+            $maxOrder = EventImage::where('event_id', $event->id)->max('sort_order') ?? 0;
+            foreach ($request->file('images') as $index => $image) {
                 $path = $image->store('events', 'public');
-
                 EventImage::create([
-
                     'event_id' => $event->id,
-
                     'image_path' => $path,
-
+                    'is_featured' => false,
+                    'sort_order' => $maxOrder + $index + 1,
                 ]);
+            }
+        }
+
+        // 5. Ensure at least one image is featured (if any images exist)
+        $hasFeatured = EventImage::where('event_id', $event->id)->where('is_featured', true)->exists();
+        if (!$hasFeatured) {
+            $firstImg = EventImage::where('event_id', $event->id)->orderBy('sort_order', 'asc')->first();
+            if ($firstImg) {
+                $firstImg->update(['is_featured' => true]);
             }
         }
 

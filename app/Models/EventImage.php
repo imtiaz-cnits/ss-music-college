@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EventImage extends Model
 {
-    protected $fillable = ['event_id', 'image_path'];
+    protected $fillable = ['event_id', 'image_path', 'is_featured', 'sort_order'];
 
     public function event()
     {

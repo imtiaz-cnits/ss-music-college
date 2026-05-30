@@ -26,9 +26,12 @@ return str_replace($en, $bn, $number);
                         @forelse($events as $event)
                         <div class="d-flex align-items-lg-stretch col-lg-4 mt-4">
                             <div class="blog_card w-100">
-                                <div class="blog_img" style="cursor: pointer;" onclick="openEventImageModal('{{ $event->images->isNotEmpty() ? asset('storage/' . $event->images->first()->image_path) : asset('assets/image/blog_card_img_01.png') }}')">
-                                    @if($event->images->isNotEmpty())
-                                    <img src="{{ asset('storage/' . $event->images->first()->image_path) }}" alt="{{ $event->title }}" style="width: 100%; height: 250px; object-fit: cover;" />
+                                @php
+                                    $featuredImage = $event->images->firstWhere('is_featured', true) ?? $event->images->first();
+                                @endphp
+                                <div class="blog_img" style="cursor: pointer;" onclick="openEventImageModal('{{ $featuredImage ? asset('storage/' . $featuredImage->image_path) : asset('assets/image/blog_card_img_01.png') }}')">
+                                    @if($featuredImage)
+                                    <img src="{{ asset('storage/' . $featuredImage->image_path) }}" alt="{{ $event->title }}" style="width: 100%; height: 250px; object-fit: cover;" />
                                     @else
                                     <img src="{{ asset('assets/image/blog_card_img_01.png') }}" alt="Default Image" style="width: 100%; height: 250px; object-fit: cover;" />
                                     @endif

@@ -15,6 +15,6 @@ class Event extends Model
 
     public function images()
     {
-        return $this->hasMany(EventImage::class);
+        return $this->hasMany(EventImage::class)->orderBy('sort_order', 'asc');
     }
 }
