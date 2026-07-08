@@ -113,41 +113,44 @@
         scrollbar-color: var(--border) transparent;
     }
 
-    /* Collapsed Sidebar */
-    .sidebar.collapsed {
-        width: 25px;
-        overflow: hidden;
-    }
+    /* Collapsed Sidebar (Desktop Only) */
+    @media (min-width: 1025px) {
+        .sidebar.collapsed {
+            width: 0 !important;
+            overflow: hidden;
+            border-right: none !important;
+        }
 
-    .sidebar.collapsed .sidebar-header {
-        display: none;
-    }
+        .sidebar.collapsed .sidebar-header {
+            display: none;
+        }
 
-    .sidebar.collapsed .sidebar-logo-text,
-    .sidebar.collapsed .sidebar-section-title,
-    .sidebar.collapsed .sidebar-link {
-        opacity: 0;
-        visibility: hidden;
-    }
+        .sidebar.collapsed .sidebar-logo-text,
+        .sidebar.collapsed .sidebar-section-title,
+        .sidebar.collapsed .sidebar-link {
+            opacity: 0;
+            visibility: hidden;
+        }
 
-    .sidebar.collapsed .sidebar-link svg {
-        opacity: 1;
-    }
+        .sidebar.collapsed .sidebar-link svg {
+            opacity: 1;
+        }
 
-    .sidebar.collapsed .sidebar-collapse-btn {
-        display: none;
-    }
+        .sidebar.collapsed .sidebar-collapse-btn {
+            display: none;
+        }
 
-    .sidebar.collapsed .sidebar-expand-btn {
-        display: flex !important;
-    }
+        .sidebar.collapsed .sidebar-expand-btn {
+            display: flex !important;
+        }
 
-    .sidebar.collapsed::-webkit-scrollbar {
-        display: none;
-    }
+        .sidebar.collapsed::-webkit-scrollbar {
+            display: none;
+        }
 
-    .sidebar.collapsed {
-        scrollbar-width: none;
+        .sidebar.collapsed {
+            scrollbar-width: none;
+        }
     }
 
     .sidebar-header {
@@ -361,8 +364,14 @@
         transition: margin-left 0.3s ease;
     }
 
-    .sidebar.collapsed ~ .main-content {
-        margin-left: 25px;
+    @media (min-width: 1025px) {
+        .sidebar.collapsed ~ .main-content {
+            margin-left: 0 !important;
+        }
+    }
+
+    .sidebar.collapsed ~ .main-content .sidebar-collapse-btn svg {
+        transform: rotate(180deg);
     }
 
     /* Top Bar - shadcn style */
@@ -1874,8 +1883,30 @@
             margin-left: 0;
         }
 
+        .desktop-only-btn {
+            display: none !important;
+        }
+
+        .mobile-sidebar-close-btn {
+            display: flex !important;
+        }
+
         .mobile-menu-btn {
-            display: flex;
+            display: flex !important;
+            background-color: var(--muted) !important;
+            border: 1px solid var(--border) !important;
+            width: 36px !important;
+            height: 36px !important;
+            align-items: center;
+            justify-content: center;
+            padding: 0 !important;
+            border-radius: 6px;
+            color: var(--foreground) !important;
+            transition: all 0.15s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background-color: var(--border) !important;
         }
     }
 
@@ -2513,5 +2544,78 @@
                 transform: translateY(-100%);
             }
         }
+    }
+
+    /* Global Responsive Tables: Card Boxes on Mobile */
+    @media (max-width: 768px) {
+        .table-container {
+            overflow-x: visible !important;
+            width: 100% !important;
+        }
+        .table {
+            display: block !important;
+            width: 100% !important;
+            border: none !important;
+        }
+        .table thead {
+            display: none !important;
+        }
+        .table tbody {
+            display: block !important;
+            width: 100% !important;
+        }
+        .table tbody tr {
+            display: block !important;
+            background: var(--card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 10px !important;
+            padding: 1.25rem !important;
+            margin-bottom: 1.25rem !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+            position: relative !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .table td {
+            display: block !important;
+            padding: 0.5rem 0 !important;
+            border: none !important;
+            width: 100% !important;
+            text-align: left !important;
+            box-sizing: border-box !important;
+        }
+        .table td:last-child {
+            border-top: 1px dashed var(--border) !important;
+            padding-top: 0.75rem !important;
+            margin-top: 0.5rem !important;
+        }
+        .table td:last-child .action-buttons,
+        .table td:last-child > div {
+            justify-content: flex-end !important;
+            display: flex !important;
+            gap: 0.5rem !important;
+            align-items: center !important;
+        }
+    }
+
+    /* Global Height 40px overrides */
+    .btn,
+    button.btn,
+    .form-control,
+    .form-select,
+    .form-input,
+    .custom-dropdown-search,
+    .pagination-btn,
+    .search-input-wrapper input {
+        height: 40px !important;
+        box-sizing: border-box !important;
+    }
+    .btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .pagination-btn {
+        min-width: 40px !important;
     }
 </style>

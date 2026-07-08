@@ -1,6 +1,10 @@
 @extends('tyro-dashboard::layouts.admin')
 @section('title', 'Dashboard')
 
+@section('breadcrumb')
+<span>Dashboard</span>
+@endsection
+
 @section('content')
 
 {{-- ডাটাবেস থেকে ইভেন্ট এবং নোটিশের কাউন্ট ও লেটেস্ট ডাটা তুলে আনা হচ্ছে --}}

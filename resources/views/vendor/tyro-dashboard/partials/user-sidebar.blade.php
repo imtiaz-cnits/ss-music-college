@@ -8,21 +8,12 @@
                 SS Music College
             </span>
         </a>
-        @if(config('tyro-dashboard.collapsible_sidebar', false))
-        <button class="sidebar-collapse-btn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        <button type="button" class="mobile-sidebar-close-btn" onclick="toggleSidebar()" aria-label="Close sidebar" style="background: transparent; border: none; color: var(--sidebar-foreground, var(--muted-foreground)); cursor: pointer; padding: 0.375rem; border-radius: 6px; display: none; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; margin-left: auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
-        @endif
     </div>
-    @if(config('tyro-dashboard.collapsible_sidebar', false))
-    <button class="sidebar-expand-btn" onclick="toggleSidebarCollapse()" aria-label="Expand sidebar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-    </button>
-    @endif
 
     <nav class="sidebar-nav sidebar-accordion"
         data-sidebar-accordion
@@ -80,6 +71,18 @@
             </a>
             @endforeach
             @endif
+        </div>
+
+        {{-- Students Dropdown --}}
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Students</div>
+
+            <a href="{{ route('dashboard.students.index') }}" class="sidebar-link {{ request()->is('*/students*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.22 4 2.22V20" />
+                </svg>
+                Students Lists
+            </a>
         </div>
 
         @php

@@ -6,9 +6,13 @@
             </svg>
         </button>
 
-        <nav class="breadcrumb">
-            @yield('breadcrumb')
-        </nav>
+        @if(config('tyro-dashboard.collapsible_sidebar', false))
+        <button type="button" class="sidebar-collapse-btn desktop-only-btn" onclick="toggleSidebarCollapse()" aria-label="Collapse sidebar" style="background-color: var(--muted); border: 1px solid var(--border); color: var(--foreground); cursor: pointer; border-radius: 6px; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; transition: all 0.15s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px; transition: transform 0.2s;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        @endif
     </div>
 
     <div class="topbar-right">

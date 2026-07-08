@@ -1,6 +1,12 @@
 @extends('tyro-dashboard::layouts.admin')
 @section('title', 'Users')
 
+@section('breadcrumb')
+<a href="{{ route($dashboardRoute::name('index')) }}">Dashboard</a>
+<span class="breadcrumb-separator">/</span>
+<span>Users</span>
+@endsection
+
 @section('content')
 <div class="page-header">
     <div class="page-header-row">

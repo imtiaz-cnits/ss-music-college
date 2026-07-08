@@ -1,6 +1,10 @@
 @extends('tyro-dashboard::layouts.admin')
 @section('title', 'Dashboard')
 
+@section('breadcrumb')
+<span>Dashboard</span>
+@endsection
+
 @section('content')
 
 @php

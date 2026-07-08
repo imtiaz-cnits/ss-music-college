@@ -36,7 +36,7 @@ class PublicEventController extends Controller
     // Backend (Admin)
     public function adminIndex()
     {
-        $events = Event::with('images')->orderBy('event_date', 'desc')->orderBy('id', 'desc')->paginate(10);
+        $events = Event::with('images')->orderBy('event_date', 'desc')->orderBy('id', 'desc')->get();
         return view('dashboard.events.index', compact('events'));
     }
 

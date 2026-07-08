@@ -36,6 +36,12 @@
                 <!-- Flash Messages -->
                 @include('tyro-dashboard::partials.flash-messages')
 
+                @hasSection('breadcrumb')
+                <nav class="breadcrumb" style="margin-bottom: 1.25rem;">
+                    @yield('breadcrumb')
+                </nav>
+                @endif
+
                 @yield('content')
             </main>
         </div>

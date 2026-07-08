@@ -101,6 +101,10 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('galleries', GalleryController::class);
     Route::put('/profile/update', [App\Http\Controllers\CustomProfileController::class, 'update'])->name('tyro-dashboard.profile.update');
 
+    Route::get('/students', function () {
+        return view('dashboard.students.index');
+    })->name('dashboard.students.index');
+
     // ইভেন্ট ম্যানেজমেন্টের রাউট
     Route::get('/events', [App\Http\Controllers\PublicEventController::class, 'adminIndex'])->name('dashboard.events.index');
     Route::get('/events/create', [App\Http\Controllers\PublicEventController::class, 'create'])->name('dashboard.events.create');
