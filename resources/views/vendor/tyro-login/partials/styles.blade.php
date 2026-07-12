@@ -107,15 +107,22 @@
         min-height: 100vh;
     }
 
+    .auth-container.centered .form-panel {
+        border: 1px solid var(--border);
+        border-radius: var(--radius, 8px);
+        background-color: var(--card);
+        box-shadow: var(--card-shadow);
+    }
+
     /* Form Card */
     .form-card {
         width: 100%;
-        max-width: 360px;
+        /* max-width: 360px; */
     }
 
     .card .form-card,
     .fullscreen .form-card {
-        max-width: 420px;
+        /* max-width: 420px; */
     }
 
     /* Logo */
@@ -605,5 +612,47 @@
         to {
             transform: rotate(360deg);
         }
+    }
+
+    /* Password Visibility Toggle */
+    .password-wrapper {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .password-wrapper .form-input {
+        padding-right: 2.75rem;
+    }
+
+    .toggle-password-btn {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0.25rem;
+        color: var(--muted-foreground);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        transition: color 0.15s ease;
+    }
+
+    .toggle-password-btn:hover {
+        color: var(--foreground) !important;
+    }
+
+    /* Custom autofill styles to match theme background */
+    .form-input:-webkit-autofill,
+    .form-input:-webkit-autofill:hover,
+    .form-input:-webkit-autofill:focus,
+    .form-input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px var(--background) inset !important;
+        -webkit-text-fill-color: var(--foreground) !important;
+        transition: background-color 5000s ease-in-out 0s;
     }
 </style>

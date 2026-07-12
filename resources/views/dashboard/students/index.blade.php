@@ -2,16 +2,212 @@
 @section('title', 'Student Management')
 
 @section('breadcrumb')
-<a href="{{ route($dashboardRoute::name('index')) }}">Dashboard</a>
-<span class="breadcrumb-separator">/</span>
-<span id="breadcrumb-student-parent">Students</span>
-<span id="breadcrumb-student-child" style="display: none;"><span class="breadcrumb-separator">/ </span><span> Add Student</span></span>
+<div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+    <a href="{{ route($dashboardRoute::name('index')) }}">Dashboard</a>
+    <span class="breadcrumb-separator">/</span>
+    <a href="#" onclick="event.preventDefault(); hideAddStudentPage();" id="breadcrumb-student-parent">Students</a>
+    <span id="breadcrumb-student-child" style="display: none;"><span class="breadcrumb-separator">/ </span><span> Add Student</span></span>
+    <span id="breadcrumb-student-profile" style="display: none;"><span class="breadcrumb-separator">/ </span><span id="breadcrumb-profile-name">Student Profile</span></span>
+</div>
+<button id="btn-back-to-student" class="btn btn-secondary btn-sm hidden" onclick="hideAddStudentPage()" style="align-items: center; gap: 0.5rem; font-size: 0.85rem; padding: 0.4rem 0.8rem; border-radius: 6px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    Back to Students
+</button>
 @endsection
 
 @section('content')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <!-- Custom Styles for Filter Layout, Avatars & Mobile Cards -->
 <style>
+    /* ============================================================
+       SPA Page containers — prevent horizontal overflow on mobile
+       ============================================================ */
+    #addStudentPage,
+    #studentProfilePage,
+    #mainListPage {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    /* All non-positioned direct children use min-width:0
+       so flex/grid doesn't blow out the container */
+    #addStudentPage > *,
+    #studentProfilePage > *,
+    #addStudentPage .card,
+    #addStudentPage .card-body,
+    #addStudentPage .card-body > *,
+    #studentProfilePage .card,
+    #studentProfilePage .card-body,
+    #studentProfilePage .card-body > * {
+        box-sizing: border-box;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Form rows — must be 100% wide and not overflow */
+    #addStudentPage .form-section,
+    #addStudentPage .form-row,
+    #addStudentPage .form-group,
+    #addStudentPage .form-field {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+
+    /* Form inputs must never overflow */
+    #addStudentPage input:not([type="checkbox"]):not([type="radio"]),
+    #addStudentPage select,
+    #addStudentPage textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .breadcrumb {
+        width: 100% !important;
+        justify-content: space-between !important;
+        display: flex !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.75rem !important;
+    }
+    #btn-back-to-student.hidden {
+        display: none !important;
+    }
+    @media (max-width: 576px) {
+        .breadcrumb {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+        }
+        .card, .form-container-card {
+            padding: 1rem !important;
+            box-sizing: border-box !important;
+        }
+        .card-body {
+            padding: 0 !important;
+        }
+        .profile-header-flex {
+            gap: 1rem !important;
+            margin-bottom: 1.25rem !important;
+            padding-bottom: 1.25rem !important;
+        }
+        .profile-grid-container {
+            gap: 1rem !important;
+        }
+        .profile-grid-container > div {
+            padding: 1rem !important;
+        }
+    }
+        
+    @media (max-width: 480px) {
+        .profile-info-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.25rem !important;
+        }
+        .profile-info-grid span:nth-child(odd) {
+            margin-top: 0.35rem;
+        }
+    }
+    @media (max-width: 768px) {
+        .profile-grid-container {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    
+    /* Responsive styles for Photo + Office layout and Tables */
+    .photo-office-grid {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 1.5rem;
+        align-items: stretch;
+    }
+    .photo-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .photo-col .photo-upload-box-tall {
+        flex: 1;
+        width: 100%;
+        min-height: 160px;
+        cursor: pointer;
+        border: 2px dashed var(--border);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: var(--muted);
+        transition: border-color 0.2s, background 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+    .photo-col .photo-upload-box-tall:hover {
+        border-color: var(--primary);
+        background: color-mix(in srgb, var(--primary) 8%, var(--muted));
+    }
+    .office-col {
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+    }
+    .office-fields-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        align-content: start;
+    }
+    .table-responsive-scroll {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    .table-responsive-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+    .table-responsive-scroll::-webkit-scrollbar-track {
+        background: var(--muted);
+        border-radius: 3px;
+    }
+    .table-responsive-scroll::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+    }
+    .table-responsive-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--muted-foreground);
+    }
+    .passing-details-table {
+        min-width: 600px;
+    }
+
+    @media (max-width: 768px) {
+        .photo-office-grid {
+            grid-template-columns: 1fr;
+        }
+        .photo-col .photo-upload-box-tall {
+            min-height: 130px;
+        }
+        .office-fields-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 480px) {
+        .office-fields-grid {
+            grid-template-columns: 1fr;
+        }
+    }
     /* Premium flatpickr calendar customization */
     .flatpickr-calendar {
         background: var(--card) !important;
@@ -515,11 +711,7 @@
         font-weight: 500;
         margin-right: 0.25rem;
     }
-    @media (max-width: 768px) {
-        .card-body-adaptive {
-            padding: 1rem !important;
-        }
-    }
+   
 
     /* Modal Styling Details */
     .modal-detail-card {
@@ -1759,75 +1951,16 @@
 
 
 <!-- New Student Registration Page -->
-<div id="addStudentPage" style="display: none;">
+<div id="addStudentPage" style="display: none; padding-top: 0.5rem;">
 
-    <!-- Responsive styles for Photo + Office layout -->
-    <style>
-        .photo-office-grid {
-            display: grid;
-            grid-template-columns: 150px 1fr;
-            gap: 1.5rem;
-            align-items: stretch;
-        }
-        .photo-col {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .photo-col .photo-upload-box-tall {
-            flex: 1;
-            width: 100%;
-            min-height: 160px;
-            cursor: pointer;
-            border: 2px dashed var(--border);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            background: var(--muted);
-            transition: border-color 0.2s, background 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-        .photo-col .photo-upload-box-tall:hover {
-            border-color: var(--primary);
-            background: color-mix(in srgb, var(--primary) 8%, var(--muted));
-        }
-        .office-col {
-            background: var(--muted);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-        }
-        .office-fields-grid {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            align-content: start;
-        }
-        @media (max-width: 768px) {
-            .photo-office-grid {
-                grid-template-columns: 1fr;
-            }
-            .photo-col .photo-upload-box-tall {
-                min-height: 130px;
-            }
-            .office-fields-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 480px) {
-            .office-fields-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <div class="page-header" style="margin-bottom: 1.5rem;">
+        <div class="page-header-row">
+            <div>
+                <h1 class="page-title" id="admission-page-title">Student Admission</h1>
+                <p class="page-description" id="admission-page-description">Fill in the application details below to register a new student.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Photo + Office Box Card -->
     <div class="card" style="margin-bottom: 1.5rem;">
@@ -1848,40 +1981,109 @@
 
                 <!-- Office Use Only Box -->
                 <div class="office-col">
-                    <div style="font-weight: 800; font-size: 1rem; color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 0.6rem; margin-bottom: 1rem; text-align: center; letter-spacing: 0.04em;">
+                    <div style="font-weight: 800; font-size: 1rem; color: var(--primary); border-bottom: 2px solid var(--border); padding-bottom: 0.6rem; margin-bottom: 1rem; text-align: left; letter-spacing: 0.04em;">
                         Office Use Only:
                     </div>
                     <div class="office-fields-grid">
                         <div>
                             <label class="form-input-label">Class</label>
-                            <select id="office_class" class="form-input-field form-select-field" onchange="syncOfficeClass(this)">
-                                <option value="11th Class">11th Class</option>
-                                <option value="12th Class">12th Class</option>
-                            </select>
+                            <div class="custom-dropdown" id="officeClassDropdown" data-selected-value="11th Class">
+                                <div class="custom-dropdown-toggle">
+                                    <input type="text" class="custom-dropdown-search" placeholder="Select Class" value="11th Class" readonly>
+                                    <span class="custom-dropdown-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="custom-dropdown-menu">
+                                    <div class="custom-dropdown-actions">
+                                        <input type="text" class="custom-dropdown-add-input" placeholder="Type new or search...">
+                                        <button type="button" class="custom-dropdown-add-btn" title="Add Option">+</button>
+                                    </div>
+                                    <ul class="custom-dropdown-list">
+                                        <li data-value="11th Class" class="custom-dropdown-item active">
+                                            <span>11th Class</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                        <li data-value="12th Class" class="custom-dropdown-item">
+                                            <span>12th Class</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="form-input-label">Section / Group</label>
-                            <select id="office_section" class="form-input-field form-select-field" onchange="syncDesiredBranch(this)">
-                                <option value="Humanities">Humanities</option>
-                                <option value="Music">Music</option>
-                            </select>
+                            <div class="custom-dropdown" id="officeSectionDropdown" data-selected-value="Humanities">
+                                <div class="custom-dropdown-toggle">
+                                    <input type="text" class="custom-dropdown-search" placeholder="Select Section" value="Humanities" readonly>
+                                    <span class="custom-dropdown-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="custom-dropdown-menu">
+                                    <div class="custom-dropdown-actions">
+                                        <input type="text" class="custom-dropdown-add-input" placeholder="Type new or search...">
+                                        <button type="button" class="custom-dropdown-add-btn" title="Add Option">+</button>
+                                    </div>
+                                    <ul class="custom-dropdown-list">
+                                        <li data-value="Humanities" class="custom-dropdown-item active">
+                                            <span>Humanities</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                        <li data-value="Music" class="custom-dropdown-item">
+                                            <span>Music</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="form-input-label">Roll No.</label>
-                            <input type="text" id="office_roll" class="form-input-field" placeholder="e.g. 101">
+                            <input type="text" id="office_roll" class="form-input-field" placeholder="e.g. 101" style="height: 38px;">
                         </div>
                         <div>
                             <label class="form-input-label">Academic Year</label>
-                            <select id="office_session" class="form-input-field form-select-field">
-                                <option value="2024-2025">2024-2025</option>
-                                <option value="2023-2024">2023-2024</option>
-                                <option value="2026-2027">2026-2027</option>
-                            </select>
+                            <div class="custom-dropdown" id="officeSessionDropdown" data-selected-value="2024-2025">
+                                <div class="custom-dropdown-toggle">
+                                    <input type="text" class="custom-dropdown-search" placeholder="Select Year" value="2024-2025" readonly>
+                                    <span class="custom-dropdown-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div class="custom-dropdown-menu">
+                                    <div class="custom-dropdown-actions">
+                                        <input type="text" class="custom-dropdown-add-input" placeholder="Type new or search...">
+                                        <button type="button" class="custom-dropdown-add-btn" title="Add Option">+</button>
+                                    </div>
+                                    <ul class="custom-dropdown-list">
+                                        <li data-value="2024-2025" class="custom-dropdown-item active">
+                                            <span>2024-2025</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                        <li data-value="2023-2024" class="custom-dropdown-item">
+                                            <span>2023-2024</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                        <li data-value="2026-2027" class="custom-dropdown-item">
+                                            <span>2026-2027</span>
+                                            <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <label class="form-input-label">Admission Date</label>
                             <div style="position: relative;">
-                                <input type="text" id="office_admission_date" class="form-input-field" style="padding-right: 2.5rem;" placeholder="Select Date">
+                                <input type="text" id="office_admission_date" class="form-input-field" style="padding-right: 2.5rem; height: 38px;" placeholder="Select Date">
                             </div>
                         </div>
                     </div>
@@ -2082,29 +2284,41 @@
 
                 <!-- 12. SSC passing details table -->
                 <div style="margin-top: 1.5rem;">
-                    <p class="form-sub-section-label" style="font-weight: 700; margin-bottom: 0.5rem; color: var(--foreground);">12. Academic Passing Details:</p>
-                    <table class="passing-details-table">
-                        <thead>
-                            <tr>
-                                <th>Exam Name</th>
-                                <th>Board Name</th>
-                                <th>Exam Center</th>
-                                <th>Roll No.</th>
-                                <th>Year</th>
-                                <th>GPA / Grade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-weight: 700; background-color: var(--muted); font-size: 0.9rem;">SSC / Equivalent</td>
-                                <td><input type="text" id="ssc_board" placeholder="e.g. Rajshahi" required></td>
-                                <td><input type="text" id="ssc_center" placeholder="e.g. Pabna-1" required></td>
-                                <td><input type="text" id="ssc_roll" placeholder="e.g. 123456" required></td>
-                                <td><input type="text" id="ssc_year" placeholder="e.g. 2023" required></td>
-                                <td><input type="text" id="ssc_grade" placeholder="e.g. 5.00" required></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <p class="form-sub-section-label" style="font-weight: 700; margin: 0; color: var(--foreground);">12. Academic Passing Details:</p>
+                        <button type="button" class="btn btn-secondary btn-sm" id="btn-add-passing-row" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; border-radius: 4px; display: flex; align-items: center; gap: 0.25rem;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add Row
+                        </button>
+                    </div>
+                    <div class="table-responsive-scroll">
+                        <table class="passing-details-table">
+                            <thead>
+                                <tr>
+                                    <th>Exam Name</th>
+                                    <th>Board Name</th>
+                                    <th>Exam Center</th>
+                                    <th>Roll No.</th>
+                                    <th>Year</th>
+                                    <th>GPA / Grade</th>
+                                    <th style="width: 70px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 700; background-color: var(--muted); font-size: 0.9rem;">SSC / Equivalent</td>
+                                    <td><input type="text" id="ssc_board" placeholder="e.g. Rajshahi" required></td>
+                                    <td><input type="text" id="ssc_center" placeholder="e.g. Pabna-1" required></td>
+                                    <td><input type="text" id="ssc_roll" placeholder="e.g. 123456" required></td>
+                                    <td><input type="text" id="ssc_year" placeholder="e.g. 2023" required></td>
+                                    <td><input type="text" id="ssc_grade" placeholder="e.g. 5.00" required></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>                <!-- 13. Previous School info -->
                 <p class="form-sub-section-label" style="font-weight: 700; margin-top: 1.5rem; color: var(--foreground);">13. Name & Address of the Institution Last Attended:</p>
                 <div class="form-grid-4">
@@ -2309,24 +2523,22 @@
 
 
 
-<!-- Student Details Popup Modal -->
-<div id="studentDetailsModal" class="modal-overlay">
-    <div class="modal" style="max-width: 600px; width: 95%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden;">
-        <div class="modal-header" style="flex-shrink: 0;">
-            <h3 class="modal-title">Student Profile Details</h3>
-            <button type="button" class="modal-close" onclick="closeStudentModal()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-        <div class="modal-body" style="flex: 1; overflow-y: auto; padding: 1.25rem;">
-            <div id="modalStudentContent">
-                <!-- Content will be dynamically injected here via JS -->
+<!-- Student Profile Detail Page -->
+<div id="studentProfilePage" style="display: none; margin-bottom: 2rem;">
+    <div class="page-header" style="margin-bottom: 1.5rem;">
+        <div class="page-header-row">
+            <div>
+                <h1 class="page-title">Student Profile</h1>
+                <p class="page-description">Detailed academic and personal profile details.</p>
             </div>
         </div>
-        <div class="modal-footer" style="flex-shrink: 0;">
-            <button type="button" class="btn btn-secondary" onclick="closeStudentModal()">Close</button>
+    </div>
+
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-body" style="padding: 2rem;">
+            <div id="profilePageContent">
+                <!-- Content will be dynamically injected here via JS -->
+            </div>
         </div>
     </div>
 </div>
@@ -2406,14 +2618,78 @@
                 district: 'District',
                 mobile: mob
             },
-            photoUrl: null
+            photoUrl: null,
+            passingDetails: [
+                {
+                    exam: 'SSC / Equivalent',
+                    board: 'Rajshahi',
+                    center: 'Pabna',
+                    roll: roll,
+                    year: '2022',
+                    grade: '5.00'
+                }
+            ]
         };
     }
 
-    // JS for details modal popup
-    function openStudentModal(studentData) {
-        const modal = document.getElementById('studentDetailsModal');
-        const content = document.getElementById('modalStudentContent');
+    window.addPassingDetailsRow = function(exam = '', board = '', center = '', roll = '', year = '', grade = '') {
+        const tbody = document.querySelector('.passing-details-table tbody');
+        if (!tbody) return;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-weight: 700; background-color: var(--muted); font-size: 0.9rem; padding: 0.45rem;">
+                <input type="text" class="passing-exam-name" placeholder="e.g. HSC" value="${exam}" required style="font-weight: 700; background-color: transparent; border: none; text-align: center; font-size: 0.9rem; color: var(--foreground); box-sizing: border-box; width: 100%; outline: none;">
+            </td>
+            <td><input type="text" class="passing-board" placeholder="e.g. Dhaka" value="${board}" required></td>
+            <td><input type="text" class="passing-center" placeholder="e.g. Center" value="${center}" required></td>
+            <td><input type="text" class="passing-roll" placeholder="e.g. 654321" value="${roll}" required></td>
+            <td><input type="text" class="passing-year" placeholder="e.g. 2025" value="${year}" required></td>
+            <td><input type="text" class="passing-grade" placeholder="e.g. 4.80" value="${grade}" required></td>
+            <td>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="this.closest('tr').remove()" style="padding: 0.25rem 0.4rem; color: #ef4444; border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.05); font-size: 0.75rem; border-radius: 4px;">
+                    Delete
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    };
+
+    // JS for details profile page
+    function viewStudentDetails(button) {
+        const row = button.closest('tr');
+        const id = row.getAttribute('data-id');
+        const profile = getStudentProfile(id, row);
+        
+        document.getElementById('mainListPage').style.display = 'none';
+        document.getElementById('addStudentPage').style.display = 'none';
+        
+        const profilePage = document.getElementById('studentProfilePage');
+        if (profilePage) {
+            profilePage.style.display = 'block';
+        }
+        
+        const profileBc = document.getElementById('breadcrumb-student-profile');
+        if (profileBc) {
+            profileBc.style.display = 'inline';
+            const profileNameSpan = document.getElementById('breadcrumb-profile-name');
+            if (profileNameSpan) profileNameSpan.textContent = profile.nameEn || 'Student Profile';
+        }
+        
+        const backBtn = document.getElementById('btn-back-to-student');
+        if (backBtn) backBtn.classList.remove('hidden');
+
+        const childBc = document.getElementById('breadcrumb-student-child');
+        if (childBc) childBc.style.display = 'none';
+
+        renderStudentProfileDetails(profile);
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderStudentProfileDetails(studentData) {
+        const content = document.getElementById('profilePageContent');
+        if (!content) return;
         
         let photoHtml = '';
         if (studentData.photoUrl) {
@@ -2429,155 +2705,182 @@
         }
 
         content.innerHTML = `
-            <div style="display: flex; gap: 1.5rem; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; flex-wrap: wrap;">
-                <div style="width: 90px; height: 110px; border-radius: 6px; overflow: hidden; border: 2px solid var(--primary); background: var(--muted); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div class="profile-header-flex" style="display: flex; gap: 2rem; align-items: center; margin-bottom: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 2rem; flex-wrap: wrap;">
+                <div style="width: 120px; height: 140px; border-radius: 8px; overflow: hidden; border: 3px solid var(--primary); background: var(--muted); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md);">
                     ${photoHtml}
                 </div>
                 <div>
-                    <h2 style="margin: 0; font-size: 1.4rem; color: var(--foreground); font-weight: 700;">${studentData.nameEn}</h2>
-                    <p style="margin: 0.15rem 0 0.5rem 0; font-size: 1.05rem; color: var(--muted-foreground); font-weight: 600;">${studentData.nameBn}</p>
-                    <p style="margin: 0; color: var(--primary); font-weight: 700; font-size: 0.95rem;">
-                        ${studentData.desiredClass} | Roll: ${studentData.roll} | Section: ${studentData.desiredBranch}
-                    </p>
+                    <h2 style="margin: 0 0 0.25rem 0; font-size: 22px; color: var(--foreground); font-weight: 800; letter-spacing: -0.025em; word-break: break-word; overflow-wrap: break-word;">${studentData.nameEn}</h2>
+                    <p style="margin: 0 0 0.75rem 0; font-size: 1.2rem; color: var(--muted-foreground); font-weight: 600;">${studentData.nameBn}</p>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <span style="background-color: var(--primary); color: var(--primary-foreground); padding: 0.35rem 0.75rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">${studentData.desiredClass}</span>
+                        <span style="background-color: var(--muted); border: 1px solid var(--border); color: var(--foreground); padding: 0.35rem 0.75rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">Roll: ${studentData.roll}</span>
+                        <span style="background-color: var(--muted); border: 1px solid var(--border); color: var(--foreground); padding: 0.35rem 0.75rem; border-radius: 6px; font-weight: 700; font-size: 0.85rem;">Section: ${studentData.desiredBranch}</span>
+                    </div>
                 </div>
             </div>
             
-            <div style="display: flex; flex-direction: column; gap: 1.5rem; font-size: 0.9rem; padding-right: 0.25rem;">
+            <div class="profile-grid-container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; font-size: 0.9rem;">
                 
-                <!-- Section: General Info -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">General Info</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                        <div><strong>ID:</strong> ${studentData.id}</div>
-                        <div><strong>Serial No:</strong> ${studentData.serialNo}</div>
-                        <div><strong>Academic Year:</strong> ${studentData.session}</div>
-                        <div><strong>Admission Date:</strong> ${studentData.admissionDate || 'N/A'}</div>
-                        <div><strong>Date of Birth:</strong> ${studentData.dob || 'N/A'}</div>
-                        <div><strong>Gender:</strong> ${studentData.gender || 'N/A'}</div>
-                        <div><strong>Nationality:</strong> ${studentData.nationality}</div>
-                        <div><strong>Religion:</strong> ${studentData.religion}</div>
-                        <div><strong>Community:</strong> ${studentData.community || 'N/A'}</div>
+                <div style="background-color: var(--muted); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border);">
+                    <h4 style="margin: 0 0 1rem 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        General Information
+                    </h4>
+                    <div class="profile-info-grid" style="display: grid; grid-template-columns: 140px 1fr; gap: 0.75rem; line-height: 1.5;">
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Student ID:</span> <strong>${studentData.id}</strong>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Serial No:</span> <span>${studentData.serialNo}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Academic Year:</span> <span>${studentData.session}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Admission Date:</span> <span>${studentData.admissionDate || 'N/A'}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Date of Birth:</span> <span>${studentData.dob || 'N/A'}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Gender:</span> <span>${studentData.gender || 'N/A'}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Nationality:</span> <span>${studentData.nationality}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Religion:</span> <span>${studentData.religion}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Community:</span> <span>${studentData.community || 'N/A'}</span>
                     </div>
                 </div>
 
-                <!-- Section: Parents -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Parent Information</h4>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <div><strong>Father's Name (Bengali):</strong> ${studentData.fatherBn}</div>
-                        <div><strong>Father's Name (English):</strong> ${studentData.fatherEn}</div>
-                        <div><strong>Mother's Name (Bengali):</strong> ${studentData.motherBn}</div>
-                        <div><strong>Mother's Name (English):</strong> ${studentData.motherEn}</div>
+                <div style="background-color: var(--muted); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border);">
+                    <h4 style="margin: 0 0 1rem 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Parent Information
+                    </h4>
+                    <div class="profile-info-grid" style="display: grid; grid-template-columns: 180px 1fr; gap: 0.75rem; line-height: 1.5;">
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Father's Name (Bn):</span> <span>${studentData.fatherBn}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Father's Name (En):</span> <strong>${studentData.fatherEn}</strong>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Mother's Name (Bn):</span> <span>${studentData.motherBn}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Mother's Name (En):</span> <strong>${studentData.motherEn}</strong>
                     </div>
                 </div>
 
-                <!-- Section: Address -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Address Details</h4>
-                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div style="background-color: var(--muted); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border);">
+                    <h4 style="margin: 0 0 1rem 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 00.099.281L7.13 9c-.229.412-.139.94.21 1.25l4.09 4.09c.31.349.83.439 1.25.21l1.6-.8a1 1 0 01.282-.1l2.2.547a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        Contact & Guardian
+                    </h4>
+                    <div class="profile-info-grid" style="display: grid; grid-template-columns: 150px 1fr; gap: 0.75rem; line-height: 1.5;">
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Guardian Name:</span> <strong>${studentData.guardian.name || 'N/A'}</strong>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Occupation:</span> <span>${studentData.guardian.occupation || 'N/A'}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Annual Income:</span> <span>${studentData.guardian.income ? studentData.guardian.income + ' BDT' : 'N/A'}</span>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Local Guardian:</span> <strong>${studentData.localGuardian.name || 'N/A'}</strong>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Guardian Contact:</span> <strong style="color: var(--primary);">${studentData.localGuardian.mobile || 'N/A'}</strong>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Guardian Address:</span> <span>${studentData.guardian.address.village ? `Village: ${studentData.guardian.address.village}, PO: ${studentData.guardian.address.post}, Upazila: ${studentData.guardian.address.upazila}, District: ${studentData.guardian.address.district}` : 'N/A'}</span>
+                    </div>
+                </div>
+
+                <div style="background-color: var(--muted); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border);">
+                    <h4 style="margin: 0 0 1rem 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Address Details
+                    </h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem; line-height: 1.5;">
                         <div>
-                            <strong>Current Address:</strong> <br>
-                            Village: ${studentData.addresses.current.village}, Post Office: ${studentData.addresses.current.post}, Upazila: ${studentData.addresses.current.upazila}, District: ${studentData.addresses.current.district}
+                            <strong style="color: var(--foreground); display: block; font-size: 0.85rem; margin-bottom: 0.15rem;">Current Address:</strong>
+                            <span style="color: var(--muted-foreground);">Village:</span> ${studentData.addresses.current.village},
+                            <span style="color: var(--muted-foreground);">PO:</span> ${studentData.addresses.current.post},
+                            <span style="color: var(--muted-foreground);">Upazila:</span> ${studentData.addresses.current.upazila},
+                            <span style="color: var(--muted-foreground);">District:</span> ${studentData.addresses.current.district}
                         </div>
-                        <div style="border-top: 1px dashed var(--border); padding-top: 0.5rem;">
-                            <strong>Permanent Address:</strong> <br>
-                            Village: ${studentData.addresses.permanent.village}, Post Office: ${studentData.addresses.permanent.post}, Upazila: ${studentData.addresses.permanent.upazila}, District: ${studentData.addresses.permanent.district}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Section: Alternate Guardian -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Guardian Information (if Father is absent)</h4>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <div><strong>Guardian Name:</strong> ${studentData.guardian.name || 'N/A'}</div>
-                        <div><strong>Occupation:</strong> ${studentData.guardian.occupation || 'N/A'}</div>
-                        <div><strong>Annual Income:</strong> ${studentData.guardian.income ? studentData.guardian.income + ' BDT' : 'N/A'}</div>
-                        <div>
-                            <strong>Guardian Address:</strong> 
-                            ${studentData.guardian.address.village ? `Village: ${studentData.guardian.address.village}, Post Office: ${studentData.guardian.address.post}, Upazila: ${studentData.guardian.address.upazila}, District: ${studentData.guardian.address.district}` : 'N/A'}
+                        <div style="border-top: 1px dashed var(--border); padding-top: 0.75rem;">
+                            <strong style="color: var(--foreground); display: block; font-size: 0.85rem; margin-bottom: 0.15rem;">Permanent Address:</strong>
+                            <span style="color: var(--muted-foreground);">Village:</span> ${studentData.addresses.permanent.village},
+                            <span style="color: var(--muted-foreground);">PO:</span> ${studentData.addresses.permanent.post},
+                            <span style="color: var(--muted-foreground);">Upazila:</span> ${studentData.addresses.permanent.upazila},
+                            <span style="color: var(--muted-foreground);">District:</span> ${studentData.addresses.permanent.district}
                         </div>
                     </div>
                 </div>
 
-                <!-- Section: Education History Table -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Academic Passing Details & Reg.</h4>
-                    <div style="margin-bottom: 0.5rem;">
-                        <strong>Reg. Number:</strong> ${studentData.ssc.regNo} | <strong>Academic Session:</strong> ${studentData.ssc.session}
+                <div style="background-color: var(--muted); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border);">
+                    <h4 style="margin: 0 0 1rem 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+                        </svg>
+                        Academic Passing Details & Reg.
+                    </h4>
+                    <div style="margin-bottom: 0.75rem; line-height: 1.5;">
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Registration Number:</span> <strong>${studentData.ssc.regNo}</strong> <br>
+                        <span style="color: var(--muted-foreground); font-weight: 600;">Academic Session:</span> <span>${studentData.ssc.session}</span>
                     </div>
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: center; margin-top: 0.5rem; background-color: var(--card);">
-                        <thead>
-                            <tr style="background-color: var(--muted);">
-                                <th style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">Exam</th>
-                                <th style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">Board</th>
-                                <th style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">Center</th>
-                                <th style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">Roll</th>
-                                <th style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">Year</th>
-                                <th style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">Grade</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="border: 1px solid var(--border); padding: 0.4rem; font-weight:700; color: var(--foreground);">SSC / Equivalent</td>
-                                <td style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">${studentData.ssc.board}</td>
-                                <td style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">${studentData.ssc.center}</td>
-                                <td style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">${studentData.ssc.roll}</td>
-                                <td style="border: 1px solid var(--border); padding: 0.4rem; color: var(--foreground);">${studentData.ssc.year}</td>
-                                <td style="border: 1px solid var(--border); padding: 0.4rem; font-weight:700; color: var(--primary);">${studentData.ssc.grade}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-scroll">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: center; background-color: var(--card); border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            <thead>
+                                <tr style="background-color: var(--muted); border-bottom: 1px solid var(--border);">
+                                    <th style="border: 1px solid var(--border); padding: 0.5rem; color: var(--muted-foreground); font-weight: 700;">Exam</th>
+                                    <th style="border: 1px solid var(--border); padding: 0.5rem; color: var(--muted-foreground); font-weight: 700;">Board</th>
+                                    <th style="border: 1px solid var(--border); padding: 0.5rem; color: var(--muted-foreground); font-weight: 700;">Center</th>
+                                    <th style="border: 1px solid var(--border); padding: 0.5rem; color: var(--muted-foreground); font-weight: 700;">Roll</th>
+                                    <th style="border: 1px solid var(--border); padding: 0.5rem; color: var(--muted-foreground); font-weight: 700;">Year</th>
+                                    <th style="border: 1px solid var(--border); padding: 0.5rem; color: var(--muted-foreground); font-weight: 700;">Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${(studentData.passingDetails && studentData.passingDetails.length > 0) ? 
+                                    studentData.passingDetails.map(item => `
+                                        <tr>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; font-weight:700; color: var(--foreground);">${item.exam}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${item.board}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${item.center}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${item.roll}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${item.year}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; font-weight:700; color: var(--primary);">${item.grade}</td>
+                                        </tr>
+                                    `).join('') : `
+                                        <tr>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; font-weight:700; color: var(--foreground);">SSC / Equiv.</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${studentData.ssc.board}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${studentData.ssc.center}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${studentData.ssc.roll}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; color: var(--foreground);">${studentData.ssc.year}</td>
+                                            <td style="border: 1px solid var(--border); padding: 0.5rem; font-weight:700; color: var(--primary);">${studentData.ssc.grade}</td>
+                                        </tr>
+                                    `
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <!-- Section: Previous School -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Last Attended Institution</h4>
-                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                        <div><strong>Institution Name:</strong> ${studentData.prevSchool.name}</div>
-                        <div><strong>Post Office:</strong> ${studentData.prevSchool.post}, <strong>Upazila:</strong> ${studentData.prevSchool.upazila}, <strong>District:</strong> ${studentData.prevSchool.district}</div>
+                <div style="background-color: var(--muted); border-radius: 10px; padding: 1.25rem; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <h4 style="margin: 0 0 0.75rem 0; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            Last Attended Institution
+                        </h4>
+                        <div style="line-height: 1.5;">
+                            <span style="color: var(--muted-foreground); font-weight: 600;">Institution Name:</span> <strong>${studentData.prevSchool.name}</strong> <br>
+                            <span style="color: var(--muted-foreground); font-weight: 600;">Location:</span> <span>PO: ${studentData.prevSchool.post}, Upazila: ${studentData.prevSchool.upazila}, District: ${studentData.prevSchool.district}</span>
+                        </div>
                     </div>
-                </div>
-
-                <!-- Section: Selected Subjects -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border);">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Selected Course Subjects</h4>
-                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                        <div><strong>Compulsory:</strong> ${studentData.subjects.compulsory.join(', ')}</div>
-                        <div><strong>Elective Subjects:</strong> ${studentData.subjects.electives.join(', ')}</div>
-                        <div><strong>Fourth Subject:</strong> <span class="badge" style="background-color: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600;">${studentData.subjects.fourth}</span></div>
-                    </div>
-                </div>
-
-                <!-- Section: Local Guardian -->
-                <div style="background-color: var(--muted); border-radius: 8px; padding: 1rem; border: 1px solid var(--border); margin-bottom: 0.5rem;">
-                    <h4 style="margin: 0 0 0.75rem 0; border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; font-size: 0.95rem; font-weight: 700; color: var(--foreground);">Local Guardian & Contact</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                        <div><strong>Guardian Name:</strong> ${studentData.localGuardian.name}</div>
-                        <div><strong>Mobile Number:</strong> ${studentData.localGuardian.mobile}</div>
-                        <div style="grid-column: span 2;">
-                            <strong>Address:</strong> Village: ${studentData.localGuardian.village}, Post Office: ${studentData.localGuardian.post}, Upazila: ${studentData.localGuardian.upazila}, District: ${studentData.localGuardian.district}
+                    
+                    <div style="border-top: 1px dashed var(--border); padding-top: 1rem;">
+                        <h4 style="margin: 0 0 0.75rem 0; font-size: 1rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 18px; height: 18px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                            Selected Course Subjects
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; line-height: 1.5;">
+                            <div><span style="color: var(--muted-foreground); font-weight: 600;">Compulsory:</span> <strong style="color: var(--foreground);">${studentData.subjects.compulsory.join(', ')}</strong></div>
+                            <div><span style="color: var(--muted-foreground); font-weight: 600;">Elective Subjects:</span> <strong style="color: var(--foreground);">${studentData.subjects.electives.join(', ')}</strong></div>
+                            <div><span style="color: var(--muted-foreground); font-weight: 600;">Fourth Subject:</span> <span class="badge" style="background-color: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.8rem; display: inline-block;">${studentData.subjects.fourth}</span></div>
                         </div>
                     </div>
                 </div>
 
             </div>
         `;
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeStudentModal() {
-        const modal = document.getElementById('studentDetailsModal');
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    function viewStudentDetails(button) {
-        const row = button.closest('tr');
-        const id = row.getAttribute('data-id');
-        const profile = getStudentProfile(id, row);
-        openStudentModal(profile);
     }
 
     // Dynamic row deletion function
@@ -2782,6 +3085,83 @@
         });
     });
 
+    function selectCustomDropdownValue(containerId, value) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        const list = container.querySelector('.custom-dropdown-list');
+        if (!list) return;
+
+        let item = null;
+        list.querySelectorAll('.custom-dropdown-item').forEach(i => {
+            if (i.getAttribute('data-value') === value) {
+                item = i;
+            }
+        });
+
+        const searchInput = container.querySelector('.custom-dropdown-search');
+
+        if (item) {
+            list.querySelectorAll('.custom-dropdown-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            
+            const displayVal = item.querySelector('span') ? item.querySelector('span').textContent : item.textContent.trim();
+            if (searchInput) searchInput.value = displayVal;
+            container.setAttribute('data-selected-value', value);
+        } else {
+            const li = document.createElement('li');
+            li.className = 'custom-dropdown-item';
+            li.setAttribute('data-value', value);
+            li.innerHTML = `
+                <span>${value}</span>
+                <button type="button" class="custom-dropdown-delete-btn" title="Delete Option">&times;</button>
+            `;
+            
+            li.addEventListener('click', function(e) {
+                list.querySelectorAll('.custom-dropdown-item').forEach(i => i.classList.remove('active'));
+                li.classList.add('active');
+                if (searchInput) searchInput.value = value;
+                container.setAttribute('data-selected-value', value);
+                container.classList.remove('open');
+                
+                // Trigger any callbacks registered for this dropdown
+                if (containerId === 'officeClassDropdown') {
+                    const desiredClassInput = document.getElementById('desired_class');
+                    if (desiredClassInput) desiredClassInput.value = value;
+                } else if (containerId === 'officeSectionDropdown') {
+                    const desiredBranchInput = document.getElementById('desired_branch');
+                    if (desiredBranchInput) desiredBranchInput.value = value;
+                    if (typeof toggleSubjectOptions === 'function') toggleSubjectOptions();
+                }
+            });
+
+            li.querySelector('.custom-dropdown-delete-btn').addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (confirm(`Are you sure you want to delete option "${value}"?`)) {
+                    const isActive = li.classList.contains('active');
+                    li.remove();
+                    if (isActive) {
+                        const firstItem = list.querySelector('.custom-dropdown-item');
+                        if (firstItem) {
+                            list.querySelectorAll('.custom-dropdown-item').forEach(i => i.classList.remove('active'));
+                            firstItem.classList.add('active');
+                            const val = firstItem.getAttribute('data-value');
+                            if (searchInput) searchInput.value = firstItem.querySelector('span') ? firstItem.querySelector('span').textContent : firstItem.textContent.trim();
+                            container.setAttribute('data-selected-value', val);
+                        }
+                    }
+                }
+            });
+
+            list.appendChild(li);
+            
+            list.querySelectorAll('.custom-dropdown-item').forEach(i => i.classList.remove('active'));
+            li.classList.add('active');
+            if (searchInput) searchInput.value = value;
+            container.setAttribute('data-selected-value', value);
+        }
+    }
+
     // Filtering mechanism
     document.addEventListener('DOMContentLoaded', function() {
         // Load existing data from LocalStorage if available;
@@ -2974,6 +3354,22 @@
         initCustomDropdown('sectionDropdown', filterTable);
         initCustomDropdown('genderDropdown', filterTable);
 
+        // Initialize our 3 custom dropdowns in Office Use Only
+        initCustomDropdown('officeClassDropdown', function(val) {
+            const desiredClassInput = document.getElementById('desired_class');
+            if (desiredClassInput) desiredClassInput.value = val;
+        });
+        initCustomDropdown('officeSectionDropdown', function(val) {
+            const desiredBranchInput = document.getElementById('desired_branch');
+            if (desiredBranchInput) {
+                desiredBranchInput.value = val;
+            }
+            if (typeof toggleSubjectOptions === 'function') {
+                toggleSubjectOptions();
+            }
+        });
+        initCustomDropdown('officeSessionDropdown');
+
         // Initialize Flatpickr for the two date fields
         if (typeof flatpickr !== 'undefined') {
             flatpickr("#office_admission_date", {
@@ -2989,6 +3385,13 @@
         searchInput.addEventListener('input', filterTable);
         window.filterTable = filterTable;
         filterTable(); // Run initially to configure pagination layout
+
+        const addPassingRowBtn = document.getElementById('btn-add-passing-row');
+        if (addPassingRowBtn) {
+            addPassingRowBtn.addEventListener('click', function() {
+                if (typeof addPassingDetailsRow === 'function') addPassingDetailsRow();
+            });
+        }
     });
 
 
@@ -3418,8 +3821,8 @@
         // Class & Group choices
         document.getElementById('desired_class').value = '11th Class';
         document.getElementById('desired_branch').value = 'Humanities';
-        document.getElementById('office_class').value = '11th Class';
-        document.getElementById('office_section').value = 'Humanities';
+        selectCustomDropdownValue('officeClassDropdown', '11th Class');
+        selectCustomDropdownValue('officeSectionDropdown', 'Humanities');
 
         // Subject selection
         const humCheckboxes = ['Economics', 'Civics', 'Sociology'];
@@ -3460,7 +3863,7 @@
 
         // Office Only
         document.getElementById('office_roll').value = '105';
-        document.getElementById('office_session').value = '2024-2025';
+        selectCustomDropdownValue('officeSessionDropdown', '2024-2025');
         
         const admInput = document.getElementById('office_admission_date');
         if (admInput) {
@@ -3483,6 +3886,14 @@
             childBc.style.display = 'inline';
             childBc.querySelector('span:nth-child(2)').textContent = window.currentEditingStudentId ? ' Edit Student' : ' Add Student';
         }
+        const backBtn = document.getElementById('btn-back-to-student');
+        if (backBtn) backBtn.classList.remove('hidden');
+
+        const pageTitle = document.getElementById('admission-page-title');
+        const pageDesc = document.getElementById('admission-page-description');
+        if (pageTitle) pageTitle.textContent = window.currentEditingStudentId ? 'Edit Student' : 'Student Admission';
+        if (pageDesc) pageDesc.textContent = window.currentEditingStudentId ? 'Modify the registered student profile details.' : 'Fill in the application details below to register a new student.';
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
         // Update form heading and submit button text based on Mode (Add/Edit)
@@ -3589,6 +4000,23 @@
         document.getElementById('ssc_roll').value = (profile.ssc && profile.ssc.roll) || '';
         document.getElementById('ssc_year').value = (profile.ssc && profile.ssc.year) || '';
         document.getElementById('ssc_grade').value = (profile.ssc && profile.ssc.grade) || '';
+
+        // Reset and rebuild dynamic passing rows
+        const passingTbody = document.querySelector('.passing-details-table tbody');
+        if (passingTbody) {
+            const rows = passingTbody.querySelectorAll('tr');
+            for (let i = 1; i < rows.length; i++) {
+                rows[i].remove();
+            }
+        }
+        if (profile.passingDetails && profile.passingDetails.length > 1) {
+            for (let i = 1; i < profile.passingDetails.length; i++) {
+                const item = profile.passingDetails[i];
+                if (typeof addPassingDetailsRow === 'function') {
+                    addPassingDetailsRow(item.exam, item.board, item.center, item.roll, item.year, item.grade);
+                }
+            }
+        }
         
         // Prev school details
         document.getElementById('prev_inst_name').value = (profile.prevSchool && profile.prevSchool.name) || '';
@@ -3609,10 +4037,10 @@
         document.getElementById('local_guardian_mobile').value = (profile.localGuardian && profile.localGuardian.mobile) || '';
         
         // Sync office inputs
-        document.getElementById('office_class').value = profile.desiredClass || '11th Class';
-        document.getElementById('office_section').value = profile.desiredBranch || 'Humanities';
+        selectCustomDropdownValue('officeClassDropdown', profile.desiredClass || '11th Class');
+        selectCustomDropdownValue('officeSectionDropdown', profile.desiredBranch || 'Humanities');
         document.getElementById('office_roll').value = profile.roll || '';
-        document.getElementById('office_session').value = profile.session || '2024-2025';
+        selectCustomDropdownValue('officeSessionDropdown', profile.session || '2024-2025');
         
         const admInput = document.getElementById('office_admission_date');
         if (admInput) {
@@ -3687,6 +4115,8 @@
             childBc.style.display = 'inline';
             childBc.querySelector('span:nth-child(2)').textContent = ' Edit Student';
         }
+        const backBtn = document.getElementById('btn-back-to-student');
+        if (backBtn) backBtn.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -3797,9 +4227,17 @@
 
     window.hideAddStudentPage = function() {
         document.getElementById('addStudentPage').style.display = 'none';
+        const profilePage = document.getElementById('studentProfilePage');
+        if (profilePage) profilePage.style.display = 'none';
         document.getElementById('mainListPage').style.display = 'block';
+        
         const childBc = document.getElementById('breadcrumb-student-child');
         if (childBc) childBc.style.display = 'none';
+        const profileBc = document.getElementById('breadcrumb-student-profile');
+        if (profileBc) profileBc.style.display = 'none';
+        
+        const backBtn = document.getElementById('btn-back-to-student');
+        if (backBtn) backBtn.classList.add('hidden');
         document.getElementById('addStudentForm').reset();
         
         // Reset interactive photo upload preview
@@ -3824,10 +4262,21 @@
             }
         });
 
-        // Sync branch/section select to default (humanities)
+        // Reset branch/section select to default (humanities)
         document.getElementById('desired_branch').value = 'Humanities';
-        document.getElementById('office_section').value = 'Humanities';
+        selectCustomDropdownValue('officeSectionDropdown', 'Humanities');
+        selectCustomDropdownValue('officeClassDropdown', '11th Class');
+        selectCustomDropdownValue('officeSessionDropdown', '2024-2025');
         toggleSubjectOptions();
+
+        // Reset Passing Details Table to default (only SSC row remains)
+        const resetPassingTbody = document.querySelector('.passing-details-table tbody');
+        if (resetPassingTbody) {
+            const rows = resetPassingTbody.querySelectorAll('tr');
+            for (let i = 1; i < rows.length; i++) {
+                rows[i].remove();
+            }
+        }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -3838,7 +4287,7 @@
     };
 
     window.syncOfficeSection = function(el) {
-        document.getElementById('office_section').value = el.value;
+        selectCustomDropdownValue('officeSectionDropdown', el.value);
         toggleSubjectOptions();
     };
 
@@ -4020,7 +4469,7 @@
         // Office fields
         const serialNo = 'N/A';
         const roll = document.getElementById('office_roll').value.trim() || 'N/A';
-        const session = document.getElementById('office_session').value;
+        const session = document.getElementById('officeSessionDropdown').getAttribute('data-selected-value') || '2024-2025';
         const admissionDate = document.getElementById('office_admission_date').value || new Date().toISOString().slice(0, 10);
         
         if (!nameEn || !localGuardianMobile) {
@@ -4033,7 +4482,30 @@
         
         // Photo URL
         const photoUrl = window.uploadedPhotoData || null;
- 
+
+        // Collect Passing Details Table rows
+        const passingDetails = [];
+        const passingRows = document.querySelectorAll('.passing-details-table tbody tr');
+        passingRows.forEach((row, index) => {
+            let exam, board, center, roll, year, grade;
+            if (index === 0) {
+                exam = "SSC / Equivalent";
+                board = document.getElementById('ssc_board').value.trim();
+                center = document.getElementById('ssc_center').value.trim();
+                roll = document.getElementById('ssc_roll').value.trim();
+                year = document.getElementById('ssc_year').value.trim();
+                grade = document.getElementById('ssc_grade').value.trim();
+            } else {
+                exam = row.querySelector('.passing-exam-name').value.trim();
+                board = row.querySelector('.passing-board').value.trim();
+                center = row.querySelector('.passing-center').value.trim();
+                roll = row.querySelector('.passing-roll').value.trim();
+                year = row.querySelector('.passing-year').value.trim();
+                grade = row.querySelector('.passing-grade').value.trim();
+            }
+            passingDetails.push({ exam, board, center, roll, year, grade });
+        });
+
         // Register profile
         const studentProfile = {
             id: randomId,
@@ -4086,7 +4558,8 @@
                 district: localGuardianDistrict,
                 mobile: localGuardianMobile
             },
-            photoUrl
+            photoUrl,
+            passingDetails
         };
 
         window.studentProfiles[randomId] = studentProfile;
@@ -4146,7 +4619,10 @@
                     <button type="button" class="action-btn" title="View" onclick="viewStudentDetails(this)">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.4                    <button type="button" class="action-btn" title="Edit" onclick="editStudentDetails(this)">
+                            <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                    </button>
+                    <button type="button" class="action-btn" title="Edit" onclick="editStudentDetails(this)">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>

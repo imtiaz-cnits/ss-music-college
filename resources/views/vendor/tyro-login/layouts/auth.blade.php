@@ -59,6 +59,28 @@
             }
         });
 
+        // Toggle password visibility
+        function togglePasswordVisibility(inputId, btn) {
+            const passwordInput = document.getElementById(inputId);
+            if (passwordInput) {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                
+                // Toggle active/inactive state of the button icons
+                const eyeIcon = btn.querySelector('.eye-show');
+                const eyeSlashIcon = btn.querySelector('.eye-hide');
+                if (eyeIcon && eyeSlashIcon) {
+                    if (isPassword) {
+                        eyeIcon.style.display = 'none';
+                        eyeSlashIcon.style.display = 'block';
+                    } else {
+                        eyeIcon.style.display = 'block';
+                        eyeSlashIcon.style.display = 'none';
+                    }
+                }
+            }
+        }
+
         // Form validation enhancement
         document.addEventListener('DOMContentLoaded', function () {
             const forms = document.querySelectorAll('form');

@@ -38,6 +38,7 @@
     html {
         scrollbar-width: thin;
         scrollbar-color: var(--border) var(--background);
+        overflow-x: hidden;
     }
 
     html::-webkit-scrollbar {
@@ -67,12 +68,15 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         font-size: 16px;
+        overflow-x: hidden;
     }
 
     /* Dashboard Layout */
     .dashboard-layout {
         display: flex;
         min-height: 100vh;
+        overflow-x: hidden;
+        width: 100%;
     }
 
     /* Sidebar - shadcn style */
@@ -362,6 +366,9 @@
         display: flex;
         flex-direction: column;
         transition: margin-left 0.3s ease;
+        overflow-x: hidden;
+        min-width: 0;
+        max-width: 100%;
     }
 
     @media (min-width: 1025px) {
@@ -585,6 +592,11 @@
         padding: 2rem;
         flex: 1;
         background-color: var(--background);
+        overflow-x: hidden;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         /* max-width: 1200px; */
     }
 
@@ -621,10 +633,11 @@
         border: 1px solid var(--border);
         border-radius: 8px;
         box-shadow: var(--card-shadow);
+        padding: 20px;
     }
 
     .card-header {
-        padding: 1.25rem 1.5rem;
+        padding-bottom: 1.5rem;
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
@@ -638,7 +651,7 @@
     }
 
     .card-body {
-        padding: 1.5rem;
+        padding: 0px !important;
     }
 
     .card-footer {
@@ -1881,6 +1894,9 @@
 
         .main-content {
             margin-left: 0;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         .desktop-only-btn {
