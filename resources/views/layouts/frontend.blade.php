@@ -26,7 +26,7 @@
         <div id="popup-overlay"></div>
         <div id="popup-message">
             <div class="popup_img">
-                <img src="{{ asset('assets/image/pop-up-poster.jpg') }}" alt="Popup Image" />
+                <img src="{{ asset('assets/image/pop-up-poster.webp') }}" alt="Popup Image" />
             </div>
             <button id="popup-close">×</button>
         </div>
