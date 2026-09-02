@@ -24,10 +24,10 @@
                                 <h3 class="name text-start fs-3">মোঃ মনিরুজ্জামান</h3>
                                 <h5 class="sub_title text-black text-start">সভাপতি, শহীদ সাধন সঙ্গীত মহাবিদ্যালয়
                                 </h5>
-                                <h5 class="sub_title text-black text-start mt-3">নেজারত ডেপুটি কালেক্টর , <br>
+                                <h5 class="sub_title text-black text-start mt-3">সহকারী কমিশনার এবং এক্সিকিউটিভ ম্যাজিস্ট্রেট, <br>
                                     জেলা প্রশাসকের কার্যালয়, পাবনা
                                 </h5>
-                                <h5 class="sub_title text-black text-start mt-3">মোবাঃ ০১৩৩২৮৫৩৪০৭
+                                <h5 class="sub_title text-black text-start mt-3">মোবাঃ ০১৭৬৫৮১১৮৫১
                                 </h5>
                             </div>
                         </div>
