@@ -85,6 +85,9 @@ Route::get('/teaching-permission', function () {
 Route::get('/acceptance-renewal', function () {
     return view('frontend.acceptance_renewal');
 })->name('acceptance_renewal');
+Route::get('/accreditation-renewal', function () {
+    return view('frontend.accreditation_renewal');
+})->name('accreditation_renewal');
 Route::get('/class-routine', function () {
     return view('frontend.class-routine');
 })->name('class_routine');

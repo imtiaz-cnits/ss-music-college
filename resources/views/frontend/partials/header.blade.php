@@ -56,11 +56,12 @@
                     <li><a href="{{ route('result') }}" class="{{ request()->routeIs('result') ? 'active' : '' }}">ফলাফল</a></li>
 
                     <li class="menu_item_has_children">
-                        <a href="#" class="{{ request()->routeIs('teaching_permission', 'acceptance_renewal') ? 'active' : '' }}">পাঠদানের তথ্য <i class="fas fa-angle-down"></i></a>
+                        <a href="#" class="{{ request()->routeIs('teaching_permission', 'acceptance_renewal', 'accreditation_renewal') ? 'active' : '' }}">পাঠদানের তথ্য <i class="fas fa-angle-down"></i></a>
                         <div class="sub_menu single_column_menu">
                             <ul>
                                 <li><a href="{{ route('teaching_permission') }}" class="{{ request()->routeIs('teaching_permission') ? 'active' : '' }}">প্রথম পাঠদানের অনুমতি</a></li>
                                 <li><a href="{{ route('acceptance_renewal') }}" class="{{ request()->routeIs('acceptance_renewal') ? 'active' : '' }}">মঞ্জুরি নবায়ন</a></li>
+                                <li><a href="{{ route('accreditation_renewal') }}" class="{{ request()->routeIs('accreditation_renewal') ? 'active' : '' }}">স্বীকৃতি নবায়ন</a></li>
                             </ul>
                         </div>
                     </li>
