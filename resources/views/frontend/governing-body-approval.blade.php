@@ -10,8 +10,28 @@
             <div class="governing_approval_heading">
               <h2>গভর্ণিং বডির অনুমোদন</h2>
             </div>
-            <div class="approval_img_box mt-3">
-              <img src="./assets/image/governing_body_approval.jpg" alt="" />
+            <div class="approval_item mt-4">
+              <div class="approval_item_heading mb-3">
+                <h3 class="d-inline-block" style="font-size: 20px; font-weight: 600; color: #0e2d62; border-left: 4px solid #1b98e0; padding-left: 12px; margin: 0;">
+                  অনুমোদন পত্র (তারিখ: ০৬/০৭/২০২৬ খ্রি.)
+                </h3>
+              </div>
+              <div class="approval_img_box">
+                <img class="document_img" src="{{ asset('assets/image/governing_body_approval_6.7.26.webp') }}" alt="গভর্ণিং বডির অনুমোদন - ০৬/০৭/২০২৬" />
+              </div>
+            </div>
+
+            <hr class="my-5" style="border-top: 1px dashed #cbd5e1;">
+
+            <div class="approval_item">
+              <div class="approval_item_heading mb-3">
+                <h3 class="d-inline-block" style="font-size: 20px; font-weight: 600; color: #0e2d62; border-left: 4px solid #1b98e0; padding-left: 12px; margin: 0;">
+                  অনুমোদন পত্র (তারিখ: ২০/১০/২০২৫ খ্রি.)
+                </h3>
+              </div>
+              <div class="approval_img_box">
+                <img class="document_img" src="{{ asset('assets/image/governing_body_approval.jpg') }}" alt="গভর্ণিং বডির অনুমোদন - ২০/১০/২০২৫" />
+              </div>
             </div>
           </div>
         </div>
