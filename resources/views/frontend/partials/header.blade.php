@@ -66,7 +66,6 @@
                         </div>
                     </li>
 
-                    <li><a href="{{ route('gallery') }}" class="{{ request()->routeIs('gallery') ? 'active' : '' }}">গ্যালারী</a></li>
                     <li><a href="{{ route('event') }}" class="{{ request()->routeIs('event') ? 'active' : '' }}">ইভেন্ট</a></li>
                     <li><a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">যোগাযোগ</a></li>
 
