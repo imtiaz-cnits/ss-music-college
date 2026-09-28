@@ -10,9 +10,15 @@
                     <div class="teaching_permission_heading">
                         <h2>স্বীকৃতি নবায়ন</h2>
                     </div>
+                    @if($renewal && $renewal->file)
+                    <div class="teaching_img_box mt-3">
+                        <img class="document_img" src="{{ asset('storage/' . $renewal->file) }}" alt="স্বীকৃতি নবায়ন" />
+                    </div>
+                    @else
                     <div class="teaching_img_box mt-3">
                         <img class="document_img" src="{{ asset('assets/image/accreditation-renewal.webp') }}" alt="স্বীকৃতি নবায়ন" />
                     </div>
+                    @endif
                 </div>
             </div>
 

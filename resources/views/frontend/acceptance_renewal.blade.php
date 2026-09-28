@@ -10,9 +10,15 @@
                     <div class="teaching_permission_heading">
                         <h2>মঞ্জুরি নবায়ন</h2>
                     </div>
+                    @if($renewal && $renewal->file)
                     <div class="teaching_img_box mt-3">
-                        <img class="document_img" src="./assets/image/teaching_permission.png" alt="" />
+                        <img class="document_img" src="{{ asset('storage/' . $renewal->file) }}" alt="মঞ্জুরি নবায়ন" />
                     </div>
+                    @else
+                    <div class="teaching_img_box mt-3">
+                        <img class="document_img" src="{{ asset('assets/image/teaching_permission.png') }}" alt="মঞ্জুরি নবায়ন" />
+                    </div>
+                    @endif
                 </div>
             </div>
 

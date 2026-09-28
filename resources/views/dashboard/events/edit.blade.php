@@ -29,18 +29,18 @@
 
             <div class="form-group mb-3">
                 <label class="form-label">Event Title</label>
-                <input type="text" name="title" class="form-control form-input" value="{{ $event->title }}" required>
+                <input type="text" name="title" class="form-control form-input" value="{{ old('title', $event->title) }}" required>
             </div>
 
             <!-- Date Picker -->
             <div class="form-group mb-3">
                 <label class="form-label">Date</label>
-                <input type="text" id="datepicker" name="event_date" class="form-control form-input" value="{{ $event->event_date->format('Y-m-d') }}" required>
+                <input type="text" id="datepicker" name="event_date" class="form-control form-input" value="{{ old('event_date', \Carbon\Carbon::parse($event->event_date)->format('Y-m-d')) }}" required>
             </div>
 
             <div class="form-group mb-3">
                 <label class="form-label">Description</label>
-                <textarea name="description" rows="4" class="form-control form-input">{{ $event->description }}</textarea>
+                <textarea name="description" rows="4" class="form-control form-input">{{ old('description', $event->description) }}</textarea>
             </div>
 
             <!-- ইমেজ প্রিভিউ ও আপলোড -->
@@ -133,7 +133,7 @@
             altInput: true,
             altFormat: "j F, Y",
             locale: "en",
-            defaultDate: new Date()
+            defaultDate: "{{ old('event_date', \Carbon\Carbon::parse($event->event_date)->format('Y-m-d')) }}"
         });
     });
 

@@ -63,16 +63,14 @@
                             @forelse($sliderEvents as $event)
                             <div class="swiper-slide h-auto">
                                 <div class="blog_card h-100 d-flex flex-column w-100">
+                                    @php
+                                        $featuredImage = $event->images->firstWhere('is_featured', true) ?? $event->images->first();
+                                    @endphp
+                                    @if($featuredImage)
                                     <div class="blog_img">
-                                        @php
-                                            $featuredImage = $event->images->firstWhere('is_featured', true) ?? $event->images->first();
-                                        @endphp
-                                        @if($featuredImage)
                                         <img src="{{ asset('storage/' . $featuredImage->image_path) }}" alt="{{ $event->title }}" style="width: 100%; height: 220px; object-fit: cover;" />
-                                        @else
-                                        <img src="{{ asset('assets/image/blog_card_img_01.png') }}" alt="Default Image" style="width: 100%; height: 220px; object-fit: cover;" />
-                                        @endif
                                     </div>
+                                    @endif
                                     <div class="blog_card_text p-4 flex-grow-1 d-flex flex-column">
                                         <h5>
                                             @php

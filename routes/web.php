@@ -2,11 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Notice;
+use App\Models\GoverningBodyApproval;
+use App\Models\AccreditationRenewal;
+use App\Models\AcceptanceRenewal;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\CustomProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PublicEventController;
+use App\Http\Controllers\GoverningBodyApprovalController;
+use App\Http\Controllers\AccreditationRenewalController;
+use App\Http\Controllers\AcceptanceRenewalController;
 
 // Home page
 Route::get('/', function () {
@@ -34,7 +40,8 @@ Route::get('/chairman-governing-body', function () {
     return view('frontend.chairman-governing-body');
 })->name('chairman_governing_body');
 Route::get('/governing-body-approval', function () {
-    return view('frontend.governing-body-approval');
+    $approvals = GoverningBodyApproval::orderBy('date', 'desc')->orderBy('id', 'desc')->get();
+    return view('frontend.governing-body-approval', compact('approvals'));
 })->name('governing_body_approval');
 Route::get('/teachers', function () {
     return view('frontend.teachers');
@@ -83,10 +90,12 @@ Route::get('/teaching-permission', function () {
     return view('frontend.teaching-permission');
 })->name('teaching_permission');
 Route::get('/acceptance-renewal', function () {
-    return view('frontend.acceptance_renewal');
+    $renewal = AcceptanceRenewal::orderBy('date', 'desc')->first();
+    return view('frontend.acceptance_renewal', compact('renewal'));
 })->name('acceptance_renewal');
 Route::get('/accreditation-renewal', function () {
-    return view('frontend.accreditation_renewal');
+    $renewal = AccreditationRenewal::orderBy('date', 'desc')->first();
+    return view('frontend.accreditation_renewal', compact('renewal'));
 })->name('accreditation_renewal');
 Route::get('/class-routine', function () {
     return view('frontend.class-routine');
@@ -115,4 +124,13 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('/events/{id}/edit', [App\Http\Controllers\PublicEventController::class, 'edit'])->name('dashboard.events.edit');
     Route::put('/events/{id}', [App\Http\Controllers\PublicEventController::class, 'update'])->name('dashboard.events.update');
     Route::delete('/events/{id}', [App\Http\Controllers\PublicEventController::class, 'destroy'])->name('dashboard.events.destroy');
+
+    // ৩টি নতুন ম্যানেজমেন্ট রাউট
+    Route::resource('governing-body-approval', GoverningBodyApprovalController::class, ['names' => 'dashboard.governing-body-approval']);
+    Route::resource('accreditation-renewal', AccreditationRenewalController::class, ['names' => 'dashboard.accreditation-renewal']);
+    Route::resource('acceptance-renewal', AcceptanceRenewalController::class, ['names' => 'dashboard.acceptance-renewal']);
 });
+
+Route::middleware(['auth'])->get('/dashboard-main', function () {
+    return redirect('/dashboard');
+})->name('dashboard');

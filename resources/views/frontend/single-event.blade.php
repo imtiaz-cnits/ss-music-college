@@ -35,10 +35,9 @@ return str_replace($en, $bn, $number);
             <div class="row">
               @foreach($event->images as $image)
               <div class="d-flex align-items-lg-stretch col-lg-4 mt-4">
-                <div class="single_event_card">
+                <div class="single_event_card w-100">
                   <div class="single_event_img">
-                    {{-- আপনার ডিজাইন অনুযায়ী img tag --}}
-                    <img class="bg-cover h-full w-full" src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $event->title }}" />
+                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $event->title }}" style="width: 100%; height: 250px; object-fit: cover;" />
                   </div>
                 </div>
               </div>

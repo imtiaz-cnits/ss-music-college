@@ -10,6 +10,23 @@
             <div class="governing_approval_heading">
               <h2>গভর্ণিং বডির অনুমোদন</h2>
             </div>
+            @forelse($approvals as $key => $approval)
+            @if($key > 0)
+            <hr class="my-5" style="border-top: 1px dashed #cbd5e1;">
+            @endif
+            <div class="approval_item mt-4">
+              <div class="approval_item_heading mb-3">
+                <h3 class="d-inline-block" style="font-size: 20px; font-weight: 600; color: #0e2d62; border-left: 4px solid #1b98e0; padding-left: 12px; margin: 0;">
+                  {{ $approval->title }}
+                </h3>
+              </div>
+              @if($approval->file)
+              <div class="approval_img_box">
+                <img class="document_img" src="{{ asset('storage/' . $approval->file) }}" alt="{{ $approval->title }}" />
+              </div>
+              @endif
+            </div>
+            @empty
             <div class="approval_item mt-4">
               <div class="approval_item_heading mb-3">
                 <h3 class="d-inline-block" style="font-size: 20px; font-weight: 600; color: #0e2d62; border-left: 4px solid #1b98e0; padding-left: 12px; margin: 0;">
@@ -33,6 +50,7 @@
                 <img class="document_img" src="{{ asset('assets/image/governing_body_approval.jpg') }}" alt="গভর্ণিং বডির অনুমোদন - ২০/১০/২০২৫" />
               </div>
             </div>
+            @endforelse
           </div>
         </div>
 

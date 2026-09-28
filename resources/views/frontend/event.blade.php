@@ -29,13 +29,11 @@ return str_replace($en, $bn, $number);
                                 @php
                                     $featuredImage = $event->images->firstWhere('is_featured', true) ?? $event->images->first();
                                 @endphp
-                                <div class="blog_img" style="cursor: pointer;" onclick="openEventImageModal('{{ $featuredImage ? asset('storage/' . $featuredImage->image_path) : asset('assets/image/blog_card_img_01.png') }}')">
-                                    @if($featuredImage)
+                                @if($featuredImage)
+                                <div class="blog_img" style="cursor: pointer;" onclick="openEventImageModal('{{ asset('storage/' . $featuredImage->image_path) }}')">
                                     <img src="{{ asset('storage/' . $featuredImage->image_path) }}" alt="{{ $event->title }}" style="width: 100%; height: 250px; object-fit: cover;" />
-                                    @else
-                                    <img src="{{ asset('assets/image/blog_card_img_01.png') }}" alt="Default Image" style="width: 100%; height: 250px; object-fit: cover;" />
-                                    @endif
                                 </div>
+                                @endif
                                 <div class="blog_card_text p-4">
                                     {{-- বাংলা তারিখ --}}
                                     <h5>{{ en2bn(\Carbon\Carbon::parse($event->event_date)->locale('bn')->translatedFormat('d F, Y')) }}</h5>
@@ -52,8 +50,8 @@ return str_replace($en, $bn, $number);
                         @endforelse
                     </div>
 
-                    <div class="d-flex justify-content-center mt-5">
-                        {{ $events->links('pagination::bootstrap-5') }}
+                    <div class="mt-4">
+                        {{ $events->links('vendor.pagination.custom') }}
                     </div>
                 </div>
             </div>

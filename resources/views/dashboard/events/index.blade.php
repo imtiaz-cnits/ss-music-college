@@ -62,7 +62,7 @@
                             @if($event->images->isNotEmpty())
                             <img src="{{ asset('storage/' . $event->images->first()->image_path) }}" width="60" height="40" style="object-fit: cover; border-radius: 4px; display: block;">
                             @else
-                            <img src="{{ asset('assets/image/blog_card_img_01.png') }}" width="60" height="40" style="object-fit: cover; border-radius: 4px; display: block;">
+                            <span style="color: #94a3b8; font-size: 13px;">No Image</span>
                             @endif
                         </td>
                         <td>{{ \Carbon\Carbon::parse($event->event_date)->locale('en')->format('d M, Y') }}</td>
@@ -70,7 +70,7 @@
                         <td style="text-align: right;">
                             <div style="display: flex; gap: 0.5rem; justify-content: flex-end; align-items: center;">
                                 <!-- Preview Button -->
-                                <button type="button" class="btn btn-sm btn-info" onclick="previewEvent('{{ addslashes($event->title) }}', '{{ \Carbon\Carbon::parse($event->event_date)->locale('en')->format('d F, Y') }}', '{{ $event->images->isNotEmpty() ? asset('storage/' . $event->images->first()->image_path) : asset('assets/image/blog_card_img_01.png') }}')">
+                                <button type="button" class="btn btn-sm btn-info" onclick="previewEvent('{{ addslashes($event->title) }}', '{{ \Carbon\Carbon::parse($event->event_date)->locale('en')->format('d F, Y') }}', '{{ $event->images->isNotEmpty() ? asset('storage/' . $event->images->first()->image_path) : '' }}')">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;">
                                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                         <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -173,7 +173,14 @@
     function previewEvent(title, date, imageUrl) {
         document.getElementById('previewTitle').innerText = title;
         document.getElementById('previewDate').innerText = date;
-        document.getElementById('previewImage').src = imageUrl;
+        const imgEl = document.getElementById('previewImage');
+        if (imageUrl) {
+            imgEl.src = imageUrl;
+            imgEl.style.display = 'block';
+        } else {
+            imgEl.src = '';
+            imgEl.style.display = 'none';
+        }
 
         document.getElementById('eventPreviewModal').classList.add('show');
     }
